@@ -59,3 +59,11 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.bak
+
+# Unity version control and history
+.plastic/
+.history/
+
+# OS files
+.DS_Store
+Thumbs.db
