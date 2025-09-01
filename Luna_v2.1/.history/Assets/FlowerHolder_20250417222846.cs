@@ -1,0 +1,174 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+public class FlowerHolder : MonoBehaviour
+{
+    public Transform holdPoint;
+
+    private GameObject heldFlower;
+    private string heldFlowerType = "";
+    private List<GardenSpot> nearbyGardens = new List<GardenSpot>();
+
+    public bool HasFlower => heldFlower != null;
+    public string CurrentFlowerType => heldFlowerType;
+    public GameObject GetHeldFlower() => heldFlower;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (HasFlower)
+            {
+                TryPlantFlower();
+            }
+            else
+            {
+                TryPickUpFlower();
+            }
+        }
+    }
+
+    private void TryPlantFlower()
+    {
+        GardenSpot closest = FindClosestGarden();
+        if (closest == null) return;
+
+        var sprout = heldFlower?.GetComponent<SproutAndLightManager>();
+        if (sprout != null && !sprout.isPlanted)
+        {
+            if (closest.HasPlantedFlower)
+                closest.PickUp();
+
+            closest.Plant(heldFlower, closest.GetPlantingPoint().position);
+            DropFlower();
+        }
+    }
+
+    private void TryPickUpFlower()
+    {
+        GameObject closestSprout = FindClosestLooseSprout();
+        if (closestSprout != null)
+        {
+            Debug.Log($"🌼 Picking up loose sprout: {closestSprout.name}");
+            PickUpFlower(closestSprout);
+            return;
+        }
+
+        GardenSpot garden = FindClosestGarden();
+        if (garden != null && garden.HasPlantedFlower)
+        {
+            GameObject flower = garden.PickUp();
+            if (flower != null)
+            {
+                Debug.Log($"🌱 Picking up planted flower: {flower.name}");
+                PickUpFlower(flower);
+            }
+        }
+    }
+
+    private GameObject FindClosestLooseSprout()
+    {
+        GameObject[] allSprouts = GameObject.FindGameObjectsWithTag("Sprout");
+        GameObject closest = null;
+        float minDist = float.MaxValue;
+
+        foreach (var sprout in allSprouts)
+        {
+            var data = sprout.GetComponent<SproutAndLightManager>();
+            if (data == null || data.isPlanted || data.isHeld) continue;
+
+            float dist = Vector3.Distance(transform.position, sprout.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = sprout;
+            }
+        }
+
+        return closest;
+    }
+
+    public void PickUpFlower(GameObject flower)
+    {
+        if (flower == null) return;
+
+        heldFlower = flower;
+        heldFlowerType = flower.GetComponent<FlowerPickup>()?.flowerType ?? "Unknown";
+
+        var sprout = flower.GetComponent<SproutAndLightManager>();
+        if (sprout != null)
+        {
+            sprout.isHeld = true;
+            sprout.isPlanted = false;
+        }
+
+        flower.transform.SetParent(holdPoint);
+        flower.transform.localPosition = Vector3.zero;
+
+        var col = flower.GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        flower.SetActive(true);
+    }
+
+    public void DropFlower()
+    {
+        if (heldFlower != null)
+        {
+            heldFlower.transform.SetParent(null); // 🔄 unparent just in case
+
+            var sprout = heldFlower.GetComponent<SproutAndLightManager>();
+            if (sprout != null)
+            {
+                sprout.isHeld = false;
+            }
+
+            heldFlower = null;
+            heldFlowerType = "";
+        }
+    }
+
+    private GardenSpot FindClosestGarden()
+    {
+        GardenSpot closest = null;
+        float minDist = float.MaxValue;
+
+        foreach (var g in nearbyGardens)
+        {
+            float dist = Vector3.Distance(transform.position, g.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = g;
+            }
+        }
+
+        return closest;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Garden"))
+        {
+            GardenSpot g = other.GetComponent<GardenSpot>();
+            if (g != null && !nearbyGardens.Contains(g))
+            {
+                nearbyGardens.Add(g);
+                g.SetHighlight(true);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Garden"))
+        {
+            GardenSpot g = other.GetComponent<GardenSpot>();
+            if (g != null && nearbyGardens.Contains(g))
+            {
+                nearbyGardens.Remove(g);
+                g.SetHighlight(false);
+            }
+        }
+    }
+}

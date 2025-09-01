@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6a07c6668aa55403790d27b575279549
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - AbilityStartFeedbacks: {instanceID: 0}
+  - AbilityStopFeedbacks: {instanceID: 0}
+  - InitialWeapon: {fileID: 114000010078180980, guid: ce47084abcafd4ced9de2d33ec6aa2ae,
+      type: 3}
+  - WeaponAttachment: {instanceID: 0}
+  - CurrentWeapon: {fileID: 114000010078180980, guid: ce47084abcafd4ced9de2d33ec6aa2ae,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
