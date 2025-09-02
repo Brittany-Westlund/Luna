@@ -1,4 +1,0 @@
-repository "Luna_v1.1@brittanywestlund@cloud"
-  path "/"
-    br "/main"
-    co "/main"
