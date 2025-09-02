@@ -6,28 +6,28 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/MainMenu.unity
+    path: Assets/01Scenes--------------/keep/MainMenu.unity
     guid: ce82c55f1f1ac0c4d99c7452dad77fe5
   - enabled: 1
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/Level0_Tutorial.unity
+    path: Assets/01Scenes--------------/keep/Level0_Tutorial.unity
     guid: f0c0b18dd71938a46b805864a352d33a
   - enabled: 1
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/LoadingScreen.unity
+    path: Assets/01Scenes--------------/keep/LoadingScreen.unity
     guid: 888394d52616e5e42b3b54c3f2bbd3eb
   - enabled: 1
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/Credits.unity
+    path: Assets/01Scenes--------------/keep/Credits.unity
     guid: 07af134f32288f94d880e6e9e914fa82
   - enabled: 0
     path: Assets/CorgiEngine/Demos/LevelSelection/SplashScreen.unity
     guid: 7b96552fd1198fa4eaae54a2f975645e
-  - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/Level1_Meadow.unity
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level1_Meadow.unity
     guid: 2bac7a4bf3c9a9e42a17d9b9feb3833d
-  - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/Level2_Mire.unity
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level2_Mire.unity
     guid: e21d85da21cb0af428292a7fa1611111
   - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/Level3.unity
+    path: Assets/01Scenes--------------/Level3.unity
     guid: e063db0b755e9004ba3e8d48c5eae777
   - enabled: 0
     path: Assets/CorgiEngine/Common/Scenes--------------/Keep/Level3_Tree.unity
@@ -39,7 +39,7 @@ EditorBuildSettings:
     path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMSceneLoading/LoadingScreens/MMAdditiveLoadingScreen.unity
     guid: d89b77a7a68c1844280c6ff2e49f95b8
   - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/LevelSelection.unity
+    path: Assets/01Scenes--------------/keep/LevelSelection.unity
     guid: 19d14a033db3ff544ace68bcc08f15eb
   - enabled: 0
     path: Assets/CorgiEngine/Demos/LevelSelection/LevelSelectionMap.unity
@@ -245,27 +245,30 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMSceneLoading/LoadingScreens/MMAdditiveLoadingScreenSimple.unity
     guid: 945e5b97212e8e74ebcd35bddde3970c
-  - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/Level7_Village.unity
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level7_Village.unity
     guid: 4831a8f60a29ef541944a454a3e6f115
   - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/LevelTesting.unity
+    path: Assets/01Scenes--------------/LevelTesting.unity
     guid: ac03db28cf0954baf916a11624256a35
-  - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/GameOver.unity
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/GameOver.unity
     guid: b1cad753955e25f468e7313353c26c6b
   - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/Level2NewerOld.unity
+    path: Assets/01Scenes--------------/Level2NewerOld.unity
     guid: 700882a1bd89c8347a4e283b7827ad65
-  - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/Level5_Glade.unity
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level5_Glade.unity
     guid: 258bd5afe9a68d94786878e1edc39d71
-  - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/keep/Level6_Cave.unity
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level6_Cave.unity
     guid: ffe38a780fdb3fd4b98ec852574f2327
   - enabled: 0
-    path: Assets/CorgiEngine/Common/Scenes--------------/StartScreen.unity
+    path: Assets/01Scenes--------------/StartScreen.unity
     guid: b1f070345301ccb46a6db77a5f4cd83a
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level0_BramblePatch.unity
+    guid: 9a489feb2b607fc42880bd638301f0f0
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 0c4807857f184584597ede5fbce1cc26,
       type: 2}
