@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class LunariaWandAttractor : MonoBehaviour
 {
@@ -64,6 +65,7 @@ public class LunariaWandAttractor : MonoBehaviour
     {
         // record the wand’s world‑scale before any parenting
         _initialWorldScale = transform.lossyScale;
+        DontDestroyOnLoad(gameObject); // wand persists forever
     }
 
     void Start()
@@ -429,6 +431,23 @@ public class LunariaWandAttractor : MonoBehaviour
         ResetWandVisuals();
         return true;
     }
+
+    void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
+    void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _luna = GameObject.FindWithTag("Player")?.transform;
+        _fly  = FindObjectOfType<ButterflyFlyHandler>();
+
+        if (_isHeld && _luna != null)
+        {
+            Transform desired = (_fly != null && _fly._isFlying) ? flightHoldPoint : groundHoldPoint;
+            SnapUnder(desired);
+            pickupIcon?.SetActive(false);
+        }
+    }
+
 }
 
 
