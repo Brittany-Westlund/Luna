@@ -269,6 +269,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01Scenes--------------/keep/Level0_BramblePatch.unity
     guid: 9a489feb2b607fc42880bd638301f0f0
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level0_MiniCave.unity
+    guid: 4d9a85fda4fc7134782ef4a067a11c1a
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level0_Meadow.unity
+    guid: 1dab5f4a25f167d408dbdb2eabf2e536
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 0c4807857f184584597ede5fbce1cc26,
       type: 2}
