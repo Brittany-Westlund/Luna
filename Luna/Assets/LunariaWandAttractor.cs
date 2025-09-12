@@ -36,22 +36,25 @@ public class LunariaWandAttractor : MonoBehaviour
     public float pickUpRotationAngle = 75f;
 
     // internal state
-    Transform           _luna;
+    Transform _luna;
     ButterflyFlyHandler _fly;
-    bool                _isHeld         = false;
-    bool                _canPickup      = false;
-    bool                _hasLight       = false;
-    float               _lastPickupTime = -Mathf.Infinity;
-    GameObject          _activeMote;
-    Vector3             _initialWorldScale;
-    Transform           _currentHoldPoint;
-    
+    bool _isHeld = false;
+    bool _canPickup = false;
+    bool _hasLight = false;
+    float _lastPickupTime = -Mathf.Infinity;
+    GameObject _activeMote;
+    Vector3 _initialWorldScale;
+    Transform _currentHoldPoint;
+
     [Header("Attracted Mote Audio")]
     public AudioSource audioSource;
 
     [Header("Pickup/Putdown Audio")]
     public AudioSource pickupSFX;
     public AudioSource putdownSFX;
+    [Header("State")]
+    public bool isHeld = false;   // 👈 show in Inspector
+
 
     [Header("Lit Flower Pop Effect")]
     public float popScaleAmount = 1.3f;
@@ -61,17 +64,19 @@ public class LunariaWandAttractor : MonoBehaviour
 
 
 
+
     void Awake()
     {
         // record the wand’s world‑scale before any parenting
         _initialWorldScale = transform.lossyScale;
-        DontDestroyOnLoad(gameObject); // wand persists forever
+        _isHeld = isHeld; // always considered held now
+
     }
 
     void Start()
     {
         _luna = GameObject.FindWithTag("Player")?.transform;
-        _fly  = FindObjectOfType<ButterflyFlyHandler>();
+        _fly = FindObjectOfType<ButterflyFlyHandler>();
 
         // ensure physics setup
         var rb = GetComponent<Rigidbody2D>();
@@ -82,7 +87,7 @@ public class LunariaWandAttractor : MonoBehaviour
         // find or add an AudioSource for SFX!
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
-        audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     void FixedUpdate()
@@ -129,88 +134,14 @@ public class LunariaWandAttractor : MonoBehaviour
         }
     }
     private void TryIlluminate()
-{
-    Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, lightRadius);
-
-    if (hits.Length == 0)
-    {
-        Debug.Log("🔍 No objects found within light radius.");
-        return;
-    }
-
-    var candidate = hits
-        .Where(c =>
-            (c.TryGetComponent<SproutAndLightManager>(out var s)
-                 && s.IsFullyGrown
-                 && !s.litFlowerRenderer.enabled)
-         || c.GetComponent<TeapotLightReceiver>() != null
-         || c.GetComponentInChildren<TeapotLightReceiver>() != null
-         || ((c.CompareTag("IndoorLantern") || c.CompareTag("OutdoorLantern"))
-             && c.transform.Find("LitLantern")?.GetComponent<SpriteRenderer>() is SpriteRenderer lsr
-             && !lsr.enabled)
-        )
-        .OrderBy(c => Vector2.Distance(transform.position, c.transform.position))
-        .FirstOrDefault();
-
-    if (candidate == null)
-    {
-        Debug.Log("❌ No valid illuminate candidates found.");
-        return;
-    }
-
-    // — 🌸 Flower —
-    if (candidate.TryGetComponent<SproutAndLightManager>(out var flower))
-    {
-        Debug.Log("✨ Illuminating flower: " + candidate.name);
-
-        flower.isPlayerNearby = true;
-        flower.GiveLight();
-        flower.isPlayerNearby = false;
-
-        // destroy its hint icon if present
-        var hint = candidate.transform.Find("LightMoteIcon(Clone)");
-        if (hint != null) Destroy(hint.gameObject);
-
-        var litB = candidate.transform.Find("LitFlowerB")?.GetComponent<SpriteRenderer>();
-        if (litB != null) litB.enabled = true;
-
-        ConsumeMote();
-        return;
-    }
-
-    // — 🍵 Teapot —
-    var receiver =
-        candidate.GetComponent<TeapotLightReceiver>()
-        ?? candidate.GetComponentInChildren<TeapotLightReceiver>()
-        ?? candidate.GetComponentInParent<TeapotLightReceiver>();
-
-    if (receiver != null)
-    {
-        Debug.Log("✨ Illuminating teapot: " + candidate.name);
-
-        if (GiveLightToObject())
-            receiver.ActivateBrewReadyState();
-
-        return;
-    }
-
-    // — 🏮 Lantern —
-    var lanternSR = candidate.transform.Find("LitLantern")?.GetComponent<SpriteRenderer>();
-    if (lanternSR != null && !lanternSR.enabled)
-    {
-        Debug.Log("✨ Illuminating lantern: " + candidate.name);
-
-        lanternSR.enabled = true;
-        ConsumeMote();
-        return;
-    }
-
-    Debug.LogWarning("⚠ Candidate found, but not a valid illuminate target: " + candidate.name);
-}
-
-  /*  private void TryIlluminate()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, lightRadius);
+
+        if (hits.Length == 0)
+        {
+            Debug.Log("🔍 No objects found within light radius.");
+            return;
+        }
 
         var candidate = hits
             .Where(c =>
@@ -218,18 +149,25 @@ public class LunariaWandAttractor : MonoBehaviour
                      && s.IsFullyGrown
                      && !s.litFlowerRenderer.enabled)
              || c.GetComponent<TeapotLightReceiver>() != null
-             || ((c.CompareTag("IndoorLantern")||c.CompareTag("OutdoorLantern"))
+             || c.GetComponentInChildren<TeapotLightReceiver>() != null
+             || ((c.CompareTag("IndoorLantern") || c.CompareTag("OutdoorLantern"))
                  && c.transform.Find("LitLantern")?.GetComponent<SpriteRenderer>() is SpriteRenderer lsr
                  && !lsr.enabled)
             )
             .OrderBy(c => Vector2.Distance(transform.position, c.transform.position))
             .FirstOrDefault();
 
-        if (candidate == null) return;
+        if (candidate == null)
+        {
+            Debug.Log("❌ No valid illuminate candidates found.");
+            return;
+        }
 
-        // — Flower —
+        // — 🌸 Flower —
         if (candidate.TryGetComponent<SproutAndLightManager>(out var flower))
         {
+            Debug.Log("✨ Illuminating flower: " + candidate.name);
+
             flower.isPlayerNearby = true;
             flower.GiveLight();
             flower.isPlayerNearby = false;
@@ -245,23 +183,90 @@ public class LunariaWandAttractor : MonoBehaviour
             return;
         }
 
-        // — Teapot —
-        var receiver = candidate.GetComponent<TeapotLightReceiver>();
+        // — 🍵 Teapot —
+        var receiver =
+        candidate.GetComponent<TeapotLightReceiver>()
+        ?? candidate.GetComponentInChildren<TeapotLightReceiver>()
+        ?? candidate.GetComponentInParent<TeapotLightReceiver>();
+
         if (receiver != null)
         {
+            Debug.Log("✨ Illuminating teapot: " + candidate.name);
+
             if (GiveLightToObject())
                 receiver.ActivateBrewReadyState();
+
             return;
         }
 
-        // — Lantern —
+        // — 🏮 Lantern —
         var lanternSR = candidate.transform.Find("LitLantern")?.GetComponent<SpriteRenderer>();
         if (lanternSR != null && !lanternSR.enabled)
         {
+            Debug.Log("✨ Illuminating lantern: " + candidate.name);
+
             lanternSR.enabled = true;
             ConsumeMote();
+            return;
         }
-    }*/
+
+        Debug.LogWarning("⚠ Candidate found, but not a valid illuminate target: " + candidate.name);
+    }
+
+    /*  private void TryIlluminate()
+      {
+          Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, lightRadius);
+
+          var candidate = hits
+              .Where(c =>
+                  (c.TryGetComponent<SproutAndLightManager>(out var s)
+                       && s.IsFullyGrown
+                       && !s.litFlowerRenderer.enabled)
+               || c.GetComponent<TeapotLightReceiver>() != null
+               || ((c.CompareTag("IndoorLantern")||c.CompareTag("OutdoorLantern"))
+                   && c.transform.Find("LitLantern")?.GetComponent<SpriteRenderer>() is SpriteRenderer lsr
+                   && !lsr.enabled)
+              )
+              .OrderBy(c => Vector2.Distance(transform.position, c.transform.position))
+              .FirstOrDefault();
+
+          if (candidate == null) return;
+
+          // — Flower —
+          if (candidate.TryGetComponent<SproutAndLightManager>(out var flower))
+          {
+              flower.isPlayerNearby = true;
+              flower.GiveLight();
+              flower.isPlayerNearby = false;
+
+              // destroy its hint icon if present
+              var hint = candidate.transform.Find("LightMoteIcon(Clone)");
+              if (hint != null) Destroy(hint.gameObject);
+
+              var litB = candidate.transform.Find("LitFlowerB")?.GetComponent<SpriteRenderer>();
+              if (litB != null) litB.enabled = true;
+
+              ConsumeMote();
+              return;
+          }
+
+          // — Teapot —
+          var receiver = candidate.GetComponent<TeapotLightReceiver>();
+          if (receiver != null)
+          {
+              if (GiveLightToObject())
+                  receiver.ActivateBrewReadyState();
+              return;
+          }
+
+          // — Lantern —
+          var lanternSR = candidate.transform.Find("LitLantern")?.GetComponent<SpriteRenderer>();
+          if (lanternSR != null && !lanternSR.enabled)
+          {
+              lanternSR.enabled = true;
+              ConsumeMote();
+          }
+      }*/
 
     private bool ConsumeMote()
     {
@@ -285,11 +290,11 @@ public class LunariaWandAttractor : MonoBehaviour
             && other.CompareTag("LightMote")
             && Time.time >= _lastPickupTime + pickupCooldown)
         {
-            _hasLight       = true;
+            _hasLight = true;
             _lastPickupTime = Time.time;
 
             unlitFlower?.SetActive(false);
-            litFlower  ?.SetActive(true);
+            litFlower?.SetActive(true);
 
             StartCoroutine(PopScale(litFlower.transform, popScaleAmount, popScaleDuration));
 
@@ -311,7 +316,7 @@ public class LunariaWandAttractor : MonoBehaviour
             // ---- PLAY THE SOUND HERE ----
             if (audioSource != null && audioSource.clip != null)
                 audioSource.Play();
-           
+
             Destroy(other.gameObject);
         }
     }
@@ -357,7 +362,9 @@ public class LunariaWandAttractor : MonoBehaviour
         if (!_canPickup) return;
 
         _isHeld = true;
-        pickupIcon?.SetActive(false);
+
+        if (pickupIcon != null)
+        pickupIcon.SetActive(false);
 
         // PLAY PICKUP SOUND
         if (pickupSFX) pickupSFX.Play();
@@ -434,19 +441,45 @@ public class LunariaWandAttractor : MonoBehaviour
 
     void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
     void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
-
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded; // extra safety
+    }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _luna = GameObject.FindWithTag("Player")?.transform;
-        _fly  = FindObjectOfType<ButterflyFlyHandler>();
+        _fly = FindObjectOfType<ButterflyFlyHandler>();
 
         if (_isHeld && _luna != null)
         {
             Transform desired = (_fly != null && _fly._isFlying) ? flightHoldPoint : groundHoldPoint;
             SnapUnder(desired);
-            pickupIcon?.SetActive(false);
+
+            if (pickupIcon != null)
+            pickupIcon.SetActive(false);
         }
     }
+    
+    public void ForceLit()
+    {
+        _hasLight = true;
+        unlitFlower?.SetActive(false);
+        litFlower?.SetActive(true);
+    }
+
+    public void ResetWandVisualsGlobal()
+    {
+        _hasLight = false;
+        litFlower?.SetActive(false);
+        unlitFlower?.SetActive(true);
+
+        if (_activeMote != null)
+        {
+            Destroy(_activeMote);
+            _activeMote = null;
+        }
+    }  
+
 
 }
 
