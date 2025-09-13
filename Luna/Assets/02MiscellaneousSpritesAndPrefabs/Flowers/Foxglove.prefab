@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 5391283561872663770}
   - component: {fileID: 474679147987898473}
   - component: {fileID: 5292338107633869048}
+  - component: {fileID: -8934492458314094604}
   m_Layer: 28
   m_Name: Foxglove
   m_TagString: Sprout
@@ -493,6 +494,19 @@ MonoBehaviour:
   m_target: {fileID: 0}
   m_usePlayerSpawnpoint: 0
   m_multiscene: 0
+--- !u!114 &-8934492458314094604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2526756153432753716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073f86fd8ee7ad14b93d095d4d8c2a37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flowerID: 01
 --- !u!1 &3610785603144029403
 GameObject:
   m_ObjectHideFlags: 0
