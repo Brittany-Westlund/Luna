@@ -1,12 +1,16 @@
 using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class FlowerGlobalState : MonoBehaviour
 {
     public static FlowerGlobalState Instance;
 
-    // Tracks all picked flower IDs
-    private HashSet<string> pickedFlowers = new HashSet<string>();
+    [Header("Held Flower (runtime only)")]
+    [Tooltip("True while Luna is carrying a flower across scenes.")]
+    public bool hasHeldFlower = false;
+
+    // The actual flower object being carried (DontDestroyOnLoad)
+    private GameObject heldFlower;
 
     void Awake()
     {
@@ -18,34 +22,65 @@ public class FlowerGlobalState : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    /// <summary>
-    /// Returns true if this flower has already been picked.
-    /// </summary>
-    public bool IsFlowerPicked(string flowerID)
+    void OnDestroy()
     {
-        return pickedFlowers.Contains(flowerID);
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    /// <summary>
-    /// Record a flower as picked so it won’t respawn.
-    /// </summary>
-    public void MarkFlowerPicked(string flowerID)
+    /// <summary>Register the currently held flower and make sure it survives scene loads.</summary>
+    public void RegisterHeldFlower(GameObject flower)
     {
-        if (!pickedFlowers.Contains(flowerID))
+        if (flower == null) return;
+
+        hasHeldFlower = true;
+        heldFlower = flower;
+
+        // Ensure this specific GameObject persists across scenes
+        DontDestroyOnLoad(heldFlower);
+
+        Debug.Log($"🌼 [FlowerGlobalState] Registered held flower: {heldFlower.name}");
+    }
+
+    /// <summary>Clear if the given flower is the one we’re tracking.</summary>
+    public void ClearIfThis(GameObject flower)
+    {
+        if (flower != null && flower == heldFlower)
         {
-            pickedFlowers.Add(flowerID);
-            Debug.Log($"🌸 Flower {flowerID} marked as picked.");
+            hasHeldFlower = false;
+            heldFlower = null;
+            Debug.Log("🌼 [FlowerGlobalState] Cleared held flower.");
         }
     }
 
-    /// <summary>
-    /// Optional: clear all flower state (e.g., on New Game).
-    /// </summary>
-    public void ResetAll()
+    /// <summary>After a scene loads, reattach the held flower to Luna's HoldPoint.</summary>
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        pickedFlowers.Clear();
-        Debug.Log("🌸 All flower states reset.");
+        if (!hasHeldFlower || heldFlower == null) return;
+
+        var luna = GameObject.FindWithTag("Player");
+        if (luna == null)
+        {
+            Debug.LogWarning("🌼 [FlowerGlobalState] Player not found in new scene.");
+            return;
+        }
+
+        // Your existing FlowerHolder on Luna should expose holdPoint.
+        var holder = luna.GetComponentInChildren<FlowerHolder>();
+        if (holder == null || holder.holdPoint == null)
+        {
+            Debug.LogWarning("🌼 [FlowerGlobalState] FlowerHolder or holdPoint not found on Player.");
+            return;
+        }
+
+        // Re-parent back into Luna’s hand
+        heldFlower.transform.SetParent(holder.holdPoint, true);
+        heldFlower.transform.localPosition = Vector3.zero;
+        heldFlower.transform.localRotation = Quaternion.identity;
+
+        Debug.Log("🌼 [FlowerGlobalState] Reattached held flower to Luna after scene load.");
     }
 }

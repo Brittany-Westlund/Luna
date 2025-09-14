@@ -14,15 +14,52 @@ public class FlowerSway : MonoBehaviour
     private Coroutine swayCoroutine;
     private const float angleTolerance = 0.01f;
 
-    // 👇 External script should set this to true when picked
     public bool isBeingPickedUp = false;
+
+    private Collider2D myTrigger;
+
+    void Awake()
+    {
+        if (pivotPoint == null) pivotPoint = transform;
+        myTrigger = GetComponent<Collider2D>() ?? GetComponentInChildren<Collider2D>();
+    }
 
     void Start()
     {
+        TryRebindPlayer();
+        KickIfOverlapping();
+    }
+
+    void OnEnable()
+    {
+        TryRebindPlayer();
+        KickIfOverlapping();
+    }
+
+    void Update()
+    {
+        if (playerController == null || player == null || !player.activeInHierarchy)
+            TryRebindPlayer();
+    }
+
+    private void TryRebindPlayer()
+    {
         player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        playerController = player ? player.GetComponentInChildren<CorgiController>() : null;
+    }
+
+    private void KickIfOverlapping()
+    {
+        if (!isActiveAndEnabled || isBeingPickedUp || myTrigger == null || player == null) return;
+
+        var playerCols = player.GetComponentsInChildren<Collider2D>(true);
+        foreach (var pc in playerCols)
         {
-            playerController = player.GetComponentInChildren<CorgiController>(); // safer
+            if (pc && myTrigger.IsTouching(pc))
+            {
+                StartSwayCoroutine(playerController && playerController.Speed.magnitude > 0.1f);
+                return;
+            }
         }
     }
 
@@ -30,7 +67,8 @@ public class FlowerSway : MonoBehaviour
     {
         while (!isBeingPickedUp)
         {
-            float targetSwayAngle = (isPlayerMoving && playerController != null && playerController.Speed.magnitude > 0.1f)
+            float moving = (playerController != null && playerController.Speed.magnitude > 0.1f) ? 1f : 0f;
+            float targetSwayAngle = (isPlayerMoving || moving > 0f)
                 ? Mathf.Sin(Time.time * swaySpeed) * swayAmount
                 : 0f;
 
@@ -76,9 +114,6 @@ public class FlowerSway : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Call this from the flower pickup logic.
-    /// </summary>
     public void DisableSwayOnPickup()
     {
         isBeingPickedUp = true;
@@ -89,6 +124,16 @@ public class FlowerSway : MonoBehaviour
             swayCoroutine = null;
         }
 
-        enabled = false; // Disables this script entirely
+        enabled = false;
+    }
+
+    // Optional external kick point (not required by GardenStickySlot now)
+    public void ReactivateAfterReattach(bool assumePlayerMoving)
+    {
+        isBeingPickedUp = false;
+        enabled = true;
+        TryRebindPlayer();
+        if (swayCoroutine == null)
+            StartSwayCoroutine(assumePlayerMoving);
     }
 }

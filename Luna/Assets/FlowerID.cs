@@ -1,42 +1,42 @@
 using UnityEngine;
 using System;
 
-[RequireComponent(typeof(FlowerPickup))]
+[DisallowMultipleComponent]
 public class FlowerID : MonoBehaviour
 {
-    [Tooltip("Unique ID for this flower instance. Auto-generated if empty.")]
+    [Tooltip("Unique identifier for this flower (auto-assigned & remembered).")]
     public string flowerID;
 
-    private FlowerPickup pickup;
+    const string PP_PREFIX = "FLOWER_ID_MAP::";
 
     void Awake()
     {
-        pickup = GetComponent<FlowerPickup>();
+        if (!string.IsNullOrEmpty(flowerID)) return;
 
-        // Generate a persistent unique ID if not set
-        if (string.IsNullOrEmpty(flowerID))
+        string scene = gameObject.scene.IsValid() ? gameObject.scene.name : "DontDestroy";
+        string path  = GetHierarchyPath(transform);
+        string key   = PP_PREFIX + scene + "::" + path;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            flowerID = PlayerPrefs.GetString(key);
+        }
+        else
         {
             flowerID = Guid.NewGuid().ToString();
-        }
-
-        // Check global state: should this flower exist?
-        if (FlowerGlobalState.Instance != null &&
-            FlowerGlobalState.Instance.IsFlowerPicked(flowerID))
-        {
-            Destroy(gameObject);
+            PlayerPrefs.SetString(key, flowerID);
+            PlayerPrefs.Save();
         }
     }
 
-    void OnDestroy()
+    static string GetHierarchyPath(Transform t)
     {
-        // Record in global state if Luna picked it (not if it just despawned)
-        if (FlowerGlobalState.Instance != null && pickup != null)
+        string path = t.name;
+        while (t.parent != null)
         {
-            // Only count as "picked" if it was held or planted before destroy
-            if (pickup.IsHeld || pickup.IsPlanted)
-            {
-                FlowerGlobalState.Instance.MarkFlowerPicked(flowerID);
-            }
+            t = t.parent;
+            path = t.name + "/" + path;
         }
+        return path;
     }
 }

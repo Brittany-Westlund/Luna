@@ -133,9 +133,6 @@ GameObject:
   - component: {fileID: 4159267164644547796}
   - component: {fileID: 5558539963983983346}
   - component: {fileID: 5391283561872663770}
-  - component: {fileID: 474679147987898473}
-  - component: {fileID: 5292338107633869048}
-  - component: {fileID: -8934492458314094604}
   m_Layer: 28
   m_Name: Foxglove
   m_TagString: Sprout
@@ -152,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 2526756153432753716}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.387, y: -0.8, z: -0.12154724}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -236,7 +233,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2526756153432753716}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -276,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb25932659c1120498e1f2afd6692c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHeld: 0
+  isHeld: 1
   isPlanted: 1
   isPlayerNearby: 0
   maxGrowthStages: 3
@@ -458,55 +455,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &474679147987898473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2526756153432753716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d90ebda87389490449c66494d2f60ab6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_key: 
-  m_appendSaverTypeToKey: 0
-  m_saveAcrossSceneChanges: 1
-  m_restoreStateOnStart: 0
-  target: {fileID: 0}
---- !u!114 &5292338107633869048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2526756153432753716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1af33a602e20a3d4ca46c8a6ef942618, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_key: 
-  m_appendSaverTypeToKey: 0
-  m_saveAcrossSceneChanges: 1
-  m_restoreStateOnStart: 0
-  m_target: {fileID: 0}
-  m_usePlayerSpawnpoint: 0
-  m_multiscene: 0
---- !u!114 &-8934492458314094604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2526756153432753716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073f86fd8ee7ad14b93d095d4d8c2a37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flowerID: 01
 --- !u!1 &3610785603144029403
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,7 +689,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -421924884, guid: 807582a53ef9d4185affe23135150601, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

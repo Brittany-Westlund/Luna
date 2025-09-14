@@ -23,11 +23,12 @@ public class FlowerHolder : MonoBehaviour
     public void PickUpFlower(GameObject flower)
     {
         Debug.Log($"🌼 PickUpFlower called on {flower.name}");
-    if (heldFlower != null)
-    {
-        Debug.Log("❌ Cannot pick up — already holding a flower.");
-        return;
-    }
+
+        if (heldFlower != null)
+        {
+            Debug.Log("❌ Cannot pick up — already holding a flower.");
+            return;
+        }
 
         if (heldFlower != null) return;  // only one at a time
 
@@ -50,6 +51,8 @@ public class FlowerHolder : MonoBehaviour
             col.enabled = false;
 
         heldFlower = flower;
+        
+
     }
 
     public void DropFlower()

@@ -35,6 +35,7 @@ TagManager:
   - Garden
   - LightBar
   - PointsText
+  - Manager
   layers:
   - Default
   - TransparentFX
