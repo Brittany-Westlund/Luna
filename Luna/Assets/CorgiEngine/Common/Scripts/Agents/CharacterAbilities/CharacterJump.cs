@@ -213,7 +213,9 @@ namespace MoreMountains.CorgiEngine
 		protected override void HandleInput()
 		{
 			// we handle regular button presses
-			if (_inputManager.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager != null && 
+    _inputManager.JumpButton != null && 
+    _inputManager.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
 			{
 				JumpStart();
 			}
