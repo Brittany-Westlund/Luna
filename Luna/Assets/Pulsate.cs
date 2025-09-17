@@ -8,6 +8,47 @@ public class Pulsate : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private Vector3 originalScale;
+
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            Debug.LogError("Pulsate script requires a SpriteRenderer component");
+            enabled = false;
+            return;
+        }
+
+        originalScale = transform.localScale;
+    }
+
+    void Update()
+    {
+        // Calculate the scale and fade factor based on a Sin wave
+        float pulse = Mathf.Sin(Time.time * pulseSpeed) * scaleAmount + 1;
+        float fade = Mathf.Sin(Time.time * pulseSpeed) * fadeAmount + 1 - fadeAmount;
+
+        // Apply the scale changes
+        transform.localScale = originalScale * pulse;
+
+        // Only modify the alpha, leave the RGB alone
+        Color current = spriteRenderer.color;
+        current.a = fade;
+        spriteRenderer.color = current;
+    }
+}
+
+
+/* using UnityEngine;
+
+public class Pulsate : MonoBehaviour
+{
+    public float pulseSpeed = 2f;
+    public float scaleAmount = 0.1f;
+    public float fadeAmount = 0.5f;
+
+    private SpriteRenderer spriteRenderer;
+    private Vector3 originalScale;
     private Color originalColor;
 
     // Start is called before the first frame update
@@ -40,3 +81,4 @@ public class Pulsate : MonoBehaviour
         spriteRenderer.color = newColor;
     }
 }
+*/

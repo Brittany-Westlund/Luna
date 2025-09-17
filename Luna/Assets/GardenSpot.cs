@@ -1,4 +1,91 @@
-// GardenSpot.cs
+using UnityEngine;
+using System.Collections;
+
+public class GardenSpot : MonoBehaviour
+{
+    [Tooltip("Child Transform where the flower will snap to.")]
+    public Transform plantingPoint;
+
+    [Tooltip("SpriteRenderer object to tint for highlight.")]
+    public GameObject highlightObject;
+
+    [Tooltip("Seconds for highlight fade in/out")]
+    public float fadeDuration = 0.3f;
+
+    private SpriteRenderer _highlightRenderer;
+    private Color          _originalColor;
+    private Coroutine      _fadeRoutine;
+
+    // Which flower is planted here
+    private GameObject plantedFlower;
+
+    void Awake()
+    {
+        if (highlightObject != null)
+        {
+            _highlightRenderer = highlightObject.GetComponent<SpriteRenderer>();
+            if (_highlightRenderer != null)
+                _originalColor = _highlightRenderer.color;
+        }
+
+        // Auto-register any pre-placed child flower
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var c = transform.GetChild(i).gameObject;
+            if (c.GetComponent<SproutAndLightManager>() != null)
+            {
+                plantedFlower = c;
+                var mgr = c.GetComponent<SproutAndLightManager>();
+                mgr.isPlanted = true;
+                break;
+            }
+        }
+    }
+
+    /// <summary>Fade the highlight in or out.</summary>
+    public void SetHighlight(bool on)
+    {
+        if (_highlightRenderer == null) return;
+
+        Color targetColor = on ? Color.white : _originalColor;
+
+        // Cancel any running fade and start a new one
+        if (_fadeRoutine != null)
+            StopCoroutine(_fadeRoutine);
+        _fadeRoutine = StartCoroutine(FadeToColor(targetColor, fadeDuration));
+    }
+
+    private IEnumerator FadeToColor(Color target, float duration)
+    {
+        Color start = _highlightRenderer.color;
+        float t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            _highlightRenderer.color = Color.Lerp(start, target, t);
+            yield return null;
+        }
+
+        _highlightRenderer.color = target;
+        _fadeRoutine = null;
+    }
+
+    // Flower helpers (unchanged)
+    public void SetPlantedFlower(GameObject flower) => plantedFlower = flower;
+    public GameObject GetPlantedFlower() => plantedFlower;
+    public void ClearPlantedFlower() => plantedFlower = null;
+    public Transform GetPlantingPoint() => plantingPoint;
+
+    public static void NormalizeTransform(Transform t)
+    {
+        t.localScale = Vector3.one;
+        t.localRotation = Quaternion.identity;
+    }
+}
+
+
+/*
 using UnityEngine;
 
 public class GardenSpot : MonoBehaviour
@@ -73,3 +160,4 @@ public class GardenSpot : MonoBehaviour
     }
 
 }
+*/
