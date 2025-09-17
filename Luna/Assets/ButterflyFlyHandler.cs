@@ -308,20 +308,24 @@ public class ButterflyFlyHandler : MonoBehaviour
         }
 
         // if the wand is currently parented to Luna, snap it onto the butterfly
-        if (_wandObj.transform.parent == luna.transform)
+        // only run this if we actually have a wand
+        if (_wandObj != null && _wandObj.transform != null)
         {
-            _wandObj.transform.SetParent(flightWandHoldPoint, true);
-            _wandObj.transform.localPosition = Vector3.zero;
-            _wandObj.transform.localRotation = Quaternion.identity;
+            if (_wandObj.transform.parent == luna.transform)
+            {
+                _wandObj.transform.SetParent(flightWandHoldPoint, true);
+                _wandObj.transform.localPosition = Vector3.zero;
+                _wandObj.transform.localRotation = Quaternion.identity;
+            }
         }
 
         if (anemonePollenGroundHoldPoint.childCount > 0)
-        {
-            var icon = anemonePollenGroundHoldPoint.GetChild(0);
-            icon.SetParent(anemonePollenFlightHoldPoint, true);
-            icon.localPosition = Vector3.zero;
-            icon.localRotation = Quaternion.identity;
-        }
+            {
+                var icon = anemonePollenGroundHoldPoint.GetChild(0);
+                icon.SetParent(anemonePollenFlightHoldPoint, true);
+                icon.localPosition = Vector3.zero;
+                icon.localRotation = Quaternion.identity;
+            }
 
         if (foxglovePollenGroundHoldPoint.childCount > 0)
         {
@@ -388,8 +392,8 @@ public class ButterflyFlyHandler : MonoBehaviour
             f.transform.localRotation = Quaternion.identity;
         }
 
-        // If the wand is currently parented to Luna, snap it onto the butterfly
-        if (_wandObj.transform.parent == luna.transform)
+        // If the wand exists and is currently parented to Luna, snap it onto the butterfly
+        if (_wandObj != null && _wandObj.transform.parent == luna.transform)
         {
             _wandObj.transform.SetParent(flightWandHoldPoint, true);
             _wandObj.transform.localPosition = Vector3.zero;
