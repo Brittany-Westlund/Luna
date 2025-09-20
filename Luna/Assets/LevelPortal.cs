@@ -14,8 +14,15 @@ public class LevelPortal : MonoBehaviour
 
     void Start()
     {
-        if (interactIcon != null) 
+        if (interactIcon != null)
             interactIcon.SetActive(false);
+
+        // Make sure GameManager sticks around
+        var gm = GameObject.Find("GameManager");
+        if (gm != null)
+        {
+            DontDestroyOnLoad(gm);
+        }
     }
 
     void Update()
@@ -25,7 +32,8 @@ public class LevelPortal : MonoBehaviour
             // Save which portal was used
             PortalState.lastUsedPortal = portalID;
 
-            SceneManager.LoadScene(sceneToLoad);
+            // Load the new scene, but keep GameManager (and Luna under it)
+            SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
         }
     }
 
@@ -34,7 +42,7 @@ public class LevelPortal : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            if (interactIcon != null) 
+            if (interactIcon != null)
                 interactIcon.SetActive(true);
         }
     }
@@ -44,7 +52,7 @@ public class LevelPortal : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            if (interactIcon != null) 
+            if (interactIcon != null)
                 interactIcon.SetActive(false);
         }
     }
