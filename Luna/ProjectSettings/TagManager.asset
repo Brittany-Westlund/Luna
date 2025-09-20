@@ -36,6 +36,8 @@ TagManager:
   - LightBar
   - PointsText
   - Manager
+  - HealthBar
+  - AvetarHead
   layers:
   - Default
   - TransparentFX

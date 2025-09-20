@@ -1,40 +1,50 @@
 using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 using MoreMountains.CorgiEngine;
 
-public class LunaCameraFix : MonoBehaviour
+public class ReassignCorgiCamera : MonoBehaviour
 {
     private CinemachineCameraController cameraController;
 
-    private void Start()
+    void Start()
     {
         cameraController = FindObjectOfType<CinemachineCameraController>();
-        StartCoroutine(WatchForRespawnedPlayer());
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private IEnumerator WatchForRespawnedPlayer()
+    void OnDestroy()
     {
-        while (true)
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(ReassignCameraAfterDelay());
+    }
+
+    private System.Collections.IEnumerator ReassignCameraAfterDelay()
+    {
+        yield return new WaitForSeconds(0.25f); // Short delay to let Luna settle
+
+        GameObject playerObj = GameObject.FindWithTag("Player");
+
+        if (playerObj != null && cameraController != null)
         {
-            yield return new WaitForSeconds(0.5f);
-
-            GameObject playerObj = GameObject.FindWithTag("Player");
-
-            if (playerObj != null && cameraController != null)
+            Character character = playerObj.GetComponent<Character>();
+            if (character != null)
             {
-                Character character = playerObj.GetComponent<Character>();
-                if (character != null)
-                {
-                    cameraController.SetTarget(character);
-                    cameraController.StartFollowing();
-                    Debug.Log("📷 Camera now following character: " + playerObj.name);
-                    yield break;
-                }
-                else
-                {
-                    Debug.LogWarning("⚠️ Player object found, but no Character component attached.");
-                }
+                cameraController.SetTarget(character);
+                cameraController.StartFollowing();
+                Debug.Log("📷 Camera now following Luna after scene load.");
             }
+            else
+            {
+                Debug.LogWarning("⚠️ Player found but no Character component.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Could not find Player or CameraController.");
         }
     }
 }
