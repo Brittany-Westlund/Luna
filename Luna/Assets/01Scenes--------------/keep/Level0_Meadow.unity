@@ -1878,7 +1878,13 @@ MonoBehaviour:
   CheckpointAttributionAxis: 3
   CheckpointAttributionDirection: 0
   CurrentCheckPoint: {fileID: 0}
-  PointsOfEntry: []
+  PointsOfEntry:
+  - Name: Checkpoint_01
+    Position: {fileID: 1062721677}
+    EntryFeedback: {fileID: 0}
+  - Name: Checkpoint_02
+    Position: {fileID: 1591387376}
+    EntryFeedback: {fileID: 0}
   IntroFadeDuration: 1
   OutroFadeDuration: 1
   FaderID: 0

@@ -270,7 +270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grassObject: {fileID: 347599709996925941}
   grassRenderer: {fileID: 7117210778140406840}
-  restDuration: 5
+  restDuration: 4
   fadeDuration: 2
   growthSFX: {fileID: 8300000, guid: 9b86a80d774bd9748a0fb6266fa917c2, type: 3}
   growthVolume: 0.15
