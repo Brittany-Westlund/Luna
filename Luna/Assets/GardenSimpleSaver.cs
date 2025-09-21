@@ -1,65 +1,141 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 using System.Collections.Generic;
 
 [DisallowMultipleComponent]
 public class GardenStickySlot : MonoBehaviour
 {
-    [Header("Unique key for THIS garden (required & unique)")]
-    public string key = "Garden-1";
+    [Header("Key / Identity")]
+    [Tooltip("Leave empty to auto-generate a unique key per scene + object path.")]
+    public string key = "";
+    [Tooltip("Prefix keys with scene name automatically (recommended).")]
+    public bool prefixWithScene = true;
 
-    [Header("Where the flower should sit (defaults to this.transform)")]
+    [Header("Planting Point")]
+    [Tooltip("Where the flower should sit (defaults to this.transform).")]
     public Transform plantingPoint;
 
-    // Shared stash for this session
+    [Header("Debug")]
+    public bool verboseLogs = false;
+
+    // Shared (session) stash
     private static Transform stashRoot;
     private static readonly Dictionary<string, GameObject> saved = new();
 
-    private void Awake()
+    // --- Lifecycle ---
+    void Awake()
     {
         if (!plantingPoint) plantingPoint = transform;
         EnsureStash();
-        if (string.IsNullOrEmpty(key)) key = gameObject.name; // fallback
+
+        if (string.IsNullOrEmpty(key))
+            key = BuildAutoKey();     // scene+path based key
+        else if (prefixWithScene)
+            key = $"{SceneManager.GetActiveScene().name}:{key}";
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        // try immediately…
+        TryRestore();
+        // …and again next frame in case slot/spawn order is slow
+        StartCoroutine(DeferredRestore());
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        TryStash();
+    }
+
+    void OnSceneLoaded(Scene s, LoadSceneMode m)
+    {
+        // When returning to this scene, slot gets enabled => TryRestore in OnEnable covers it
+        // If the slot was already active (additive cases), do an extra pass:
+        StartCoroutine(DeferredRestore());
+    }
+
+    IEnumerator DeferredRestore()
+    {
+        yield return null; // one frame
+        TryRestore();
+    }
+
+    // --- Core ---
+    private void TryRestore()
+    {
+        // clean nulls
+        if (saved.ContainsKey(key) && saved[key] == null)
+            saved.Remove(key);
+
         if (saved.TryGetValue(key, out var go) && go)
         {
+            // If our saved sprout is still in the stash, reattach to this garden
             if (go.transform.parent == stashRoot)
             {
-                // remove any duplicate sprout Unity just spawned in this scene
+                // Remove any duplicate sprout Unity baked in this scene
                 var extra = FindChildSprout();
                 if (extra && extra != go) Destroy(extra);
 
+                Log($"Reattaching saved sprout to [{key}].");
                 Reattach(go);
             }
             else if (!go.transform.IsChildOf(transform))
             {
-                Debug.LogWarning(
-                    $"GardenStickySlot[{key}]: flower already attached elsewhere; duplicate key?", this);
+                LogWarn($"Saved sprout for [{key}] is attached elsewhere. Duplicate key?");
             }
         }
         else
         {
+            // First time: if a sprout is already present as child, register it
             var planted = FindChildSprout();
-            if (planted) saved[key] = planted; // track the first time
+            if (planted)
+            {
+                Log($"Registering existing sprout under [{key}].");
+                saved[key] = planted;
+            }
         }
     }
 
-    private void OnDisable()
+    private void TryStash()
     {
         var planted = FindChildSprout();
-        if (planted) Stash(planted);
+        if (planted)
+        {
+            Log($"Stashing sprout from [{key}] while scene/slot disables.");
+            Stash(planted);
+        }
     }
 
-    // -------- helpers --------
+    // --- Helpers ---
+    private string BuildAutoKey()
+    {
+        // unique path under scene (SceneName:Root/Parent/This)
+        string scene = SceneManager.GetActiveScene().name;
+        string path = GetHierarchyPath(transform);
+        return $"{scene}:{path}";
+    }
+
+    private static string GetHierarchyPath(Transform t)
+    {
+        var names = new Stack<string>();
+        var cur = t;
+        while (cur != null)
+        {
+            names.Push(cur.name);
+            cur = cur.parent;
+        }
+        return string.Join("/", names);
+    }
+
     private GameObject FindChildSprout()
     {
+        // requires your sprout prefab to be tagged "Sprout"
         foreach (Transform c in transform)
-        {
             if (c && c.CompareTag("Sprout"))
                 return c.gameObject;
-        }
         return null;
     }
 
@@ -81,12 +157,13 @@ public class GardenStickySlot : MonoBehaviour
     private void Stash(GameObject go)
     {
         if (!go) return;
+
         saved[key] = go;
 
         if (go.transform.parent != stashRoot)
             go.transform.SetParent(stashRoot, true);
 
-        try { Object.DontDestroyOnLoad(go); } catch { }
+        try { Object.DontDestroyOnLoad(go); } catch { /* some editors throw in edit */ }
 
         ToggleAllColliders(go, false);
 
@@ -104,8 +181,8 @@ public class GardenStickySlot : MonoBehaviour
     {
         if (!go) return;
 
-        go.transform.SetParent(plantingPoint, true);
-        go.transform.position = plantingPoint.position;
+        go.transform.SetParent(plantingPoint ? plantingPoint : transform, true);
+        go.transform.position = (plantingPoint ? plantingPoint : transform).position;
 
         ToggleAllColliders(go, true);
 
@@ -118,155 +195,34 @@ public class GardenStickySlot : MonoBehaviour
             spr.ClearAllHints();
         }
 
-        // Only pulse if this slot is active; otherwise just ensure active
-        if (isActiveAndEnabled)
-            StartCoroutine(PulseEnable(go));
-        else
-            go.SetActive(true);
-    }
-
-    private System.Collections.IEnumerator PulseEnable(GameObject go)
-    {
-        if (!go) yield break;
-        if (!go.activeSelf)
-        {
-            go.SetActive(true);
-            yield break;
-        }
-        go.SetActive(false);
-        yield return null; // one frame
-        go.SetActive(true);
-    }
-}
-
-
-/*
-using UnityEngine;
-using System.Collections.Generic;
-
-[DisallowMultipleComponent]
-public class GardenStickySlot : MonoBehaviour
-{
-    [Header("Unique key for THIS garden (required & unique)")]
-    public string key = "Garden-1";
-
-    [Header("Where the flower should sit (defaults to this.transform)")]
-    public Transform plantingPoint;
-
-    // Shared stash for this session
-    private static Transform stashRoot;
-    private static readonly Dictionary<string, GameObject> saved = new();
-
-    void Awake()
-    {
-        if (!plantingPoint) plantingPoint = transform;
-        EnsureStash();
-        if (string.IsNullOrEmpty(key)) key = gameObject.name; // fallback
-    }
-
-    void OnEnable()
-    {
-        if (saved.TryGetValue(key, out var go) && go)
-        {
-            if (go.transform.parent == stashRoot)
-            {
-                Reattach(go);
-            }
-            else if (!go.transform.IsChildOf(transform))
-            {
-                Debug.LogWarning($"GardenStickySlot[{key}]: flower already attached elsewhere; duplicate key?", this);
-            }
-        }
-        else
-        {
-            var planted = FindChildSprout();
-            if (planted) saved[key] = planted; // track first time; don't move it
-        }
-    }
-
-    void OnDisable()
-    {
-        var planted = FindChildSprout();
-        if (planted) Stash(planted);
-    }
-
-    // -------- helpers --------
-    GameObject FindChildSprout()
-    {
-        foreach (Transform c in transform)
-        {
-            if (c && c.CompareTag("Sprout"))
-                return c.gameObject;
-        }
-        return null;
-    }
-
-    static void EnsureStash()
-    {
-        if (stashRoot) return;
-        var stash = new GameObject("GardenStickyStash");
-        stash.hideFlags = HideFlags.DontSave;
-        Object.DontDestroyOnLoad(stash);
-        stashRoot = stash.transform;
-    }
-
-    void ToggleAllColliders(GameObject go, bool enabled)
-    {
-        foreach (var col in go.GetComponentsInChildren<Collider2D>(true))
-            if (col) col.enabled = enabled;
-    }
-
-    void Stash(GameObject go)
-    {
-        if (!go) return;
-        saved[key] = go;
-
-        if (go.transform.parent != stashRoot)
-            go.transform.SetParent(stashRoot, true);
-
-        try { Object.DontDestroyOnLoad(go); } catch {}
-
-        ToggleAllColliders(go, false);
-
-        var spr = go.GetComponent<SproutAndLightManager>();
-        if (spr != null)
-        {
-            spr.isHeld = false;
-            spr.isPlanted = true;
-            spr.isPlayerNearby = false;
-            spr.ClearAllHints();
-        }
-    }
-
-    void Reattach(GameObject go)
-    {
-        if (!go) return;
-
-        go.transform.SetParent(plantingPoint, true);
-        go.transform.position = plantingPoint.position; // keep world scale/rot
-
-        ToggleAllColliders(go, true);
-
-        var spr = go.GetComponent<SproutAndLightManager>();
-        if (spr != null)
-        {
-            spr.isHeld = false;
-            spr.isPlanted = true;
-            spr.isPlayerNearby = false;
-            spr.ClearAllHints();
-        }
-
-        // Pulse-enable one frame to wake any OnEnable/Start-based effects (e.g., sway/animators)
+        // Wake any OnEnable/Start on the sprout
         StartCoroutine(PulseEnable(go));
     }
 
-    System.Collections.IEnumerator PulseEnable(GameObject go)
+    private IEnumerator PulseEnable(GameObject go)
     {
         if (!go) yield break;
         if (!go.activeSelf) { go.SetActive(true); yield break; }
         go.SetActive(false);
-        yield return null; // one frame
+        yield return null;
         go.SetActive(true);
     }
+
+    // --- Debug ---
+    private void Log(string msg)
+    {
+        if (verboseLogs) Debug.Log($"[GardenStickySlot] {msg}", this);
+    }
+    private void LogWarn(string msg)
+    {
+        if (verboseLogs) Debug.LogWarning($"[GardenStickySlot] {msg}", this);
+    }
+
+    // Optional: clear saved state for this slot (call from context menu or a debug button)
+    [ContextMenu("Clear Saved For This Slot")]
+    private void ClearThis()
+    {
+        if (saved.ContainsKey(key)) saved.Remove(key);
+        Debug.Log($"[GardenStickySlot] Cleared saved for [{key}].", this);
+    }
 }
-*/

@@ -516,6 +516,11 @@ PrefabInstance:
       propertyPath: key
       value: Meadow-2
       objectReference: {fileID: 0}
+    - target: {fileID: 565926360699333367, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: verboseLogs
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 822762393072212455, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: m_Offset.x
