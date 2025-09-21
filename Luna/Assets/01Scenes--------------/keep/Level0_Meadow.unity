@@ -1914,10 +1914,10 @@ MonoBehaviour:
   ResetPointsOnRestart: 1
   BoundsMode: 0
   LevelBounds:
-    m_Center: {x: 0, y: 0.99, z: 0}
-    m_Extent: {x: 25, y: 6.25, z: 5}
+    m_Center: {x: -3.6, y: 0.99, z: 0}
+    m_Extent: {x: 28.8, y: 6.25, z: 5}
   ConvertToColliderBoundsButton: 0
-  LoadingSceneMode: 1
+  LoadingSceneMode: 0
   LoadingSceneName: Level0_Meadow
   AdditiveLoadingSettings:
     LoadingSceneName: MMAdditiveLoadingScreen
@@ -1995,9 +1995,9 @@ CompositeCollider2D:
     m_ColliderPaths:
     - - X: 250000000
         Y: 62500000
-      - X: -250000000
+      - X: -325769920
         Y: 62500000
-      - X: -250000000
+      - X: -325769920
         Y: -62500000
       - X: 250000000
         Y: -62500000
@@ -2005,8 +2005,8 @@ CompositeCollider2D:
     m_Paths:
     - - {x: 24.999971, y: -6.25}
       - {x: 24.999971, y: 6.25}
-      - {x: -25, y: 6.249971}
-      - {x: -24.999971, y: -6.25}
+      - {x: -32.576992, y: 6.249971}
+      - {x: -32.576965, y: -6.25}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -2043,7 +2043,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -3.788496, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2054,7 +2054,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 50, y: 12.5}
+  m_Size: {x: 57.576992, y: 12.5}
   m_EdgeRadius: 0
 --- !u!50 &213527049
 Rigidbody2D:
@@ -21196,6 +21196,7 @@ GameObject:
   - component: {fileID: 1896594460}
   - component: {fileID: 1896594461}
   - component: {fileID: 1896594462}
+  - component: {fileID: 1896594463}
   m_Layer: 0
   m_Name: Sounds
   m_TagString: Untagged
@@ -21521,6 +21522,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1896594461}
+--- !u!81 &1896594463
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896594454}
+  m_Enabled: 1
 --- !u!1 &1897774003
 GameObject:
   m_ObjectHideFlags: 0
@@ -25502,6 +25511,7 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 213527045}
   - {fileID: 1858949006}
   - {fileID: 490182785}
   - {fileID: 1062721677}
@@ -25509,7 +25519,6 @@ SceneRoots:
   - {fileID: 1829879857}
   - {fileID: 1896594455}
   - {fileID: 2017512073}
-  - {fileID: 213527045}
   - {fileID: 1799519421}
   - {fileID: 74625126}
   - {fileID: 1734560203}

@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerPrefabs: []
-  AutoAttributePlayerIDs: 1
+  AutoAttributePlayerIDs: 0
   SceneCharacters: []
   DebugSpawn: {fileID: 1132044354}
   CheckpointAttributionAxis: 3
@@ -537,10 +537,10 @@ MonoBehaviour:
   ResetPointsOnRestart: 1
   BoundsMode: 0
   LevelBounds:
-    m_Center: {x: 8.58, y: -2.12, z: 0}
-    m_Extent: {x: 2.59, y: 1.4, z: 5}
+    m_Center: {x: 8.69, y: -1.63, z: 0}
+    m_Extent: {x: 3.39, y: 2.08, z: 5}
   ConvertToColliderBoundsButton: 0
-  LoadingSceneMode: 1
+  LoadingSceneMode: 0
   LoadingSceneName: Level0_Tutorial
   AdditiveLoadingSettings:
     LoadingSceneName: MMAdditiveLoadingScreen
@@ -616,20 +616,20 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 213527048}
     m_ColliderPaths:
-    - - X: 104947024
+    - - X: 121889304
         Y: -5397157
-      - X: 31876056
+      - X: 52551404
         Y: -5397157
-      - X: 31876056
+      - X: 52551404
         Y: -47068836
-      - X: 104947024
+      - X: 121889304
         Y: -47068836
   m_CompositePaths:
     m_Paths:
-    - - {x: 10.494673, y: -4.7068834}
-      - {x: 10.494673, y: -0.5397157}
-      - {x: 3.1876056, y: -0.53974503}
-      - {x: 3.187635, y: -4.7068834}
+    - - {x: 12.188901, y: -4.7068834}
+      - {x: 12.188901, y: -0.5397157}
+      - {x: 5.2551403, y: -0.53974503}
+      - {x: 5.25517, y: -4.7068834}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -666,7 +666,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 6.841154, y: -2.6232996}
+  m_Offset: {x: 8.722035, y: -2.6232996}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -677,7 +677,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7.307097, y: 4.1671677}
+  m_Size: {x: 6.93379, y: 4.1671677}
   m_EdgeRadius: 0
 --- !u!50 &213527049
 Rigidbody2D:
@@ -2112,6 +2112,10 @@ PrefabInstance:
       propertyPath: FacingDirection
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 7a343ffc127af4b41b1e509d55d21956, type: 3}
+      propertyPath: ForceAssignation
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2284,9 +2288,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1169411378}
-  - component: {fileID: 1169411377}
-  - component: {fileID: 1169411379}
-  - component: {fileID: 1169411380}
   m_Layer: 0
   m_Name: Music
   m_TagString: Music
@@ -2294,23 +2295,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1169411377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169411376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50dfe57b03522e148b2bd9f2b37504bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InitializationTime: 0
-  SoundClip: {fileID: 8300000, guid: 4a3a47e249c2d6b49971fde9bb42ba5b, type: 3}
-  Loop: 1
-  ID: 255
-  Volume: 1
 --- !u!4 &1169411378
 Transform:
   m_ObjectHideFlags: 0
@@ -2326,40 +2310,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1896594455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1169411379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169411376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50dfe57b03522e148b2bd9f2b37504bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InitializationTime: 0
-  SoundClip: {fileID: 8300000, guid: 4a3a47e249c2d6b49971fde9bb42ba5b, type: 3}
-  Loop: 1
-  ID: 255
-  Volume: 0.859
---- !u!114 &1169411380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169411376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50dfe57b03522e148b2bd9f2b37504bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InitializationTime: 0
-  SoundClip: {fileID: 8300000, guid: af7fd41ab8fcf4f4aa2538f7b63eb659, type: 3}
-  Loop: 1
-  ID: 255
-  Volume: 0.034
 --- !u!1001 &1267633721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3613,6 +3563,7 @@ GameObject:
   - component: {fileID: 1896594460}
   - component: {fileID: 1896594461}
   - component: {fileID: 1896594462}
+  - component: {fileID: 1896594463}
   m_Layer: 0
   m_Name: Sounds
   m_TagString: Untagged
@@ -3938,6 +3889,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1896594461}
+--- !u!81 &1896594463
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896594454}
+  m_Enabled: 1
 --- !u!1 &1938829408
 GameObject:
   m_ObjectHideFlags: 0
