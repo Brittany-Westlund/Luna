@@ -460,6 +460,7 @@ GameObject:
   - component: {fileID: 213527049}
   - component: {fileID: 213527048}
   - component: {fileID: 213527047}
+  - component: {fileID: 213527050}
   m_Layer: 21
   m_Name: LevelManager
   m_TagString: Untagged
@@ -537,8 +538,8 @@ MonoBehaviour:
   ResetPointsOnRestart: 1
   BoundsMode: 0
   LevelBounds:
-    m_Center: {x: 8.69, y: -1.63, z: 0}
-    m_Extent: {x: 3.39, y: 2.08, z: 5}
+    m_Center: {x: 8.87, y: -1.63, z: 0}
+    m_Extent: {x: 5.66, y: 3.38, z: 5}
   ConvertToColliderBoundsButton: 0
   LoadingSceneMode: 0
   LoadingSceneName: Level0_Tutorial
@@ -616,20 +617,20 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 213527048}
     m_ColliderPaths:
-    - - X: 121889304
-        Y: -5397157
-      - X: 52551404
-        Y: -5397157
-      - X: 52551404
-        Y: -47068836
-      - X: 121889304
-        Y: -47068836
+    - - X: 145518928
+        Y: 7714405
+      - X: 32091598
+        Y: 7714405
+      - X: 32091598
+        Y: -59748152
+      - X: 145518928
+        Y: -59748152
   m_CompositePaths:
     m_Paths:
-    - - {x: 12.188901, y: -4.7068834}
-      - {x: 12.188901, y: -0.5397157}
-      - {x: 5.2551403, y: -0.53974503}
-      - {x: 5.25517, y: -4.7068834}
+    - - {x: 14.551865, y: -5.9748154}
+      - {x: 14.551865, y: 0.7714405}
+      - {x: 3.2091599, y: 0.7714112}
+      - {x: 3.2091892, y: -5.9748154}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -666,7 +667,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 8.722035, y: -2.6232996}
+  m_Offset: {x: 8.880527, y: -2.6016874}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -677,7 +678,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.93379, y: 4.1671677}
+  m_Size: {x: 11.342733, y: 6.746256}
   m_EdgeRadius: 0
 --- !u!50 &213527049
 Rigidbody2D:
@@ -706,6 +707,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &213527050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213527044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
 --- !u!1001 &251278671
 PrefabInstance:
   m_ObjectHideFlags: 0

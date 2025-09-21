@@ -656,6 +656,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1539236456}
+    - targetCorrespondingSourceObject: {fileID: 96089112699349889, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1539236457}
     - targetCorrespondingSourceObject: {fileID: 5256202750805728544, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       insertIndex: -1
@@ -2505,6 +2509,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0de571259fbbb64781944095a551ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &884342036 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8262906485295088938, guid: a9f055d37203fa54ba373213778c4b33,
+    type: 3}
+  m_PrefabInstance: {fileID: 124280114}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &891372382
 GameObject:
   m_ObjectHideFlags: 0
@@ -3852,6 +3862,22 @@ MonoBehaviour:
   confiner2D: {fileID: 0}
   framesToWait: 3
   gameplayPrefix: Level
+--- !u!114 &1539236457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539236424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94286a48f773fb4b9241336010f4862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigRoot: {fileID: 1614089834}
+  gameplayScenes:
+  - Level0_Meadow
+  - Level0_MiniCave
 --- !u!114 &1556297393 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8400518537347985492, guid: da6060b42c28f7443a4f6ac3d99e261e,
@@ -4134,6 +4160,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1587698006462563895, guid: b3992e38e52f78f46939d66d95bbcfa5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -12.226719
+      objectReference: {fileID: 0}
+    - target: {fileID: 3290923827635554976, guid: b3992e38e52f78f46939d66d95bbcfa5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -12.226719
+      objectReference: {fileID: 0}
+    - target: {fileID: 3780298075245890531, guid: b3992e38e52f78f46939d66d95bbcfa5,
+        type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 884342036}
+    - target: {fileID: 3780298075245890531, guid: b3992e38e52f78f46939d66d95bbcfa5,
+        type: 3}
+      propertyPath: m_Priority
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4851244102463479597, guid: b3992e38e52f78f46939d66d95bbcfa5,
         type: 3}
       propertyPath: FollowsAPlayer
@@ -4149,11 +4195,7 @@ PrefabInstance:
     - {fileID: 7896380306696868855, guid: b3992e38e52f78f46939d66d95bbcfa5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 861298510090847468, guid: b3992e38e52f78f46939d66d95bbcfa5,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1614089835}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3992e38e52f78f46939d66d95bbcfa5, type: 3}
 --- !u!4 &1614089833 stripped
 Transform:
@@ -4167,21 +4209,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1614089832}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1614089835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614089834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c94286a48f773fb4b9241336010f4862, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameplayScenes:
-  - Level0_Meadow
-  - Level0_MiniCave
 --- !u!1001 &1616795315
 PrefabInstance:
   m_ObjectHideFlags: 0
