@@ -7,6 +7,234 @@ using System.Collections;
 public class LunaHealthManager : MonoBehaviour
 {
     [Header("Health Settings")]
+    public MMProgressBar healthBar;          // optional now
+    public float decayInterval = 5f;
+    public float healthLossAmount = 0.01f;   // fraction of max per interval
+
+    [Header("Fade Settings")]
+    public float fadeDuration = 1.5f;
+    public Color fadeColor = Color.black;    // lets you tint if desired
+
+    private float _nextDecayTime;
+    private Health _lunaHealth;
+
+    // Screen fader
+    private static GameObject _fadeGO;             // persist across scenes
+    private static SpriteRenderer _screenFader;    // persist across scenes
+
+    private bool _isSuppressed = false;
+    private float _suppressTimer = 0f;
+    private bool _isDying = false;
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoadedRepositionFader;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoadedRepositionFader;
+    }
+
+    void Start()
+    {
+        _nextDecayTime = Time.time + decayInterval;
+        _lunaHealth = GetComponent<Health>();
+
+        EnsureFaderExists();
+        RepositionFaderToCamera(Camera.main);
+        SetFaderAlpha(0f); // start fully transparent
+    }
+
+    void Update()
+    {
+        if (_isDying) return; // stop decay while dying
+
+        if (_isSuppressed)
+        {
+            _suppressTimer -= Time.deltaTime;
+            if (_suppressTimer <= 0f)
+            {
+                _isSuppressed = false;
+                _suppressTimer = 0f;
+                Debug.Log("🕓 Anemone suppression expired — decay resumes.");
+            }
+            return;
+        }
+
+        if (Time.time >= _nextDecayTime)
+        {
+            ApplyHealthDecay();
+            _nextDecayTime = Time.time + decayInterval;
+        }
+
+        if (_lunaHealth != null && _lunaHealth.CurrentHealth <= 0 && !_isDying)
+        {
+            StartCoroutine(HandleDeath());
+        }
+    }
+
+    private void ApplyHealthDecay()
+    {
+        if (_lunaHealth == null) return;
+
+        float newHealth = Mathf.Max(0f, _lunaHealth.CurrentHealth - healthLossAmount * _lunaHealth.MaximumHealth);
+        _lunaHealth.SetHealth(newHealth, gameObject);
+
+        // Optional bar update if assigned
+        if (healthBar != null && _lunaHealth.MaximumHealth > 0f)
+        {
+            healthBar.SetBar01(newHealth / _lunaHealth.MaximumHealth);
+        }
+    }
+
+    private IEnumerator HandleDeath()
+    {
+        _isDying = true;
+
+        // Fade to black
+        yield return StartCoroutine(FadeToBlack());
+
+        // Lose a life (Corgi flow)
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.LoseLife();
+        }
+
+        // Reload scene
+        int buildIndex = SceneManager.GetActiveScene().buildIndex;
+        AsyncOperation op = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Single);
+        while (!op.isDone) { yield return null; } // wait load
+
+        // After scene loaded, the fader persists but camera changed → reposition in handler
+        // Give one frame for Camera.main to be valid if needed
+        yield return null;
+
+        // Fade from black
+        yield return StartCoroutine(FadeFromBlack());
+
+        _isDying = false;
+    }
+
+    // === Fader Management ===
+
+    private void EnsureFaderExists()
+    {
+        if (_screenFader != null) return;
+
+        // Create once and persist
+        _fadeGO = new GameObject("ScreenFader_Persistent");
+        _screenFader = _fadeGO.AddComponent<SpriteRenderer>();
+        _screenFader.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0f);
+        _screenFader.sortingOrder = 32767; // very top
+
+        DontDestroyOnLoad(_fadeGO);
+
+        // Make it large enough for typical ortho cams; we’ll reposition/scale each scene.
+        _fadeGO.transform.localScale = new Vector3(40f, 40f, 1f);
+    }
+
+    private void OnSceneLoadedRepositionFader(Scene scene, LoadSceneMode mode)
+    {
+        // Each new scene: move fader in front of new main camera
+        RepositionFaderToCamera(Camera.main);
+    }
+
+    private void RepositionFaderToCamera(Camera cam)
+    {
+        if (_screenFader == null) return;
+
+        if (cam == null)
+        {
+            // try again next frame if camera not ready yet
+            StartCoroutine(WaitAndReposition());
+            return;
+        }
+
+        // Place slightly in front of camera
+        Vector3 pos = cam.transform.position + cam.transform.forward * 5f;
+        // For 2D orthographic, forward is typically (0,0,-1), so we push "in front" relative to camera
+
+        _screenFader.transform.position = pos;
+
+        // Auto scale for orthographic cameras (covers viewport)
+        if (cam.orthographic)
+        {
+            float height = cam.orthographicSize * 2f;
+            float width = height * cam.aspect;
+            // Convert to sprite units (assuming default 1 unit = 1 world unit rectangle)
+            _screenFader.transform.localScale = new Vector3(width * 1.1f, height * 1.1f, 1f);
+        }
+    }
+
+    private IEnumerator WaitAndReposition()
+    {
+        yield return null;
+        RepositionFaderToCamera(Camera.main);
+    }
+
+    private void SetFaderAlpha(float a)
+    {
+        if (_screenFader == null) return;
+        var c = _screenFader.color;
+        _screenFader.color = new Color(c.r, c.g, c.b, Mathf.Clamp01(a));
+    }
+
+    private IEnumerator FadeToBlack()
+    {
+        EnsureFaderExists();
+        RepositionFaderToCamera(Camera.main);
+
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            if (_screenFader == null) yield break; // destroyed somehow
+            float alpha = Mathf.Lerp(0f, 1f, t / fadeDuration);
+            _screenFader.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, alpha);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        if (_screenFader != null)
+            _screenFader.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 1f);
+    }
+
+    private IEnumerator FadeFromBlack()
+    {
+        EnsureFaderExists();
+        RepositionFaderToCamera(Camera.main);
+
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            if (_screenFader == null) yield break;
+            float alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
+            _screenFader.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, alpha);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        if (_screenFader != null)
+            _screenFader.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0f);
+    }
+
+    // 🌼 Called by Anemone pollen
+    public void SuppressDecay(float duration)
+    {
+        _isSuppressed = true;
+        _suppressTimer = duration;
+        Debug.Log($"🛡️ Health decay suppressed for {duration} seconds.");
+    }
+}
+
+
+/* using UnityEngine;
+using UnityEngine.SceneManagement;
+using MoreMountains.Tools;
+using MoreMountains.CorgiEngine;
+using System.Collections;
+
+public class LunaHealthManager : MonoBehaviour
+{
+    [Header("Health Settings")]
     public MMProgressBar healthBar;
     public float decayInterval = 5f;
     public float healthLossAmount = 0.01f;
@@ -117,3 +345,4 @@ public class LunaHealthManager : MonoBehaviour
         Debug.Log($"🛡️ Health decay suppressed for {duration} seconds.");
     }
 }
+*/

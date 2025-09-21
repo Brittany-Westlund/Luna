@@ -75,7 +75,7 @@ Transform:
   m_GameObject: {fileID: 1112323790655758766}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.93, y: -12.34, z: -7.9296875}
+  m_LocalPosition: {x: -8.3099985, y: -11.979718, z: -7.9296875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e5c1fce60695741af1183d73694950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FollowsAPlayer: 1
+  FollowsAPlayer: 0
   ConfineCameraToLevelBounds: 1
   ManualUpDownLookDistance: 3
   CharacterSpeed: {x: 0, y: 16}
@@ -148,7 +148,7 @@ MonoBehaviour:
   PerspectiveZoom: {x: 10, y: 15}
   InitialPerspectiveZoom: 5
   PerspectiveZoomSpeed: 0.01
-  InstantRepositionCameraOnRespawn: 1
+  InstantRepositionCameraOnRespawn: 0
   DisableVirtualCameraOnStopFollow: 0
   StartFollowingBtn: 0
   StopFollowingBtn: 0
@@ -200,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 2198403886578885043}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.93, y: -12.34, z: -7.9296875}
+  m_LocalPosition: {x: -8.3099985, y: -11.979718, z: -7.9296875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []

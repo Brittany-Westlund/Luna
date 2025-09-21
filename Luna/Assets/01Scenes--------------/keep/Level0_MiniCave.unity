@@ -466,7 +466,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &213527045
 Transform:
   m_ObjectHideFlags: 0
@@ -496,8 +496,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefabs: []
   AutoAttributePlayerIDs: 1
-  SceneCharacters:
-  - {fileID: 0}
+  SceneCharacters: []
   DebugSpawn: {fileID: 1132044354}
   CheckpointAttributionAxis: 3
   CheckpointAttributionDirection: 0
@@ -614,7 +613,17 @@ CompositeCollider2D:
   m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths: []
+  m_ColliderPaths:
+  - m_Collider: {fileID: 213527048}
+    m_ColliderPaths:
+    - - X: 104947024
+        Y: -5397157
+      - X: 31876056
+        Y: -5397157
+      - X: 31876056
+        Y: -47068836
+      - X: 104947024
+        Y: -47068836
   m_CompositePaths:
     m_Paths:
     - - {x: 10.494673, y: -4.7068834}

@@ -8,22 +8,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01Scenes--------------/keep/MainMenu.unity
     guid: ce82c55f1f1ac0c4d99c7452dad77fe5
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level0_Tutorial.unity
     guid: f0c0b18dd71938a46b805864a352d33a
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/LoadingScreen.unity
     guid: 888394d52616e5e42b3b54c3f2bbd3eb
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Credits.unity
     guid: 07af134f32288f94d880e6e9e914fa82
   - enabled: 0
     path: Assets/CorgiEngine/Demos/LevelSelection/SplashScreen.unity
     guid: 7b96552fd1198fa4eaae54a2f975645e
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level1_Meadow.unity
     guid: 2bac7a4bf3c9a9e42a17d9b9feb3833d
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level2_Mire.unity
     guid: e21d85da21cb0af428292a7fa1611111
   - enabled: 0
@@ -245,28 +245,28 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMSceneLoading/LoadingScreens/MMAdditiveLoadingScreenSimple.unity
     guid: 945e5b97212e8e74ebcd35bddde3970c
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level7_Village.unity
     guid: 4831a8f60a29ef541944a454a3e6f115
   - enabled: 0
     path: Assets/01Scenes--------------/LevelTesting.unity
     guid: ac03db28cf0954baf916a11624256a35
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/GameOver.unity
     guid: b1cad753955e25f468e7313353c26c6b
   - enabled: 0
     path: Assets/01Scenes--------------/Level2NewerOld.unity
     guid: 700882a1bd89c8347a4e283b7827ad65
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level5_Glade.unity
     guid: 258bd5afe9a68d94786878e1edc39d71
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level6_Cave.unity
     guid: ffe38a780fdb3fd4b98ec852574f2327
   - enabled: 0
     path: Assets/01Scenes--------------/StartScreen.unity
     guid: b1f070345301ccb46a6db77a5f4cd83a
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level0_BramblePatch.unity
     guid: 9a489feb2b607fc42880bd638301f0f0
   - enabled: 1

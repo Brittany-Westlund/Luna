@@ -1,34 +1,41 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using MoreMountains.CorgiEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Character))]
 public class ReassignCorgiInputManager : MonoBehaviour
 {
     private Character _character;
 
-    void Awake()
+    private void Awake()
     {
         _character = GetComponent<Character>();
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneLoaded += (_, __) => StartCoroutine(BindWhenReady());
     }
 
-    void OnDestroy()
+    private IEnumerator BindWhenReady()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+        float timeout = 5f;
+        float t = 0f;
+        InputManager im = null;
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        InputManager input = FindObjectOfType<InputManager>();
-        if (_character != null && input != null)
+        while (t < timeout)
         {
-            _character.SetInputManager(input);
+            im = FindObjectOfType<InputManager>(true);
+            if (im != null && im.gameObject.activeInHierarchy) break;
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        if (_character != null && im != null)
+        {
+            _character.SetInputManager(im);
             Debug.Log("🎮 Reassigned InputManager to Luna after scene load.");
         }
         else
         {
-            Debug.LogWarning("⚠️ Could not reassign InputManager to Luna.");
+            Debug.LogWarning("⚠️ Could not reassign InputManager to Luna (still missing/disabled).");
         }
     }
 }

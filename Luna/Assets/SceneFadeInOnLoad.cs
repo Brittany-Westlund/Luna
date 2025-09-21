@@ -14,6 +14,7 @@ public class SceneFadeInOnLoad : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        if (transform.parent != null) { transform.SetParent(null); } // make root
         DontDestroyOnLoad(gameObject); // only if I want one persistent fader
     }
     void Start()
