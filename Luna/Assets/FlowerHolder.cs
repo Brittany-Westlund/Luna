@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FlowerHolder : MonoBehaviour
 {
-    [HideInInspector] public Transform holdPoint;
+    [SerializeField] public Transform holdPoint;
     private GameObject heldFlower;
 
     public bool HasFlower => heldFlower != null;
@@ -10,6 +10,19 @@ public class FlowerHolder : MonoBehaviour
     public AudioSource pickupSFXSource;
     public AudioSource plantSFXSource;
 
+    void Awake()
+        {
+            if (holdPoint == null)
+            {
+                var go = new GameObject("HoldPoint");
+                holdPoint = go.transform;
+                holdPoint.SetParent(transform, worldPositionStays: false);
+                holdPoint.localPosition = new Vector3(0f, 0.75f, 0f);
+                holdPoint.localRotation = Quaternion.identity;
+                holdPoint.localScale    = Vector3.one;
+            }
+        }
+ 
     public string CurrentFlowerType
     {
         get
