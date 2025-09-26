@@ -9,7 +9,7 @@ public class LunaRest : MonoBehaviour
     public GameObject lunaRestingSprite; // Assign in Inspector
     public SpriteRenderer normalSprite;
 
-    private bool isInGarden = false;
+    public bool isInGarden = false;
     public bool isResting = false;
     private Vector2 lastPosition;
 
@@ -84,4 +84,16 @@ public class LunaRest : MonoBehaviour
             }
         }
     }
+
+    // LunaRest.cs  (add anywhere inside the class)
+public void BeginRestExternal()
+{
+    if (!isResting) StartResting();   // uses your existing private method
+}
+
+public void EndRestExternal()
+{
+    if (isResting) StopResting();     // uses your existing private method
+}
+
 }

@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 4319395808750535181}
   - component: {fileID: 2492673775668692963}
   - component: {fileID: -4019639261628360866}
+  - component: {fileID: 999113340683069588}
   m_Layer: 0
   m_Name: Garden
   m_TagString: Garden
@@ -292,6 +293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantingPoint: {fileID: 1744397371121947300}
   highlightObject: {fileID: 7989381468655696136}
+  fadeDuration: 0.3
 --- !u!114 &-4019639261628360866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,7 +307,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: Garden-1
+  prefixWithScene: 1
   plantingPoint: {fileID: 1744397371121947300}
+  verboseLogs: 0
+--- !u!114 &999113340683069588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8679495483268242065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1037c3bf8da06c442b0d25d6e65c9766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bubbleIndex: 0
 --- !u!1001 &7095265306607210917
 PrefabInstance:
   m_ObjectHideFlags: 0
