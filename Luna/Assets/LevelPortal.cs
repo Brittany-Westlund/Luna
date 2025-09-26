@@ -28,14 +28,14 @@ public class LevelPortal : MonoBehaviour
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            // Save which portal was used
-            PortalState.lastUsedPortal = portalID;
+    {
+        PortalState.lastUsedPortal = portalID;   // ✅ ALWAYS set this
+        Debug.Log($"[PORTAL USE] id='{portalID}' -> load '{sceneToLoad}'");
 
-            // Load the new scene, but keep GameManager (and Luna under it)
-            SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
-        }
+        SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
     }
+    }
+    
 
     void OnTriggerEnter2D(Collider2D other)
     {
