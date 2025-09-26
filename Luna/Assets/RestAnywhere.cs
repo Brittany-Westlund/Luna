@@ -3,12 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(LunaRest))]
 public class RestAnywhere : MonoBehaviour
 {
-    [Header("Controls")]
     public KeyCode restKey = KeyCode.Z;
-    public bool holdToRest = false;     // if true: hold to keep resting; if false: toggle on key press
-
-    [Header("Behavior")]
-    public bool enableAnywhere = true;  // allow starting rest outside gardens
+    public bool holdToRest = false;
+    public bool enableAnywhere = true;
 
     private LunaRest rest;
 
@@ -21,20 +18,25 @@ public class RestAnywhere : MonoBehaviour
     {
         if (rest == null) return;
 
+        // 🚫 If we're in a Garden, DO NOTHING here.
+        // Let LunaRest handle input in gardens to avoid double-toggling.
+        if (rest.isInGarden) return;
+
+        if (!enableAnywhere) return;
+
         if (holdToRest)
         {
-            if (Input.GetKeyDown(restKey)) TryStartRest();
-            if (Input.GetKeyUp(restKey))   TryStopRest();
+            if (Input.GetKeyDown(restKey) && !rest.isResting) rest.BeginRestExternal();
+            if (Input.GetKeyUp(restKey)   &&  rest.isResting) rest.EndRestExternal();
         }
         else
         {
             if (Input.GetKeyDown(restKey))
             {
-                if (rest.isResting) TryStopRest();
-                else                TryStartRest();
+                if (rest.isResting) rest.EndRestExternal();
+                else                rest.BeginRestExternal();
             }
         }
-        // Note: movement-cancel still handled by LunaRest itself.
     }
 
     private void TryStartRest()

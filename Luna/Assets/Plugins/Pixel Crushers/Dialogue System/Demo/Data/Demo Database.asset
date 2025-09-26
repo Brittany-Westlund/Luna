@@ -33996,9 +33996,13 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Oh! Hello! You've found an iris. A truly special bloom. \nIts pollen
-          comes in many kinds\u2026 like a rainbow waiting to unfold. \nNo flower
-          holds more mystery, save for the moonflower, of course."
+        value: 'Hello, little Moonpetal! I need a favor.
+
+          Could you grow
+          me a flower? Your presence helps them grow!
+
+          Look for glowing
+          patches on the ground and rest there.'
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
