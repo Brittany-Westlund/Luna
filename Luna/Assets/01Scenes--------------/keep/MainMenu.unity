@@ -647,6 +647,21 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5796380648158763339, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: StickToSlopes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796380648158763339, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: NumberOfVerticalRays
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796380648158763339, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: NumberOfHorizontalRays
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5957265256780893158, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: m_LocalPosition.x
