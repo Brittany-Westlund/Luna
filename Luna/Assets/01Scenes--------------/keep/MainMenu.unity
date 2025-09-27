@@ -592,10 +592,20 @@ PrefabInstance:
       propertyPath: PlayerID
       value: Player1
       objectReference: {fileID: 0}
+    - target: {fileID: 3147265757518959335, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3693888301941078946, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 3782265770863141336, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: m_Name
+      value: WandHoldPoint_Fly
       objectReference: {fileID: 0}
     - target: {fileID: 3998693414545768835, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
@@ -611,6 +621,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4363917322852770535, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: flightHoldPointName
+      value: WandHoldPoint_Fly
       objectReference: {fileID: 0}
     - target: {fileID: 4640164935458969687, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
@@ -7679,6 +7694,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Checkpoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 691060114516017777, guid: 6bcef5a0b3004e442a5e74d20960e1f1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3775125770236206817, guid: 6bcef5a0b3004e442a5e74d20960e1f1,
         type: 3}

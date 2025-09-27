@@ -144,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &10304574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2428,6 +2428,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 4077681652052930716, guid: bb7581bc8f6a3754ebec965af061e99b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4145057707427970654, guid: bb7581bc8f6a3754ebec965af061e99b,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -2512,6 +2517,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayerID
       value: -1489025537
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162112082132988142, guid: bb7581bc8f6a3754ebec965af061e99b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6278733894794847184, guid: bb7581bc8f6a3754ebec965af061e99b,
         type: 3}
