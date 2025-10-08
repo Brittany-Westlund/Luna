@@ -49,43 +49,34 @@ public class GardenGrowth : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (restCoroutine != null)
+        var rest = other.GetComponent<LunaRest>();
+        if (rest != null)
         {
-            StopCoroutine(restCoroutine);
-            restCoroutine = null;
+            if (restCoroutine != null)
+            {
+                StopCoroutine(restCoroutine);
+                restCoroutine = null;
+            }
         }
     }
 
     private IEnumerator WaitAndGrow(LunaRest rest)
     {
-        float elapsed = 0f;
+        yield return null; // ensures trigger and rest state both settled
 
+        float elapsed = 0f;
         while (elapsed < restDuration)
         {
-            if (!rest.isResting) yield break; // bail if Luna stops resting
+            if (!rest.isResting) yield break;
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // ✅ Growth triggered
-        if (grassObject != null)
+        if (grassObject != null && !grassObject.activeSelf)
         {
             grassObject.SetActive(true);
-
-            if (grassRenderer != null)
-            {
-                // start invisible
-                Color c = grassRenderer.color;
-                c.a = 0f;
-                grassRenderer.color = c;
-
-                // play sound after delay
-                if (growthSFX != null)
-                    StartCoroutine(PlayGrowthSound());
-
-                // fade in
-                yield return StartCoroutine(FadeInGrass());
-            }
+            StartCoroutine(FadeInGrass());
+            if (growthSFX != null) StartCoroutine(PlayGrowthSound());
         }
 
         restCoroutine = null;

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class WandForever : MonoBehaviour
@@ -6,6 +7,7 @@ public class WandForever : MonoBehaviour
 
     void Awake()
     {
+        // 🔍 Find wandChild if not assigned
         if (wandChild == null)
         {
             var attractor = GetComponentInChildren<LunariaWandAttractor>(true);
@@ -13,28 +15,28 @@ public class WandForever : MonoBehaviour
                 wandChild = attractor.gameObject;
         }
 
-        if (wandChild == null) return;
-
-        if (WandGlobalState.Instance != null && WandGlobalState.Instance.hasWand)
-        {
-            wandChild.SetActive(true);
-
-            var attractor = wandChild.GetComponent<LunariaWandAttractor>();
-            if (attractor != null)
-            {
-                if (WandGlobalState.Instance.wandLit)
-                {
-                    attractor.ForceLit(); // wand lit
-                }
-                else
-                {
-                    attractor.ResetWandVisualsGlobal(); // 👈 renamed method
-                }
-            }
-        }
-        else
-        {
+        // Start disabled; we’ll turn it on after save data loads
+        if (wandChild != null)
             wandChild.SetActive(false);
+    }
+
+    void Start()
+    {
+        // ⏳ Wait one frame to let CollectibleState finish loading
+        StartCoroutine(CheckAfterLoad());
+    }
+
+    IEnumerator CheckAfterLoad()
+    {
+        yield return null; // ensures CollectibleState.OnEnable() has finished
+
+        bool hasCollectedWand = CollectibleManager.Instance != null &&
+                                CollectibleManager.Instance.HasCollected("Wand01");
+
+        if (hasCollectedWand)
+        {
+            UnlockWand();
+            Debug.Log("🌕 Luna’s wand restored from collectibles.json");
         }
     }
 
@@ -43,11 +45,8 @@ public class WandForever : MonoBehaviour
         if (wandChild != null)
             wandChild.SetActive(true);
 
-        if (WandGlobalState.Instance != null)
-        {
-            WandGlobalState.Instance.hasWand = true;
-            WandGlobalState.Instance.wandLit = false; // start unlit
-        }
+        if (CollectibleManager.Instance != null)
+            CollectibleManager.Instance.MarkCollected("Wand01");
 
         Debug.Log("✨ Luna now permanently has the wand.");
     }

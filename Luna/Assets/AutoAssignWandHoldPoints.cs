@@ -33,7 +33,8 @@ public class AutoAssignWandHoldPoints : MonoBehaviour
 
     private void OnSceneLoaded(Scene s, LoadSceneMode m)
     {
-        // next frame so Player hierarchy is ready
+         // Only start if this object and its GameObject are active
+    if (this != null && isActiveAndEnabled && gameObject.activeInHierarchy)
         StartCoroutine(AssignNextFrame());
     }
 

@@ -10,6 +10,8 @@ public class GardenSpot : MonoBehaviour
 
     [Header("Highlight Fade")]
     public float fadeDuration = 0.3f;
+    public ParticleSystem sparkleFX;
+    private bool revealed;
 
     private SpriteRenderer _highlightRenderer;
     private Color _originalColor;
@@ -85,6 +87,19 @@ public class GardenSpot : MonoBehaviour
     {
         t.localScale = Vector3.one;
         t.localRotation = Quaternion.identity;
+    }
+    public void Reveal()
+    {
+        if (revealed) return;
+        sparkleFX.Play();
+        revealed = true;
+    }
+
+    public void Hide()
+    {
+        if (!revealed) return;
+        sparkleFX.Stop();
+        revealed = false;
     }
 }
 
