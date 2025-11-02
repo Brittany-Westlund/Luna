@@ -124,7 +124,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1914180557628335724}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -210,7 +210,8 @@ MonoBehaviour:
   target: {fileID: 0}
   followSpeed: 5
   followDistance: 0.7
-  lowerDistance: 0.3
+  horizontalOffset: -0.5
+  followToggleKey: 98
 --- !u!114 &5155852039684519226
 MonoBehaviour:
   m_ObjectHideFlags: 0

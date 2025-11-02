@@ -38,6 +38,14 @@ TagManager:
   - Manager
   - HealthBar
   - AvetarHead
+  - Mist
+  - LeafBoat
+  - Lunaria
+  - Sparkles
+  - HydrationIcon
+  - LilyStool
+  - SporeIcon
+  - LilystoolHint
   layers:
   - Default
   - TransparentFX
@@ -69,7 +77,7 @@ TagManager:
   - SporeLayer
   - Sprout
   - NetLayer
-  - 
+  - Sparkles
   - 
   m_SortingLayers:
   - name: Abyss

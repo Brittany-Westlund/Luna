@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class TeaStateManager : MonoBehaviour
 {
@@ -11,6 +13,10 @@ public class TeaStateManager : MonoBehaviour
     private TeacupInventory     _teacupInventory;
     private GameObject          _currentTeapot;
     private TeapotLightReceiver _currentReceiver;
+
+    private bool justDrankTea = false;
+private float lastDrinkTime = -1f;
+
    
     [Header("SFX")]
     public AudioSource spawnAudioSource;
@@ -44,12 +50,15 @@ public class TeaStateManager : MonoBehaviour
     }
 
     void HandleTeaLogic()
-    { 
-        Debug.Log("🍵 HandleTeaLogic: Attempting to brew (should see this when T is pressed and teapot is lit)");
-        
-        // 1) If you already have a teacup, use it
-        if (_teacupInventory.HasTeacup())
-        {
+{
+    Debug.Log("🍵 HandleTeaLogic: Attempting to brew (should see this when T is pressed and teapot is lit)");
+
+    var hydrationGate = FindObjectOfType<TeaHydrationInputBlocker>();
+    bool hydrationTooLow = hydrationGate != null && hydrationGate.IsHydrationTooLow();
+
+    // 1️⃣ If Luna already has a teacup (drinking/giving): always allowed
+    if (_teacupInventory.HasTeacup())
+    {
             if (IsNearNPC())
             {
                 _teacupInventory.TryGiveTeacupToNPC();
@@ -60,100 +69,113 @@ public class TeaStateManager : MonoBehaviour
                 _teacupInventory.DrinkTeacup();
                 RemoveDrinkTargetHighlight();
             }
-            return;
-        }
-
-        // 2) No teapot in scene? Spawn one.
-        if (_currentTeapot == null)
-        {
-            // Find all LilyStools in the scene
-            LilyStool[] stools = FindObjectsOfType<LilyStool>();
-            LilyStool nearest = null;
-            float minDist = float.MaxValue;
-            foreach (var stool in stools)
-            {
-                float dist = Vector2.Distance(transform.position, stool.transform.position);
-                if (dist < lilyStoolSearchRadius && dist < minDist)
-                {
-                    nearest = stool;
-                    minDist = dist;
-                }
-            }
-
-            if (nearest == null)
-            {
-                Debug.Log("❌ No LilyStool nearby! Find one to place your teapot.");
-                ShowLilystoolHint();
-                return;
-            }
-            // Spawn teapot at the stool's spawn point
-            _currentTeapot = Instantiate(
-                teapotPrefab,
-                nearest.teapotSpawnPoint.position,
-                Quaternion.identity
-            );
-
-            if (spawnAudioSource != null)
-            {
-                Debug.Log("PlaySpawnSFX called on manager!");
-                spawnAudioSource.Play();
-            }
-
-            _currentReceiver = _currentTeapot.GetComponent<TeapotLightReceiver>();
-            if (_currentReceiver == null)
-                Debug.LogError("❌ Spawned teapot has no TeapotLightReceiver!");
-            return;
-        }
-        
-        // 3) Teapot exists but is unlit → either forbid storing (if flowers inside)
-        //                                           or store it (if empty)
-        if (!_currentReceiver.HasLight)
-        {
-            if (_currentReceiver.GetIngredientCount() > 0)
-            {
-                Debug.Log("❗ You added flowers but haven't lit it yet—hit Q to light or remove them first.");
-                return;
-            }
-            else
-            {
-                Debug.Log("🫖 Teapot was stored (empty).");
-
-                float destroyDelay = 0f;
-                
-                if (storeAudioSource != null && storeAudioSource.clip != null)
-                {
-                    Debug.Log("PlayStoreSFX called on manager!");
-                    storeAudioSource.Play();
-                    destroyDelay = storeAudioSource.clip.length;
-                }
-                else
-                {
-                    Debug.LogWarning("No Store SFX found or clip missing—destroying teapot immediately.");
-                }
-
-                Destroy(_currentTeapot, destroyDelay);
-                _currentTeapot = null;
-                _currentReceiver = null;
-                return;
-            }
-        }
-
-        // 4) Teapot is lit → brew
-        Debug.Log("🍵 Brewing tea (light detected)...");
-        var cup = _currentReceiver.BrewTea();
-        if (cup != null)
-        {
-            Debug.Log("🍵 BrewTea() succeeded, receiving cup");
-            _teacupInventory.ReceiveTeacup(cup);
-            Destroy(_currentTeapot);
-            _currentTeapot = null;
-            _currentReceiver = null;
-        }
-        else
-        {
-            Debug.LogWarning("❗ BrewTea() returned null—check prefab or spawn‐point");
-        }
+        // 🧭 Do NOT show hint here — drinking is allowed, no hydration gate yet
+       
+        justDrankTea = true;
+        lastDrinkTime = Time.time;
+        return;
     }
+
+        // 2️⃣ If hydration too low, but make sure we *didn't just drink*
+if (hydrationTooLow)
+{
+    // ✅ Require at least a short pause after drinking before showing hint
+    if (!justDrankTea || Time.time - lastDrinkTime > 1.0f)
+    {
+        Debug.Log("🛑 Too dehydrated — cannot brew or spawn new teapot.");
+        if (hydrationGate != null)
+            StartCoroutine(hydrationGate.PulseNearestLilystoolHint());
+    }
+    return;
+}
+
+// 3️⃣ No teapot in scene → try to spawn one near LilyStool
+if (_currentTeapot == null)
+{
+    // ✅ Reset "just drank" only now that she’s actually trying to brew again
+    justDrankTea = false;
+
+    LilyStool[] stools = FindObjectsOfType<LilyStool>();
+    LilyStool nearest = null;
+    float minDist = float.MaxValue;
+
+        foreach (var stool in stools)
+        {
+            float dist = Vector2.Distance(transform.position, stool.transform.position);
+            if (dist < lilyStoolSearchRadius && dist < minDist)
+            {
+                nearest = stool;
+                minDist = dist;
+            }
+        }
+
+        if (nearest == null)
+        {
+            Debug.Log("❌ No LilyStool nearby! Find one to place your teapot.");
+            ShowLilystoolHint();
+            return;
+        }
+
+        // ✅ Spawn teapot only if hydrated enough
+        _currentTeapot = Instantiate(
+            teapotPrefab,
+            nearest.teapotSpawnPoint.position,
+            Quaternion.identity
+        );
+
+        if (spawnAudioSource != null)
+        {
+            Debug.Log("PlaySpawnSFX called on manager!");
+            spawnAudioSource.Play();
+        }
+
+        _currentReceiver = _currentTeapot.GetComponent<TeapotLightReceiver>();
+        if (_currentReceiver == null)
+            Debug.LogError("❌ Spawned teapot has no TeapotLightReceiver!");
+        return;
+    }
+
+    // 5) Teapot exists but unlit → store or warn
+    if (!_currentReceiver.HasLight)
+    {
+        if (_currentReceiver.GetIngredientCount() > 0)
+        {
+            Debug.Log("❗ You added flowers but haven't lit it yet—hit Q to light or remove them first.");
+            return;
+        }
+
+        Debug.Log("🫖 Teapot was stored (empty).");
+        float destroyDelay = 0f;
+        if (storeAudioSource != null && storeAudioSource.clip != null)
+        {
+            Debug.Log("PlayStoreSFX called on manager!");
+            storeAudioSource.Play();
+            destroyDelay = storeAudioSource.clip.length;
+        }
+
+        Destroy(_currentTeapot, destroyDelay);
+        _currentTeapot = null;
+        _currentReceiver = null;
+        return;
+    }
+
+    // 6) Teapot is lit → brew
+    Debug.Log("🍵 Brewing tea (light detected)...");
+    var cup = _currentReceiver.BrewTea();
+    if (cup != null)
+    {
+        Debug.Log("🍵 BrewTea() succeeded, receiving cup");
+        _teacupInventory.ReceiveTeacup(cup);
+        Destroy(_currentTeapot);
+        _currentTeapot = null;
+        _currentReceiver = null;
+    }
+    else
+    {
+        Debug.LogWarning("❗ BrewTea() returned null—check prefab or spawn‐point");
+    }
+}
+
 
     private TeacupReceiver _lastNpcHighlighted = null;
 
@@ -207,9 +229,9 @@ public class TeaStateManager : MonoBehaviour
 
     IEnumerator ShowHintForSeconds()
     {
-        lilystoolHintIcon.SetActive(true);
+        ToggleHintRenderers(true);
         yield return new WaitForSeconds(hintShowTime);
-        lilystoolHintIcon.SetActive(false);
+        ToggleHintRenderers(false);
     }
 
     bool IsNearNPC()
@@ -232,5 +254,23 @@ public class TeaStateManager : MonoBehaviour
         }
         return null;
     }
+
+private void ToggleHintRenderers(bool visible)
+{
+    if (lilystoolHintIcon == null) return;
+
+    // SpriteRenderer (world-space icon)
+    foreach (var sr in lilystoolHintIcon.GetComponentsInChildren<SpriteRenderer>(true))
+        sr.enabled = visible;
+
+    // UI Image (screen-space icon)
+    foreach (var img in lilystoolHintIcon.GetComponentsInChildren<Image>(true))
+        img.enabled = visible;
+
+    // CanvasGroup (if used for fading)
+    foreach (var cg in lilystoolHintIcon.GetComponentsInChildren<CanvasGroup>(true))
+        cg.alpha = visible ? 1f : 0f;
+}
+
 
 }

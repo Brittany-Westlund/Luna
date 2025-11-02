@@ -1,4 +1,97 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class LunaHealthManager : MonoBehaviour
+{
+    [Header("Auto-Linked References")]
+    [SerializeField] private Image healthBarFill; // assign manually only if you want to override
+
+    private bool triedFinding = false;
+
+    void Awake()
+    {
+        // Try to find immediately (in most scenes HUD is loaded at start)
+        TryFindHealthBar();
+    }
+
+    IEnumerator Start()
+    {
+        // If not found yet (e.g., HUD loads a frame later), keep checking briefly
+        if (healthBarFill == null)
+        {
+            yield return new WaitForSeconds(0.1f);
+            TryFindHealthBar();
+        }
+    }
+
+    private void TryFindHealthBar()
+    {
+        if (healthBarFill != null || triedFinding) return;
+
+        triedFinding = true;
+
+        // Look for HUD under Canvas or UICamera
+        GameObject hud = GameObject.Find("HUD");
+
+        if (hud == null)
+        {
+            // broader fallback
+            var canvas = FindObjectOfType<Canvas>();
+            if (canvas != null)
+            {
+                Transform hudTransform = canvas.transform.Find("HUD");
+                if (hudTransform != null)
+                    hud = hudTransform.gameObject;
+            }
+        }
+
+        if (hud != null)
+        {
+            Transform healthBar = hud.transform.Find("HealthBar");
+            if (healthBar != null)
+            {
+                // try to grab an Image from HealthBar or its children
+                healthBarFill = healthBar.GetComponentInChildren<Image>();
+                Debug.Log($"[AutoFindHealthBar] Found HealthBar: {healthBarFill?.name}");
+            }
+            else
+            {
+                Debug.LogWarning("[AutoFindHealthBar] Could not find HealthBar under HUD.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[AutoFindHealthBar] Could not find HUD in scene.");
+        }
+    }
+
+    /// <summary>
+    /// Call this whenever you need to update health.
+    /// 'value' should be a normalized 0–1 float.
+    /// </summary>
+    public void SetHealth(float value)
+    {
+        if (healthBarFill != null)
+        {
+            healthBarFill.fillAmount = Mathf.Clamp01(value);
+        }
+        else
+        {
+            Debug.LogWarning("[AutoFindHealthBar] HealthBarFill missing—cannot update health.");
+        }
+    }
+
+    // 🌼 Called by Anemone pollen
+    public void SuppressDecay(float duration)
+    {
+        Debug.Log($"🛡️ SuppressDecay({duration}) called — no decay logic in this version.");
+    }
+
+}
+
+
+/* using UnityEngine;
 using UnityEngine.SceneManagement;
 using MoreMountains.Tools;
 using MoreMountains.CorgiEngine;
@@ -226,7 +319,7 @@ public class LunaHealthManager : MonoBehaviour
 }
 
 
-/* using UnityEngine;
+/ using UnityEngine;
 using UnityEngine.SceneManagement;
 using MoreMountains.Tools;
 using MoreMountains.CorgiEngine;

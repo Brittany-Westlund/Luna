@@ -341,10 +341,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d07d889eb5dcfd43a628fd131ea72a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LitLanternSprite: {fileID: 339461562}
+  litLanternSprite: {fileID: 0}
+  allowPlayerToggle: 0
+  toggleKey: 101
   lightBar: {fileID: 0}
-  targetObject: {fileID: 0}
-  deactivateOnLight: 1
+  lightCost: 0.1
+  spritesToEnable: []
+  objectsToEnable: []
+  spritesToDisable: []
+  objectsToDisable: []
 --- !u!212 &17320814
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5512,7 +5517,6 @@ MonoBehaviour:
   slideOffset: 0.1
   sporeHealthCost: 5
   healthReturnOnDetach: 10
-  healthBar: {fileID: 426351260}
   sproutLayer:
     serializedVersion: 2
     m_Bits: 268435456
@@ -5521,6 +5525,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 134217728
   pickupRadius: 1
+  pickupOrCreateSFX: {fileID: 0}
+  growFlowerSFX: {fileID: 0}
+  storeSporeSFX: {fileID: 0}
 --- !u!1 &1451270545
 GameObject:
   m_ObjectHideFlags: 0
@@ -8258,7 +8265,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points: 0
-  PointsText: {fileID: 2019772312}
 --- !u!114 &2019772317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8275,6 +8281,8 @@ MonoBehaviour:
   sparkles: {fileID: 2681505594951680467}
   holdDuration: 0.8
   fadeDuration: 0.25
+  sparkleSound: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!1001 &2110059546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8704,13 +8712,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5774338654135511178, guid: b3e857eb9329a8641bb94b887ccb70e1,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.78085035
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774338654135511178, guid: b3e857eb9329a8641bb94b887ccb70e1,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.78085035
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774338654135511178, guid: b3e857eb9329a8641bb94b887ccb70e1,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.78085035
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774338654135511178, guid: b3e857eb9329a8641bb94b887ccb70e1,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.78
+      value: 5.7034
       objectReference: {fileID: 0}
     - target: {fileID: 5774338654135511178, guid: b3e857eb9329a8641bb94b887ccb70e1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.76
+      value: -0.7918
       objectReference: {fileID: 0}
     - target: {fileID: 5774338654135511178, guid: b3e857eb9329a8641bb94b887ccb70e1,
         type: 3}
@@ -8906,12 +8929,12 @@ PrefabInstance:
     - target: {fileID: 8040196612289779000, guid: 67e9e6648638ca94eaaa9e41373f42f2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.98
+      value: 19.9034
       objectReference: {fileID: 0}
     - target: {fileID: 8040196612289779000, guid: 67e9e6648638ca94eaaa9e41373f42f2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.84
+      value: -11.3918
       objectReference: {fileID: 0}
     - target: {fileID: 8040196612289779000, guid: 67e9e6648638ca94eaaa9e41373f42f2,
         type: 3}
@@ -8961,12 +8984,12 @@ PrefabInstance:
     - target: {fileID: 8040196612442320774, guid: 67e9e6648638ca94eaaa9e41373f42f2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.98
+      value: 19.9034
       objectReference: {fileID: 0}
     - target: {fileID: 8040196612442320774, guid: 67e9e6648638ca94eaaa9e41373f42f2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.84
+      value: -11.3918
       objectReference: {fileID: 0}
     - target: {fileID: 8040196612442320774, guid: 67e9e6648638ca94eaaa9e41373f42f2,
         type: 3}

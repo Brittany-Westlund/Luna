@@ -29,7 +29,7 @@ public class TeacupToggle : MonoBehaviour
 
     [Header("Wiggle Settings")]
     [Tooltip("Maximum wiggle angle in degrees (both directions)")]
-    public float wiggleAngle = 25f; // default to 25° for visibility
+    public float wiggleAngle = 25f;
     [Tooltip("How long each wiggle takes (back and forth)")]
     public float wiggleSpeed = 0.2f;
     [Tooltip("How many wiggles before pausing")]
@@ -43,6 +43,7 @@ public class TeacupToggle : MonoBehaviour
     private bool isVisible = true;
     private AudioSource audioSource;
     private bool playerNearby = false;
+    private static int nearbyTeacupCount = 0; // shared by all teacups
     private Quaternion initialRotation;
 
     void Awake()
@@ -59,6 +60,16 @@ public class TeacupToggle : MonoBehaviour
 
         if (sparkleObject != null)
             sparkleObject.SetActive(false);
+
+        // ✅ Auto-find the Lilystool hint icon if not manually assigned
+        if (lilystoolHintIcon == null)
+        {
+            GameObject foundHint = GameObject.FindGameObjectWithTag("LilystoolHint");
+            if (foundHint != null)
+                lilystoolHintIcon = foundHint;
+            else
+                Debug.LogWarning("TeacupToggle: No GameObject with tag 'LilystoolHint' found in scene.");
+        }
     }
 
     void OnEnable()
@@ -69,15 +80,22 @@ public class TeacupToggle : MonoBehaviour
     void OnDisable()
     {
         StopWiggle();
+
+        // if this teacup is turning off while Luna is nearby, adjust count
+        if (playerNearby)
+        {
+            playerNearby = false;
+            nearbyTeacupCount = Mathf.Max(0, nearbyTeacupCount - 1);
+        }
+
+        // ❌ Do NOT show or toggle hint here — TeaStateManager handles that
     }
 
     void Update()
     {
         // Suppress lilystool hint if near a teacup
-        if (playerNearby && lilystoolHintIcon != null && lilystoolHintIcon.activeSelf)
-        {
-            lilystoolHintIcon.SetActive(false);
-        }
+        if (playerNearby && lilystoolHintIcon != null)
+            ToggleHintRenderers(false);
 
         // ✅ Only allow toggle if Luna is nearby
         if (Input.GetKeyDown(toggleKey) && playerNearby)
@@ -99,13 +117,10 @@ public class TeacupToggle : MonoBehaviour
         }
     }
 
-    // 🔧 Extra suppression layer (runs after all Update calls)
     void LateUpdate()
     {
-        if (playerNearby && lilystoolHintIcon != null && lilystoolHintIcon.activeSelf)
-        {
-            lilystoolHintIcon.SetActive(false);
-        }
+        if (playerNearby && lilystoolHintIcon != null)
+            ToggleHintRenderers(false);
     }
 
     private IEnumerator HideTeacupWithLatency()
@@ -183,22 +198,29 @@ public class TeacupToggle : MonoBehaviour
     private void PlaySFX()
     {
         if (toggleSFX != null && audioSource != null)
-        {
             audioSource.PlayOneShot(toggleSFX, sfxVolume);
-        }
     }
 
     // 🔑 Player proximity detection
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
+        {
             playerNearby = true;
+            nearbyTeacupCount++; // count one more teacup in range
+            ToggleHintRenderers(false); // hide hint
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
+        {
             playerNearby = false;
+            nearbyTeacupCount = Mathf.Max(0, nearbyTeacupCount - 1);
+
+            // ❌ Don’t re-enable the hint here — TeaStateManager handles it
+        }
     }
 
     // 🔑 Wiggle loop
@@ -242,5 +264,19 @@ public class TeacupToggle : MonoBehaviour
             transform.localRotation = Quaternion.Lerp(startRot, endRot, t);
             yield return null;
         }
+    }
+
+    private void ToggleHintRenderers(bool visible)
+    {
+        if (lilystoolHintIcon == null) return;
+
+        foreach (var sr in lilystoolHintIcon.GetComponentsInChildren<SpriteRenderer>(true))
+            sr.enabled = visible;
+
+        foreach (var img in lilystoolHintIcon.GetComponentsInChildren<UnityEngine.UI.Image>(true))
+            img.enabled = visible;
+
+        foreach (var cg in lilystoolHintIcon.GetComponentsInChildren<CanvasGroup>(true))
+            cg.alpha = visible ? 1f : 0f;
     }
 }

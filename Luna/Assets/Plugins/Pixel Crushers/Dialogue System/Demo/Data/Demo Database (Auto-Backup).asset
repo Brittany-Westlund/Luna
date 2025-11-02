@@ -31723,8 +31723,8 @@ MonoBehaviour:
         typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: "Such a rare sight these days. They were never meant to be gathered\u2026\nthey
-          take ages to return, if they come back at all.\nWe wouldn\u2019t be in
-          this mess if we\u2019d just let them be... Thank goodness for the fairypetals."
+          take ages to return, if they come back at all.\nIf only we\u2019d let them
+          be, we might've been able to stay... Thank goodness for the fairypetalfolk."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -31937,7 +31937,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Another moonpetal mushroom? Humm. I hope someone finishes the garden...
+        value: Another moonpetal mushroom? Hm... A teahouse really would be lovely
+          here.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -32079,7 +32080,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: 
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 49
@@ -32126,9 +32127,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Oh my! I knew someone would eventually find their way here!\nThis
-          place sure is tucked away nicely, isn\u2019t it? I\u2019m Citrini.\nDid
-          you see the note from\u2026 Mary, was it?"
+        value: "Oh\u2026 you startled me. I thought everyone had gone."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -32199,7 +32198,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "I\u2019m Luna! Yes, seems like she left in a bit of a rush!"
+        value: Hi... I met a Fairypetal on the edge of the meadow. She said you stayed
+          behind.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -32270,9 +32270,9 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Seems so... I think I\u2019ll stay a while.\nMaybe you\u2019d like
-          to join me... explore a little? I saw a teapot in the house!\nYou could
-          try your hand at brewing a perfect cup!"
+        value: "I couldn\u2019t leave. The Teahouse needs tending, and I only have
+          two little wings. Mary always kept everything glowing\u2026 but since she
+          left, it\u2019s been so quiet."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -32343,7 +32343,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: A teapot? Wonderful! Where do we start?
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -32367,15 +32367,9 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Block
+      falseConditionAction: 
       conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 4
-        destinationConversationID: 49
-        destinationDialogueID: 5
-        isConnector: 0
-        priority: 2
+      outgoingLinks: []
       conditionsString: 
       userScript: 
       onExecute:
@@ -32387,943 +32381,9 @@ MonoBehaviour:
         y: 230
         width: 160
         height: 30
-    - id: 5
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: "Hmm... well, we could gather the wildflowers.\nLet\u2019s move them
-          to the gardens! A bit of spore magic and they\u2019ll grow in no time.\nThey
-          emit soothing pollens, but we\u2019ll need to collect some light motes
-          first..."
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 5
-        destinationConversationID: 49
-        destinationDialogueID: 6
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 160
-        y: 280
-        width: 160
-        height: 30
-    - id: 6
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: Okay... bring the wildflowers to the garden, give them a few spores,
-          and then...
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 6
-        destinationConversationID: 49
-        destinationDialogueID: 16
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 160
-        y: 330
-        width: 160
-        height: 30
-    - id: 7
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: "Oh yeah! I saw a Lunaria wand upstairs. Mary must\u2019ve left it.
-          Bless her.\nI couldn\u2019t lift it myself, but you seem strong! Try equipping
-          it. \nSee if you can make the goldenrod glow with it. Its pollen is wonderfully
-          healing."
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 7
-        destinationConversationID: 49
-        destinationDialogueID: 8
-        isConnector: 0
-        priority: 2
-      - originConversationID: 49
-        originDialogueID: 7
-        destinationConversationID: 49
-        destinationDialogueID: 9
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 157.00378
-        y: 411.46057
-        width: 160
-        height: 30
-    - id: 8
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: Goodness! That Mary... May the moon smile upon her.
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 8
-        destinationConversationID: 49
-        destinationDialogueID: 10
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 66.91884
-        y: 457.42572
-        width: 160
-        height: 30
-    - id: 9
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: "Oh dear, Mary Moonpetal\u2026 may kindness follow her."
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 9
-        destinationConversationID: 49
-        destinationDialogueID: 10
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 283.96704
-        y: 455.20715
-        width: 160
-        height: 30
-    - id: 10
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: "Quite so! \u2026Oh! Speaking of the moon, there\u2019s a moonflower
-          around here somewhere.\nInstead of pollen, it gives off light motes.\nIt\u2019s
-          very rare, as you probably already know."
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 10
-        destinationConversationID: 49
-        destinationDialogueID: 11
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 157.2092
-        y: 511.96838
-        width: 160
-        height: 30
-    - id: 11
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: Ah, the moonflower... Better not get too ahead of myself...
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 11
-        destinationConversationID: 49
-        destinationDialogueID: 17
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 158.04503
-        y: 562.8816
-        width: 160
-        height: 30
-    - id: 12
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: "Exactly! Then we can brew some tea. \n...could use a little cozy
-          myself!\nJust call me over anytime, I\u2019ll follow your lead!"
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 12
-        destinationConversationID: 49
-        destinationDialogueID: 13
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 160.82788
-        y: 651.9953
-        width: 160
-        height: 30
-    - id: 13
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: Thanks!
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks: []
-      conditionsString: 
-      userScript: Variable["ButterflyIntroDone"] = true
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 163.30179
-        y: 706.4621
-        width: 160
-        height: 30
-    - id: 14
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: Wait... light motes? How are we supposed to collect light?
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 14
-        destinationConversationID: 49
-        destinationDialogueID: 7
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 350.97406
-        y: 380.55557
-        width: 160
-        height: 30
-    - id: 15
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: "...Let\u2019s see, plant the wildflowers, grow them with spores,
-          and... set them aglow?"
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 15
-        destinationConversationID: 49
-        destinationDialogueID: 12
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 30.472763
-        y: 615.84656
-        width: 160
-        height: 30
-    - id: 16
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: '*flutters quietly, antennae perked*'
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 16
-        destinationConversationID: 49
-        destinationDialogueID: 14
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 343.2217
-        y: 331.10657
-        width: 160
-        height: 30
-    - id: 17
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: Hard not to! *twirls*
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 49
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 49
-        originDialogueID: 17
-        destinationConversationID: 49
-        destinationDialogueID: 15
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 379.4259
-        y: 571.88513
-        width: 160
-        height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 39.206238, y: 122.60282}
-    canvasZoom: 0.58500624
+    canvasScrollPosition: {x: 0, y: 0}
+    canvasZoom: 0.37850755
   - id: 50
     fields:
     - title: Title
@@ -33735,8 +32795,7 @@ MonoBehaviour:
         typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: "\u2026Oh, wow! You can really taste the lunaria from the light, can\u2019t
-          you?\nSo soothing\u2026 like moonlight in a cup. Might be time to catch
-          some z\u2019s.\nYou could rest in the garden. Come back if you need anything!"
+          you?\nSo soothing\u2026 like moonlight in a cup."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -33996,9 +33055,13 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Oh! Hello! You've found an iris. A truly special bloom. \nIts pollen
-          comes in many kinds\u2026 like a rainbow waiting to unfold. \nNo flower
-          holds more mystery, save for the moonflower, of course."
+        value: 'Hello, little Moonpetal! I need a favor.
+
+          Could you grow
+          me a flower? Your presence helps them grow!
+
+          Look for glowing
+          patches on the ground and rest there.'
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -35212,82 +34275,11 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: 
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 56
-        originDialogueID: 0
-        destinationConversationID: 56
-        destinationDialogueID: 1
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 160
-        y: 30
-        width: 160
-        height: 30
-    - id: 1
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 21
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: Whoa... are you... are you floating?
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 56
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 56
-        originDialogueID: 1
+        originDialogueID: 0
         destinationConversationID: 56
         destinationDialogueID: 2
         isConnector: 0
@@ -35300,7 +34292,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 80
+        y: 30
         width: 160
         height: 30
     - id: 2
@@ -35330,10 +34322,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 'Oh! You can see me? Not everyone does.
-
-          I''m a fairypetal
-          mushroom, a friend of Mary''s.'
+        value: "Oh! I didn\u2019t expect to see a Moonpetal here. I thought the last
+          of you had already migrated."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -35404,8 +34394,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: You know Mary? She's created such a beautiful place here. Did she
-          reach the village safely?
+        value: "I\u2019m following them, just not in a straight line... I like to
+          wander."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -35476,9 +34466,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "She made it safely! She asked me to watch over the meadow... \nAs
-          long as this fairypetal veil stays up, wha lies beyond the meadow will
-          stay safe, too."
+        value: 'I can see that! Better take in the beauty while it lasts. Moonbow
+          Teahouse won''t hold for long without a moonpetal to tend the meadow.  '
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -35549,7 +34538,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: ...Beyond the meadow?
+        value: I remember hearing about the teahouse when I was just a shoot!
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -35620,8 +34609,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Mhm. Only Mary knows the recipe to lift the veil.\nThere must be
-          something very special on the other side\u2026"
+        value: "Then you should see it while you can. It\u2019s through the hollow
+          there. Light the lantern at the entrance with a moonmote."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -35692,7 +34681,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Wow...
+        value: ...
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -35763,8 +34752,9 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Well! I\u2019d better be off, lots of petals to tend.\nI\u2019ll
-          check back in soon. Bye now!"
+        value: Legend says the old Moonpetals drew light through their spores. Most
+          moonpetals use a Lunaria flower to draw the light, like a wand. Clever
+          trick, really.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -35861,7 +34851,13 @@ MonoBehaviour:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
-      outgoingLinks: []
+      outgoingLinks:
+      - originConversationID: 56
+        originDialogueID: 9
+        destinationConversationID: 56
+        destinationDialogueID: 10
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: Variable["FairypetalIntroDone"] = true
       onExecute:
@@ -35873,9 +34869,217 @@ MonoBehaviour:
         y: 480
         width: 160
         height: 30
+    - id: 10
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Pictures
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 21
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: "Here, take this one. It\u2019ll do more good in your hands."
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Parenthetical
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Audio Files
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Video File
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 56
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 56
+        originDialogueID: 10
+        destinationConversationID: 56
+        destinationDialogueID: 11
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 530
+        width: 160
+        height: 30
+    - id: 11
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Pictures
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 21
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Really? Thank you.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Parenthetical
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Audio Files
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Video File
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 56
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 56
+        originDialogueID: 11
+        destinationConversationID: 56
+        destinationDialogueID: 12
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 580
+        width: 160
+        height: 30
+    - id: 12
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Pictures
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 21
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: "Before you go\u2026 there\u2019s a butterfly still by the teahouse,
+          trying to keep it afloat alone. If you find it, could you lend it a hand?"
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Parenthetical
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Audio Files
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Video File
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 56
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 630
+        width: 160
+        height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.7529992
+    canvasScrollPosition: {x: 2644.0396, y: 1826.0731}
+    canvasZoom: 0.35399997
   - id: 57
     fields:
     - title: Title

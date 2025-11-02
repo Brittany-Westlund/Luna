@@ -24,6 +24,9 @@ public class WandForever : MonoBehaviour
     {
         // ⏳ Wait one frame to let CollectibleState finish loading
         StartCoroutine(CheckAfterLoad());
+
+        Debug.Log($"[WandForever] wandChild active at Start? {wandChild?.activeSelf}");
+
     }
 
     IEnumerator CheckAfterLoad()

@@ -1,3 +1,4 @@
+
 // FlowerInteractionManager.cs
 using UnityEngine;
 using System.Collections.Generic;
@@ -14,6 +15,9 @@ public class FlowerInteractionManager : MonoBehaviour
 
     // Gardens you’re standing over
     private readonly List<GardenSpot> nearbyGardens = new List<GardenSpot>();
+// 🕐 Prevents accidental re-pickup right after planting
+    private float inputCooldown = 0f;
+    private const float COOLDOWN_DURATION = 0.4f;
 
     void Awake()
     {
@@ -46,29 +50,40 @@ public class FlowerInteractionManager : MonoBehaviour
     }
     void Update()
     {
+       if (inputCooldown > 0f)
+        inputCooldown -= Time.deltaTime;
+       
         // —— Teapot logic (must stay in its trigger) ——
         if (teapotReceiver != null)
         {
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                if (flowerHolder.HasFlower)
-                    teapotReceiver.AddFlowerToTeapot(flowerHolder);
-                else if (teapotReceiver.HasAnyIngredients())
-                    teapotReceiver.RetrieveLastFlower(flowerHolder);
-            }
+           if (Input.GetKeyDown(KeyCode.X) && inputCooldown <= 0f)
+{
+    if (flowerHolder.HasFlower)
+        teapotReceiver.AddFlowerToTeapot(flowerHolder);
+    else if (teapotReceiver.HasAnyIngredients())
+        teapotReceiver.RetrieveLastFlower(flowerHolder);
+
+    inputCooldown = COOLDOWN_DURATION;
+}
+
+
             return;
         }
 
         // —— Garden highlight & plant/pickup ——
         UpdateGardenHighlighting();
 
-        if (Input.GetKeyDown(KeyCode.X))
+      if (Input.GetKeyDown(KeyCode.X) && inputCooldown <= 0f)
         {
             if (!flowerHolder.HasFlower)
                 TryPickUpFromGarden();
             else
                 TryPlantToGarden();
+
+            inputCooldown = COOLDOWN_DURATION;
         }
+
+
     }
 
     private void UpdateGardenHighlighting()
@@ -120,8 +135,16 @@ public class FlowerInteractionManager : MonoBehaviour
         // place held
         held.transform.SetParent(currentGarden.transform);
         held.transform.position = currentGarden.GetPlantingPoint().position;
+       
         var sm = held.GetComponent<SproutAndLightManager>();
-        if (sm != null) { sm.isPlanted = true; sm.isHeld = false; }
+        if (sm != null)
+        {
+            sm.isPlanted = true;
+            sm.isHeld = false;
+            sm.ResetInitialPosition();
+
+        }
+       
         var col = held.GetComponent<Collider2D>();
         if (col != null) col.enabled = true;
         currentGarden.SetPlantedFlower(held);

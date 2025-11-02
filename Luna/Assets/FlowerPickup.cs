@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class FlowerPickup : MonoBehaviour
 {
+    private void OnEnable() => MoonflowerTracker.Register(this);
+    private void OnDisable() => MoonflowerTracker.Unregister(this);
+
+
     [Tooltip("Set in Inspector to identify this flower’s type")]
     public string flowerType = "Unknown";
     

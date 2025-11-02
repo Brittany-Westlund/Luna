@@ -1,12 +1,13 @@
 using UnityEngine;
+using System.Linq;
 
-public class NetPickupPutDown : MonoBehaviour
+public class PickupPutDown : MonoBehaviour
 {
-    public KeyCode interactKey = KeyCode.G;
-    public Transform holdPointPrefab;
+    [Header("Settings")]
+    public KeyCode interactKey = KeyCode.R; // Changed from G to R
     public Vector3 holdPointOffset = Vector3.zero;
-    public float dropOffsetX = 0.5f; // Horizontal offset for drop position
-    public float dropOffsetY = 0.0f; // Vertical offset for drop position
+    public float dropOffsetX = 0.5f;
+    public float dropOffsetY = 0.0f;
 
     private GameObject _player;
     private Rigidbody2D _rigidbody;
@@ -16,15 +17,35 @@ public class NetPickupPutDown : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        if (_rigidbody == null)
+        {
+            Debug.LogError($"{name}: Missing Rigidbody2D component!");
+            return;
+        }
 
         _rigidbody.isKinematic = true;
 
+        // Find player
         _player = GameObject.FindGameObjectWithTag("Player");
         if (_player == null)
         {
-            Debug.LogError("Player not found! Ensure Player has the correct tag.");
+            Debug.LogError($"{name}: Player not found! Ensure Player has the correct tag.");
+            return;
         }
 
+        // Try to locate SporeHoldPoint under Luna or anywhere in player hierarchy
+        holdPoint = FindHoldPoint(_player.transform, "SporeHoldPoint");
+
+        if (holdPoint == null)
+        {
+            Debug.LogWarning($"{name}: SporeHoldPoint not found under Player. Creating temporary hold point.");
+            GameObject tempHold = new GameObject("TempHoldPoint");
+            tempHold.transform.SetParent(_player.transform);
+            tempHold.transform.localPosition = Vector3.zero;
+            holdPoint = tempHold.transform;
+        }
+
+        // Ensure collider exists and acts as trigger
         Collider2D collider = GetComponent<Collider2D>();
         if (collider != null)
         {
@@ -32,74 +53,73 @@ public class NetPickupPutDown : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Collider not found on object! Add a Collider2D component.");
+            Debug.LogError($"{name}: Collider2D not found! Add a collider to use PickupPutDown.");
         }
-
-        holdPoint = Instantiate(holdPointPrefab, _player.transform);
-        holdPoint.localPosition = holdPointOffset;
     }
 
     private void Update()
     {
-        if (_player == null) return;
+        if (_player == null || holdPoint == null) return;
 
         float distanceToPlayer = Vector2.Distance(transform.position, _player.transform.position);
 
-        // Check if tagged as "Pickupable", within range, and interact key is pressed
         if (CompareTag("Pickupable") && Input.GetKeyDown(interactKey) && distanceToPlayer <= 1.0f)
         {
-            Debug.Log("Interact key pressed within range and tag matches 'Pickupable'.");
-
             if (!isHeld)
-            {
                 Pickup();
-            }
             else
-            {
                 Drop();
-            }
         }
     }
 
     private void Pickup()
     {
         isHeld = true;
-
-        // Set the object to the hold point and disable physics while held
         transform.SetParent(holdPoint);
-        transform.localPosition = Vector3.zero;
+        transform.localPosition = holdPointOffset;
 
-        if (_rigidbody != null)
-        {
-            _rigidbody.isKinematic = true;
-            _rigidbody.velocity = Vector2.zero; // Stop any movement
-        }
+        _rigidbody.isKinematic = true;
+        _rigidbody.velocity = Vector2.zero;
 
-        Debug.Log("Picked up object. Hold point active.");
+        Debug.Log($"{name}: Picked up. Attached to {holdPoint.name}.");
     }
 
     private void Drop()
     {
         isHeld = false;
-
-        // Detach the object from the hold point
         transform.SetParent(null);
 
-        // Position the object based on the player's position and offsets
         Vector3 dropPosition = new Vector3(
-            _player.transform.position.x + dropOffsetX * Mathf.Sign(_player.transform.localScale.x), // Adjust based on player facing direction
+            _player.transform.position.x + dropOffsetX * Mathf.Sign(_player.transform.localScale.x),
             _player.transform.position.y + dropOffsetY,
             transform.position.z
         );
 
         transform.position = dropPosition;
+        _rigidbody.isKinematic = false;
 
-        // Re-enable physics for the dropped object
-        if (_rigidbody != null)
+        Debug.Log($"{name}: Dropped at position {transform.position}.");
+    }
+
+    /// <summary>
+    /// Searches for the hold point recursively under the given root transform.
+    /// </summary>
+    private Transform FindHoldPoint(Transform root, string targetName)
+    {
+        // First, look for Luna explicitly if she exists
+        var luna = root.GetComponentsInChildren<Transform>(true)
+                       .FirstOrDefault(t => t.name == "Luna");
+        if (luna != null)
         {
-            _rigidbody.isKinematic = false;
+            var child = luna.GetComponentsInChildren<Transform>(true)
+                            .FirstOrDefault(t => t.name == targetName);
+            if (child != null)
+                return child;
         }
 
-        Debug.Log("Dropped object at position: " + transform.position);
+        // If not found, look anywhere under Player hierarchy
+        var fallback = root.GetComponentsInChildren<Transform>(true)
+                           .FirstOrDefault(t => t.name == targetName);
+        return fallback;
     }
 }
