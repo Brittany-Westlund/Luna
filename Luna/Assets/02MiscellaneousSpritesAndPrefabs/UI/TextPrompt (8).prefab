@@ -14,13 +14,15 @@ GameObject:
   - component: {fileID: 1832673739455102463}
   - component: {fileID: 5081819413627654224}
   - component: {fileID: 8020209342463905396}
-  m_Layer: 0
+  - component: {fileID: 6242775788499653192}
+  - component: {fileID: 7042127105764418809}
+  m_Layer: 5
   m_Name: TextPrompt (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3739989710377274611
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28,13 +30,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4275280852926638412}
-  m_LocalRotation: {x: 0.015013021, y: -0.01881096, z: 0.0021663038, w: 0.99970806}
+  m_LocalRotation: {x: 0.015014836, y: -0.01881356, z: 0.0021672444, w: 0.999708}
   m_LocalPosition: {x: 0, y: 0, z: 6.6046968}
-  m_LocalScale: {x: 0.5643977, y: 0.65092754, z: 0}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.075968884, y: 0.19593602, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -0.125, y: 50.754, z: -1.889}
+  m_LocalEulerAnglesHint: {x: 1.725, y: -2.153, z: 0.216}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4.634945, y: 9.599127}
@@ -102,7 +104,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: E
+  m_text: X
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ad5edec1d2467f428156ac9f1fe786f, type: 2}
   m_sharedMaterial: {fileID: -1723674134689400254, guid: 0ad5edec1d2467f428156ac9f1fe786f,
@@ -112,8 +114,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290459101
-  m_fontColor: {r: 0.8679245, g: 0.20879315, b: 0.7319503, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -183,8 +185,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4275280852926638412}
   m_Enabled: 1
-  m_SortingLayerID: -1628607475
-  m_SortingLayer: 2
+  m_SortingLayerID: -1053558941
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_SortAtRoot: 0
 --- !u!114 &5081819413627654224
@@ -199,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f631653e89046d49a7fbe0b83b6b6e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyToPress: 101
+  keyToPress: 120
   disableWholeObject: 1
 --- !u!61 &8020209342463905396
 BoxCollider2D:
@@ -233,7 +235,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -7.352815, y: -8.601254}
+  m_Offset: {x: -12.013615, y: -4.8241234}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -244,5 +246,41 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 35.627132, y: 25.615164}
+  m_Size: {x: 44.94873, y: 20.732971}
   m_EdgeRadius: 0
+--- !u!114 &6242775788499653192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4275280852926638412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c7cc9bf4bc9d4458ea45d2a3a909b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 0.5
+  fadeOutDelay: 0.2
+  playerTag: Player
+  spriteRenderer: {fileID: 0}
+  textMesh: {fileID: 2040382125696152342}
+  meshRenderer: {fileID: 1955789252853396247}
+--- !u!114 &7042127105764418809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4275280852926638412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c7cc9bf4bc9d4458ea45d2a3a909b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 0.5
+  fadeOutDelay: 0.2
+  playerTag: Player
+  spriteRenderer: {fileID: 0}
+  textMesh: {fileID: 2040382125696152342}
+  meshRenderer: {fileID: 1955789252853396247}

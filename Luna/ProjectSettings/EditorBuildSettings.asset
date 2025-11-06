@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01Scenes--------------/keep/Level0_Meadow.unity
     guid: 1dab5f4a25f167d408dbdb2eabf2e536
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level0_BramblePatch.unity
     guid: 9a489feb2b607fc42880bd638301f0f0
   - enabled: 1

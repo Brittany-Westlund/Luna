@@ -7,7 +7,7 @@ using UnityEditor; // for the custom button
 #endif
 
 /// <summary>
-/// 🌿 Your magical notebook — remembers every collectible the player has picked up.
+/// 🌿 magical notebook — remembers every collectible the player has picked up.
 /// Uses Unity’s built-in JsonUtility (no external libraries).
 /// </summary>
 [CreateAssetMenu(fileName = "CollectibleState", menuName = "CharmLab/Collectible State")]
@@ -39,12 +39,36 @@ public class CollectibleState : ScriptableObject
     }
 
     // 🧹 Clear everything (used by the editor button or a "New Game")
-    public void ResetAll()
+    // 🧹 Clear everything (used by the editor button or a "New Game")
+public void ResetAll()
+{
+    collectedIDs.Clear();
+    collectedSet.Clear();
+
+    // Delete any existing save file in WebGL or desktop builds
+    try
     {
-        collectedIDs.Clear();
-        collectedSet.Clear();
-        Save();
+        if (File.Exists(SavePath))
+        {
+            File.Delete(SavePath);
+            Debug.Log("[CollectibleState] Save file deleted.");
+        }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // WebGL keeps its data in PlayerPrefs/IndexedDB
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+        Debug.Log("[CollectibleState] Cleared PlayerPrefs (WebGL).");
+#endif
     }
+    catch (System.Exception e)
+    {
+        Debug.LogError($"[CollectibleState] Error clearing save file: {e}");
+    }
+
+    Save();
+}
+
 
     // ---------- SAVE / LOAD using Unity’s built-in JsonUtility ----------
 
@@ -117,5 +141,7 @@ public class CollectibleStateEditor : Editor
             Debug.Log("[CollectibleState] Save file cleared and collectible list reset.");
         }
     }
+
+    
 }
 #endif

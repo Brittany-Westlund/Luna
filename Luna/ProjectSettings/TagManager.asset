@@ -46,6 +46,8 @@ TagManager:
   - LilyStool
   - SporeIcon
   - LilystoolHint
+  - Fairyfly
+  - Wand
   layers:
   - Default
   - TransparentFX

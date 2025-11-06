@@ -3,11 +3,17 @@ using UnityEngine;
 
 public class WandForever : MonoBehaviour
 {
+    [Header("References")]
+    [Tooltip("Assign Luna’s wand GameObject here (or leave empty to auto-find).")]
     public GameObject wandChild;
 
-    void Awake()
+    [Header("Collectible ID")]
+    [Tooltip("This must match the ID stored in your CollectibleState.")]
+    public string wandID = "Wand01";
+
+    private void Awake()
     {
-        // 🔍 Find wandChild if not assigned
+        // 🔍 Auto-find wand child if not manually assigned
         if (wandChild == null)
         {
             var attractor = GetComponentInChildren<LunariaWandAttractor>(true);
@@ -15,42 +21,66 @@ public class WandForever : MonoBehaviour
                 wandChild = attractor.gameObject;
         }
 
-        // Start disabled; we’ll turn it on after save data loads
+        // ✅ Always start disabled (prevents startup flash in build)
         if (wandChild != null)
             wandChild.SetActive(false);
     }
 
-    void Start()
+    private void Start()
     {
-        // ⏳ Wait one frame to let CollectibleState finish loading
+        // ⏳ Give CollectibleManager/JSON time to load
         StartCoroutine(CheckAfterLoad());
-
-        Debug.Log($"[WandForever] wandChild active at Start? {wandChild?.activeSelf}");
-
     }
 
-    IEnumerator CheckAfterLoad()
+    private IEnumerator CheckAfterLoad()
     {
-        yield return null; // ensures CollectibleState.OnEnable() has finished
+        // wait a short bit longer than one frame for builds
+        yield return new WaitForSeconds(0.2f);
 
-        bool hasCollectedWand = CollectibleManager.Instance != null &&
-                                CollectibleManager.Instance.HasCollected("Wand01");
-
-        if (hasCollectedWand)
+        if (CollectibleManager.Instance == null)
         {
-            UnlockWand();
-            Debug.Log("🌕 Luna’s wand restored from collectibles.json");
+            Debug.LogWarning("[WandForever] CollectibleManager not found; wand stays hidden.");
+            yield break;
+        }
+
+        bool hasWand = CollectibleManager.Instance.HasCollected(wandID);
+        Debug.Log($"[WandForever] Checking wand '{wandID}' collected? {hasWand}");
+
+        if (hasWand)
+        {
+            UnlockWand(false); // false = don't re-save to file
+        }
+        else
+        {
+            LockWand();
+            Debug.Log("[WandForever] Wand not collected yet — remaining hidden.");
         }
     }
 
-    public void UnlockWand()
+    /// <summary>
+    /// Called when Luna first earns the wand (e.g. after dialogue or quest).
+    /// </summary>
+    /// <param name="saveToFile">If true, records ownership permanently.</param>
+    public void UnlockWand(bool saveToFile = true)
     {
         if (wandChild != null)
             wandChild.SetActive(true);
 
-        if (CollectibleManager.Instance != null)
-            CollectibleManager.Instance.MarkCollected("Wand01");
+        if (saveToFile && CollectibleManager.Instance != null)
+        {
+            CollectibleManager.Instance.MarkCollected(wandID);
+            Debug.Log($"✨ Luna now permanently owns {wandID}.");
+        }
+    }
 
-        Debug.Log("✨ Luna now permanently has the wand.");
+    /// <summary>
+    /// Manually lock/remove the wand (useful for testing or story resets).
+    /// </summary>
+    public void LockWand()
+    {
+        if (wandChild != null)
+            wandChild.SetActive(false);
+
+        Debug.Log($"[WandForever] {wandID} locked/hidden.");
     }
 }

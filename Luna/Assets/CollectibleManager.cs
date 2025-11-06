@@ -35,4 +35,18 @@ public class CollectibleManager : MonoBehaviour
     }
     private void OnApplicationQuit() => collectibleState.Save();
 
+    public void ResetAll()
+{
+    if (collectibleState != null)
+    {
+        collectibleState.ResetAll();
+        Debug.Log("[CollectibleManager] Global collectible state reset.");
+    }
+    else
+    {
+        Debug.LogWarning("[CollectibleManager] No CollectibleState assigned — cannot reset.");
+    }
+}
+
+
 }

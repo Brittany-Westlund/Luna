@@ -3,6 +3,101 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
+[RequireComponent(typeof(FairyflyMovement))]
+public class FairyflyCoordinator : MonoBehaviour
+{
+    [Header("Flower Activation")]
+    public float checkInterval = 0.5f;
+    public float pauseAtFlower = 0.25f;
+    public bool debugLogs = false;
+
+    private FairyflyMovement fairyflyMovement; // ✅ reference FairyflyMovement
+    private bool isMoving = false;
+
+    void Start()
+    {
+        fairyflyMovement = GetComponent<FairyflyMovement>();
+        StartCoroutine(MonitorFlowers());
+    }
+
+    private IEnumerator MonitorFlowers()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(checkInterval);
+            if (isMoving) continue;
+
+            // Look for grown, unlit flowers
+            var flowers = FindObjectsOfType<SproutAndLightManager>();
+            foreach (var f in flowers)
+            {
+                if (f == null || !f.IsFullyGrown) continue;
+                if (f.litFlowerRenderer == null || f.litFlowerRenderer.enabled) continue;
+
+                yield return StartCoroutine(FlyToFlowerAndContinue(f));
+                break;
+            }
+        }
+    }
+
+    private IEnumerator FlyToFlowerAndContinue(SproutAndLightManager flower)
+{
+    // Prevent re-entry if already en route
+    if (isMoving) yield break;
+    isMoving = true;
+
+    Vector3 startPos = transform.position;
+    Vector3 targetPos = flower.transform.position;
+
+    float distance = Vector3.Distance(startPos, targetPos);
+    float moveDuration = Mathf.Max(distance / 1.0f, 0.6f); // lower divisor = slower
+    float t = 0f;
+
+    // Smooth glide toward flower
+    while (t < 1f)
+    {
+        t += Time.deltaTime / moveDuration;
+        transform.position = Vector3.Lerp(startPos, targetPos, Mathf.SmoothStep(0, 1, t));
+        yield return null;
+    }
+
+    // 🌕 Light flower
+    var lit = flower.transform.Find("LitFlowerB");
+    if (lit != null)
+    {
+        lit.gameObject.SetActive(true);
+        var r = lit.GetComponent<SpriteRenderer>();
+        if (r) r.enabled = true;
+
+        var force = lit.GetComponent<LitFlowerBForceOn>();
+        if (force) force.enabled = true;
+
+        flower.HideLightHint();
+        flower.GiveLight();
+    }
+
+    // Pause slightly for effect
+    yield return new WaitForSeconds(pauseAtFlower);
+
+    // ✅ Tell FairyflyMovement to skip only one wait
+    fairyflyMovement.skipWaitOnce = true;
+
+    // ✅ Resume normal path only once
+    if (!fairyflyMovement.isMoving)
+        StartCoroutine(fairyflyMovement.MoveSequencePublic());
+
+    isMoving = false;
+}
+
+}
+
+
+
+/* using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+[RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
 public class FairyflyCoordinator : MonoBehaviour
 {
     [Header("Wait Points")]
@@ -136,3 +231,4 @@ public class FairyflyCoordinator : MonoBehaviour
         if (waitPoint2) Gizmos.DrawSphere(waitPoint2.position, 0.05f);
     }
 }
+*/

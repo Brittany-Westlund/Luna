@@ -575,6 +575,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   fadeSpeed: 1
   destroyOnFade: 1
+  isMoving: 0
+  skipWaitOnce: 0
 --- !u!212 &1041311240388474826
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -674,35 +676,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79b065d4aa07764897baa84abab78e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitPoint1: {fileID: 0}
-  waitPoint2: {fileID: 0}
-  moveSpeed: 2
-  easeCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  floatAmplitude: 0.1
-  floatFrequency: 2
   checkInterval: 0.5
   pauseAtFlower: 0.25
   debugLogs: 0
