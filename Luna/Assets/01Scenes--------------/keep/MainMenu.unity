@@ -1123,7 +1123,7 @@ PrefabInstance:
     - target: {fileID: 5687387486910050501, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5687387486910050501, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
@@ -1816,8 +1816,18 @@ PrefabInstance:
       objectReference: {fileID: 1398397023}
     - target: {fileID: 8400584652903677854, guid: da6060b42c28f7443a4f6ac3d99e261e,
         type: 3}
+      propertyPath: displaySettings.inputSettings.cancel.key
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8400584652903677854, guid: da6060b42c28f7443a4f6ac3d99e261e,
+        type: 3}
       propertyPath: displaySettings.subtitleSettings.continueButton
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8400584652903677854, guid: da6060b42c28f7443a4f6ac3d99e261e,
+        type: 3}
+      propertyPath: displaySettings.inputSettings.cancelConversation.key
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8400584652903677854, guid: da6060b42c28f7443a4f6ac3d99e261e,
         type: 3}
