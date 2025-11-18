@@ -48,6 +48,7 @@ TagManager:
   - LilystoolHint
   - Fairyfly
   - Wand
+  - Moonbow
   layers:
   - Default
   - TransparentFX
@@ -80,7 +81,7 @@ TagManager:
   - Sprout
   - NetLayer
   - Sparkles
-  - 
+  - Moonbow
   m_SortingLayers:
   - name: Abyss
     uniqueID: 1264728185

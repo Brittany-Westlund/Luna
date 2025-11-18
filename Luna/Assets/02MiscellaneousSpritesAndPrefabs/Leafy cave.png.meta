@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3f9296003a6769b4fa3d318ef4abec76
+guid: 7080b84b7fc9f7542a01967b9a32522e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,14 +43,14 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -147,98 +147,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: Moonbows_0
-      rect:
-        serializedVersion: 2
-        x: 102
-        y: 2226
-        width: 513
-        height: 318
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ce4bdd02632ab334aa450d4865aa335c
-      internalID: -1464716898
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Moonbows_3
-      rect:
-        serializedVersion: 2
-        x: 1275
-        y: 2245
-        width: 497
-        height: 334
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 21b25815acd334242a827a2852067e1c
-      internalID: -2077202625
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Moonbows_4
-      rect:
-        serializedVersion: 2
-        x: 475
-        y: 1513
-        width: 724
-        height: 334
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1f4586fa802e8544c95150f780efcf22
-      internalID: -951582271
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Moonbows_5
-      rect:
-        serializedVersion: 2
-        x: 515
-        y: 623
-        width: 724
-        height: 335
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 114, y: 167.5}
-        - {x: -186, y: 164.5}
-        - {x: -362, y: 167.5}
-        - {x: -362, y: -167.5}
-        - {x: 362, y: -167.5}
-        - {x: 362, y: 167.5}
-        - {x: 239, y: 167.5}
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: eb8440ad0da27e747a57a49a40afa050
-      internalID: -1828468991
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
@@ -249,13 +158,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Moonbows_0: -1464716898
-      Moonbows_1: 98826246
-      Moonbows_2: -577935726
-      Moonbows_3: -2077202625
-      Moonbows_4: -951582271
-      Moonbows_5: -1828468991
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
