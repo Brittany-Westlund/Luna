@@ -1,0 +1,449 @@
+fileFormatVersion: 2
+guid: 8032fc96a1a3fab419c5af187ded8b7b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: VillagePlatforms_1
+      rect:
+        serializedVersion: 2
+        x: 1857
+        y: 3056
+        width: 410
+        height: 286
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d08a895e85a7044b8708ac68332777e
+      internalID: -1551048550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_7
+      rect:
+        serializedVersion: 2
+        x: 3951
+        y: 3039
+        width: 9
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23574b2a2a34bcf448b954a4b0ce08a7
+      internalID: -790718185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_12
+      rect:
+        serializedVersion: 2
+        x: 1689
+        y: 2689
+        width: 563
+        height: 339
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1e59a6555074c54e9e87cb1591370d3
+      internalID: -1507713671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_15
+      rect:
+        serializedVersion: 2
+        x: 1370
+        y: 2488
+        width: 329
+        height: 308
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eec73faf1d36796409d474d14c1fe8d5
+      internalID: 41594315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_19
+      rect:
+        serializedVersion: 2
+        x: 2383
+        y: 2290
+        width: 662
+        height: 436
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d2c490e1a5d6bf4f91b85da7cc7fef9
+      internalID: -1904945989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_30
+      rect:
+        serializedVersion: 2
+        x: 2410
+        y: 1754
+        width: 947
+        height: 575
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 942e4bf6c32ab194bbf6792cb14c33aa
+      internalID: 239109613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_32
+      rect:
+        serializedVersion: 2
+        x: 1734
+        y: 1715
+        width: 620
+        height: 317
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37bb9321a861e9a4f8e06c24cd20c5ca
+      internalID: 1904911458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_42
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 1416
+        width: 408
+        height: 318
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 048886a908245284ebf3ce769ee9b65b
+      internalID: -355242353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_46
+      rect:
+        serializedVersion: 2
+        x: 1636
+        y: 1365
+        width: 1186
+        height: 317
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f1360abdda98cc43a3f7c31bf1c8ae3
+      internalID: -1622511243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_48
+      rect:
+        serializedVersion: 2
+        x: 2827
+        y: 974
+        width: 606
+        height: 308
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a9e14b6ada8bc749916c5a804375ea5
+      internalID: 1886275311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VillagePlatforms_50
+      rect:
+        serializedVersion: 2
+        x: 2643
+        y: 684
+        width: 26
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 361daddd19dbeea439dc941679157f1b
+      internalID: -992938178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      VillagePlatforms_0: 950948316
+      VillagePlatforms_1: -1551048550
+      VillagePlatforms_10: -557635012
+      VillagePlatforms_11: 256144468
+      VillagePlatforms_12: -1507713671
+      VillagePlatforms_13: 1131237195
+      VillagePlatforms_14: -83659274
+      VillagePlatforms_15: 41594315
+      VillagePlatforms_16: -79793697
+      VillagePlatforms_17: 1259373789
+      VillagePlatforms_18: 1727396714
+      VillagePlatforms_19: -1904945989
+      VillagePlatforms_2: -383495023
+      VillagePlatforms_20: -768928563
+      VillagePlatforms_21: 501949949
+      VillagePlatforms_22: 694358208
+      VillagePlatforms_23: -728468271
+      VillagePlatforms_24: -804224534
+      VillagePlatforms_25: -813420215
+      VillagePlatforms_26: 384051977
+      VillagePlatforms_27: -1087452773
+      VillagePlatforms_28: 125479201
+      VillagePlatforms_29: 258551069
+      VillagePlatforms_3: 742848216
+      VillagePlatforms_30: 239109613
+      VillagePlatforms_31: 1954128297
+      VillagePlatforms_32: 1904911458
+      VillagePlatforms_33: 1138948357
+      VillagePlatforms_34: -1650919097
+      VillagePlatforms_35: 326551864
+      VillagePlatforms_36: 1729219980
+      VillagePlatforms_37: -425639416
+      VillagePlatforms_38: -379077181
+      VillagePlatforms_39: 1863986811
+      VillagePlatforms_4: 813138127
+      VillagePlatforms_40: -220811323
+      VillagePlatforms_41: -296510621
+      VillagePlatforms_42: -355242353
+      VillagePlatforms_43: 764278037
+      VillagePlatforms_44: 1601359874
+      VillagePlatforms_45: 438714831
+      VillagePlatforms_46: -1622511243
+      VillagePlatforms_47: 672260229
+      VillagePlatforms_48: 1886275311
+      VillagePlatforms_49: 1305656411
+      VillagePlatforms_5: 1042318584
+      VillagePlatforms_50: -992938178
+      VillagePlatforms_51: 757426031
+      VillagePlatforms_6: 770826659
+      VillagePlatforms_7: -790718185
+      VillagePlatforms_8: 544239521
+      VillagePlatforms_9: 2058948198
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

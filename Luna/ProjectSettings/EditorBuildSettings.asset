@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/keep/MainMenu.unity
     guid: ce82c55f1f1ac0c4d99c7452dad77fe5
   - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level0_Village.unity
+    guid: bf82cbc8f5ec17c42ac74a0868bb1d71
+  - enabled: 1
     path: Assets/01Scenes--------------/keep/Level0_Beginning.unity
     guid: 9cc30fa34504456418310077dd4e2370
   - enabled: 1
@@ -17,7 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01Scenes--------------/keep/Level0_BramblePatch.unity
     guid: 9a489feb2b607fc42880bd638301f0f0
-  - enabled: 1
+  - enabled: 0
     path: Assets/01Scenes--------------/keep/Level3_BramblePatch.unity
     guid: 76ba1ad90617a694e9fd5473b6c78977
   - enabled: 1
