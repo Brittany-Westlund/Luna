@@ -989,6 +989,21 @@ PrefabInstance:
       propertyPath: healthLossAmount
       value: 0.01
       objectReference: {fileID: 0}
+    - target: {fileID: 4056549471829758418, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: CanJumpDownOneWayPlatforms
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056549471829758418, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: MovingPlatformsJumpCollisionOffDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056549471829758418, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: OneWayPlatformsJumpCollisionOffDuration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4191816821460906274, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: healthBar
@@ -1152,6 +1167,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5701745991804247995, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
+      propertyPath: aidRadius
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701745991804247995, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 0}
@@ -1161,6 +1181,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5217680162469921544, guid: b87ebfd90337f7841862f215d69c3cc2,
         type: 3}
+    - target: {fileID: 5701745991804247995, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: pickupRadius
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 5701745991804247995, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: healthReturnOnDetach

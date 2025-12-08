@@ -19,6 +19,9 @@ public class LanternSmartToggle : MonoBehaviour
     [Header("What to Disable When Lit")]
     public SpriteRenderer[] spritesToDisable;
     public GameObject[] objectsToDisable;
+    // ✅ Public read-only access for other systems (like the teapot)
+    public bool IsLit => litLanternSprite != null && litLanternSprite.enabled;
+
 
     private bool lastLitState = false;
     private bool playerInRange = false;
@@ -97,4 +100,18 @@ public class LanternSmartToggle : MonoBehaviour
             playerInRange = false;
         }
     }
+
+    // ✅ Called by the teapot to consume the lantern's light
+public void ExtinguishLantern()
+    {
+        if (litLanternSprite == null || !litLanternSprite.enabled)
+            return;
+
+        litLanternSprite.enabled = false;
+
+        // Force visual state refresh immediately
+        ApplyToggleState(false);
+        lastLitState = false;
+    }
+
 }
