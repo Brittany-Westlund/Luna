@@ -11,11 +11,16 @@ public class ActivateOtherOnKeyPress : MonoBehaviour
     public bool disableWholeObject = true; // If false, only disables SpriteRenderer
 
     private bool playerInTrigger = false;
+    private bool hasActivated = false;   // ✅ ONE-SHOT LATCH
 
     private void Update()
     {
+        if (hasActivated) return; // ✅ NEVER allow re-trigger
+
         if (playerInTrigger && Input.GetKeyDown(keyToPress))
         {
+            hasActivated = true; // ✅ lock forever
+
             // ✅ TURN ON TARGET FIRST
             if (objectToActivate != null)
             {

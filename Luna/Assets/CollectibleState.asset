@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65c74dfbc5e10c2409ca41ccc26233fe, type: 3}
-  m_Name: GlobalCollectibleState
+  m_Name: CollectibleState
   m_EditorClassIdentifier: 
   collectedIDs: []

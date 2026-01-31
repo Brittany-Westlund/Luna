@@ -16,9 +16,13 @@ public class TeacupReceiver : MonoBehaviour
     public string[] requiredFlowers;
     private bool hasRequiredIngredients;
     private Transform teacupHoldPoint;
+    private TeacupOutcomeResponder outcomeResponder;
+
 
     private void Start()
     {
+       outcomeResponder = GetComponent<TeacupOutcomeResponder>();
+
         // Try to find the hold point and icons by name in children
         teacupHoldPoint = transform.Find("TeacupHoldPoint");
         happyIcon = transform.Find("HappyIcon")?.gameObject;
@@ -93,6 +97,12 @@ public class TeacupReceiver : MonoBehaviour
             dialogueTrigger.enabled = true;     // This will fire "On Enable"
             Debug.Log("DialogueSystemTrigger enabled via tea delivery!");
         }
+
+        if (outcomeResponder != null)
+        {
+            outcomeResponder.HandleTeaOutcome(hasRequiredIngredients);
+        }
+
 
         yield return new WaitForSeconds(15f);
 
