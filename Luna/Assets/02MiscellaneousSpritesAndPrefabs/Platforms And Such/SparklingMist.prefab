@@ -615,6 +615,7 @@ GameObject:
   - component: {fileID: 8167984925678715292}
   - component: {fileID: 3531797929654184792}
   - component: {fileID: 1340019005536393281}
+  - component: {fileID: 1022488288459339316}
   m_Layer: 0
   m_Name: SparklingMist
   m_TagString: Mist
@@ -786,6 +787,18 @@ MonoBehaviour:
   maxScale: 5
   growthSpeed: 2
   debugLogs: 1
+--- !u!114 &1022488288459339316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847963606699182376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9daea2b6b07eb9419c25ac63046fdac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2493994430453610125
 GameObject:
   m_ObjectHideFlags: 0

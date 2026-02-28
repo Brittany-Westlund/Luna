@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/keep/MainMenuNoManager.unity
     guid: fa15f5e9c1566f340a45d456296e2f48
   - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level0_Tearoom.unity
+    guid: 4d9a85fda4fc7134782ef4a067a11c1a
+  - enabled: 0
+    path: Assets/01Scenes--------------/keep/Level1_Meadow.unity
+    guid: 2bac7a4bf3c9a9e42a17d9b9feb3833d
+  - enabled: 1
     path: Assets/01Scenes--------------/keep/Level0_Village.unity
     guid: bf82cbc8f5ec17c42ac74a0868bb1d71
   - enabled: 1
@@ -26,9 +32,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01Scenes--------------/keep/Credits.unity
     guid: 07af134f32288f94d880e6e9e914fa82
-  - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0_Tearoom.unity
-    guid: 4d9a85fda4fc7134782ef4a067a11c1a
   - enabled: 0
     path: Assets/01Scenes--------------/keep/Level0_BramblePatch.unity
     guid: 9a489feb2b607fc42880bd638301f0f0
@@ -50,9 +53,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/CorgiEngine/Demos/LevelSelection/SplashScreen.unity
     guid: 7b96552fd1198fa4eaae54a2f975645e
-  - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level1_Meadow.unity
-    guid: 2bac7a4bf3c9a9e42a17d9b9feb3833d
   - enabled: 0
     path: Assets/01Scenes--------------/keep/Level2_Mire.unity
     guid: e21d85da21cb0af428292a7fa1611111

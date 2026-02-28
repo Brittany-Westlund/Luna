@@ -4003,8 +4003,8 @@ MonoBehaviour:
     m_Center: {x: -3.6, y: 38.76, z: 0}
     m_Extent: {x: 28.8, y: 6.25, z: 5}
   ConvertToColliderBoundsButton: 0
-  LoadingSceneMode: 0
-  LoadingSceneName: Level0_Meadow
+  LoadingSceneMode: 1
+  LoadingSceneName: Level0_Village
   AdditiveLoadingSettings:
     LoadingSceneName: MMAdditiveLoadingScreen
     ThreadPriority: 4

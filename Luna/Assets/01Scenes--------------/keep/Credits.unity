@@ -5256,12 +5256,12 @@ PrefabInstance:
     - target: {fileID: 7727795936850235180, guid: 3c2a6dc3fa07a134285adc6e48ed3af1,
         type: 3}
       propertyPath: sceneToLoad
-      value: MainMenuNoGameManager
+      value: MainMenuNoManager
       objectReference: {fileID: 0}
     - target: {fileID: 9072969378300498425, guid: 3c2a6dc3fa07a134285adc6e48ed3af1,
         type: 3}
       propertyPath: SceneName
-      value: MainMenu
+      value: MainMenuNoManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

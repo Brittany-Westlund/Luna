@@ -50,6 +50,7 @@ TagManager:
   - Wand
   - Moonbow
   - WindowNPC
+  - Book
   layers:
   - Default
   - TransparentFX
