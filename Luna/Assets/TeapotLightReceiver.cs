@@ -4,6 +4,9 @@ using System.Collections.Generic;
 public class TeapotLightReceiver : MonoBehaviour
 {
     [Header("Teapot Settings")]
+    [Tooltip("If false, this teapot does not require light to brew.")]
+    public bool requireLight = true;
+
     public GameObject sparkleEffect;
     public GameObject brewingIndicatorIcon;
 
@@ -13,6 +16,7 @@ public class TeapotLightReceiver : MonoBehaviour
 
     [Header("Hint Icon")]
     public GameObject lightHintIcon;
+
     [Header("Audio")]
     public AudioSource audioSource; // adding light sfx
 
@@ -20,7 +24,7 @@ public class TeapotLightReceiver : MonoBehaviour
 
     private bool _isLit = false;
     private List<GameObject> _ingredients = new List<GameObject>();
-    
+
     void Awake()
     {
         sparkleEffect = sparkleEffect ?? transform.Find("SparkleEffect")?.gameObject;
@@ -29,7 +33,6 @@ public class TeapotLightReceiver : MonoBehaviour
 
         sparkleEffect?.SetActive(false);
         brewingIndicatorIcon?.SetActive(false);
-        lightHintIcon?.SetActive(true); // will get turned off below if needed
 
         teacupSpawnPoint = teacupSpawnPoint ?? transform.Find("TeacupSpawnPoint");
         if (teacupSpawnPoint == null)
@@ -38,34 +41,61 @@ public class TeapotLightReceiver : MonoBehaviour
         _teacupPrefab = Resources.Load<GameObject>("Teacup");
         if (_teacupPrefab == null)
             Debug.LogError("Teacup prefab not found in Resources/Teacup.prefab!");
+
+        // If light is not required, treat the teapot as already satisfying the light condition.
+        if (!requireLight)
+        {
+            _isLit = true;
+
+            var receiver = GetComponent<TeapotReceiver>();
+            if (receiver != null)
+                receiver.hasLight = true;
+        }
+
+        if (lightHintIcon != null)
+            lightHintIcon.SetActive(requireLight && !_isLit);
     }
 
     void Update()
     {
-        // Show hint only if not lit
+        // Show hint only if light is required and not yet lit
         if (lightHintIcon != null)
-            lightHintIcon.SetActive(!_isLit);
+            lightHintIcon.SetActive(requireLight && !_isLit);
     }
 
     public void ActivateBrewReadyState()
     {
+        if (!requireLight)
+        {
+            // If light isn't required, keep it logically satisfied and skip lighting visuals/audio.
+            _isLit = true;
+
+            var receiverNoLight = GetComponent<TeapotReceiver>();
+            if (receiverNoLight != null)
+                receiverNoLight.hasLight = true;
+
+            lightHintIcon?.SetActive(false);
+            return;
+        }
+
         if (_isLit) return;
+
         _isLit = true;
-        sparkleEffect.SetActive(true);
-        brewingIndicatorIcon.SetActive(true);
+        sparkleEffect?.SetActive(true);
+        brewingIndicatorIcon?.SetActive(true);
         lightHintIcon?.SetActive(false); // turn off hint when lit
         Debug.Log("🫖 Teapot is ready to brew!");
 
-         var receiver = GetComponent<TeapotReceiver>();
-         if (receiver != null)
-            receiver.hasLight = true; 
+        var receiver = GetComponent<TeapotReceiver>();
+        if (receiver != null)
+            receiver.hasLight = true;
 
         // --- Play "teapot lit" sound here ---
         if (audioSource != null && audioSource.clip != null)
-        audioSource.Play();
+            audioSource.Play();
     }
 
-    public bool HasLight => _isLit;
+    public bool HasLight => !requireLight || _isLit;
 
     public void AddIngredient(GameObject flower)
     {
@@ -86,7 +116,7 @@ public class TeapotLightReceiver : MonoBehaviour
 
     public bool IsReadyToBrew()
     {
-        return _isLit;
+        return !requireLight || _isLit;
     }
 
     public GameObject BrewTea()
@@ -101,7 +131,8 @@ public class TeapotLightReceiver : MonoBehaviour
         // If no receiver, fallback to old logic
         Debug.LogWarning("No TeapotReceiver found, using legacy brew logic (no flower handling).");
         Debug.Log($"BrewTea() → isLit={_isLit}, prefabLoaded={_teacupPrefab != null}");
-        if (!_isLit || _teacupPrefab == null)
+
+        if ((requireLight && !_isLit) || _teacupPrefab == null)
         {
             ResetTeapot();
             return null;
@@ -126,127 +157,19 @@ public class TeapotLightReceiver : MonoBehaviour
         }
 
         ResetTeapot();
-        return cup;  
-    }
-
-    public void ResetTeapot()
-    {
-        _isLit = false;
-        _ingredients.Clear();
-        sparkleEffect?.SetActive(false);
-        brewingIndicatorIcon?.SetActive(false);
-        lightHintIcon?.SetActive(true);
-    }
-}
-
-
-/* using UnityEngine;
-using System.Collections.Generic;
-
-public class TeapotLightReceiver : MonoBehaviour
-{
-    [Header("Teapot Settings")]
-    public GameObject sparkleEffect;
-    public GameObject brewingIndicatorIcon;
-
-    [Header("Spawn Settings")]
-    [Tooltip("Where the teacup should appear when brewed")]
-    public Transform teacupSpawnPoint;
-    [Header("Hint Icon")]
-    public GameObject lightHintIcon;
-
-    // loaded from Resources/Teacup.prefab or assign in editor
-    private GameObject _teacupPrefab;
-
-    private bool _isLit = false;
-    private List<GameObject> _ingredients = new List<GameObject>();
-
-    void Awake()
-    {
-        // auto‐find effects
-        sparkleEffect = sparkleEffect ?? transform.Find("SparkleEffect")?.gameObject;
-        brewingIndicatorIcon = brewingIndicatorIcon ?? transform.Find("BrewingIndicatorIcon")?.gameObject;
-
-        sparkleEffect?.SetActive(false);
-        brewingIndicatorIcon?.SetActive(false);
-
-        // auto‐find spawn point
-        teacupSpawnPoint = teacupSpawnPoint ?? transform.Find("TeacupSpawnPoint");
-        if (teacupSpawnPoint == null)
-            Debug.LogWarning("TeacupSpawnPoint not found!");
-
-        // load cup
-        _teacupPrefab = Resources.Load<GameObject>("Teacup");
-        if (_teacupPrefab == null)
-            Debug.LogError("Teacup prefab not found in Resources/Teacup.prefab!");
-    }
-
-    /// <summary> Called by the wand (Q) to light the pot. </summary>
-    public void ActivateBrewReadyState()
-    {
-        if (_isLit) return;
-        _isLit = true;
-        sparkleEffect.SetActive(true);
-        brewingIndicatorIcon.SetActive(true);
-        Debug.Log("🫖 Teapot is ready to brew!");
-    }
-
-    /// <summary> True if it’s been lit. </summary>
-    public bool HasLight => _isLit;
-
-    /// <summary> Still tracks flowers if you want later—but no longer required for brewing. </summary>
-    public void AddIngredient(GameObject flower)
-    {
-        if (!_ingredients.Contains(flower))
-            _ingredients.Add(flower);
-    }
-
-    /// <summary>
-    /// True if one or more flowers have been added.
-    /// </summary>
-    public bool HasAnyIngredients()
-    {
-        return _ingredients.Count > 0;
-    }
-    public int GetIngredientCount()
-    {
-        var receiver = GetComponent<TeapotReceiver>();
-        return receiver != null ? receiver.GetIngredientCount() : 0;
-    }
-
-
-    /// <summary>
-    /// True once the teapot has been lit (regardless of ingredients).
-    /// Used by UI buttons to enable the Brew‑button.
-    /// </summary>
-    public bool IsReadyToBrew()
-    {
-        return _isLit;
-    }
-
-    /// <summary> Brew the tea: now only requires light. </summary>
-    public GameObject BrewTea()
-    {
-        Debug.Log($"BrewTea() → isLit={_isLit}, prefabLoaded={_teacupPrefab != null}");
-        if (!_isLit || _teacupPrefab == null)
-            return null;
-
-        Vector3 spawnPos = teacupSpawnPoint != null
-            ? teacupSpawnPoint.position
-            : transform.position;
-
-        var cup = Instantiate(_teacupPrefab, spawnPos, Quaternion.identity);
-        ResetTeapot();
         return cup;
     }
 
-    /// <summary> Clears state + hides effects. </summary>
     public void ResetTeapot()
     {
-        _isLit = false;
+        _isLit = !requireLight; // stay satisfied if light is not required
         _ingredients.Clear();
         sparkleEffect?.SetActive(false);
         brewingIndicatorIcon?.SetActive(false);
+        lightHintIcon?.SetActive(requireLight && !_isLit);
+
+        var receiver = GetComponent<TeapotReceiver>();
+        if (receiver != null)
+            receiver.hasLight = !requireLight;
     }
 }
-*/

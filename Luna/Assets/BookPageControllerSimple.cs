@@ -1,455 +1,270 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
-/// <summary>
-/// BookControllerSimple
-/// - One script for: open/close, store/place, paging, reveal/unlock, saving.
-/// - Page order: Intro -> UnlockedSpreads -> BlankEndPage
-/// - Auto-store when far works even if book is open (it will close + store).
-/// - Optional: never open to blank end page.
-/// </summary>
-[DisallowMultipleComponent]
 public class BookControllerSimple : MonoBehaviour
 {
     [Header("Player")]
+    public Transform player;
     public string playerTag = "Player";
-    public string storePointName = "BookStorePoint";
-    public string placedPointName = "BookPlacedPoint";
 
-    [Header("Tiny Book Visuals (this object is the closed sprite)")]
-    public SpriteRenderer tinyClosedRenderer;          // usually this object's SpriteRenderer
-    public SpriteRenderer tinyOpenRenderer;            // OpenBookTiny SpriteRenderer (optional)
+    [Header("Book UI")]
+    public GameObject bookUIRoot;
+    public Image bookPageImage;
 
-    [Header("Big Book Visuals (the page sprite renderer you show when open)")]
-    public SpriteRenderer bigPageRenderer;             // the big book page SpriteRenderer to enable/disable
+    [Header("Lilystool Detection")]
+    public float lilystoolRadius = 2f;
+    public string lilystoolTag = "Lilystool";
+
+    [Header("Input")]
+    public KeyCode toggleKey = KeyCode.V;
+    public KeyCode previousPageKey = KeyCode.A;
+    public KeyCode nextPageKey = KeyCode.D;
+    public bool allowArrowKeysToo = true;
 
     [Header("Pages")]
     public bool useIntroPage = true;
-    public Sprite introPageSprite;                     // Field Notes / Controls (first page)
-    public Sprite blankEndPageSprite;                  // always last page
-    public Sprite[] unlockableSpreads;                 // spreads revealed over time (inserted before blank)
-
-    [Header("Open Behavior")]
-    [Tooltip("When opening the book, never land on the blank end page. Open to the last non-blank page instead.")]
+    public Sprite introPageSprite;
+    public Sprite blankEndPageSprite;
+    public Sprite[] unlockableSpreads;
     public bool neverOpenToBlank = true;
 
     [Header("Persistence")]
     public bool saveProgress = true;
     public string saveKeyPrefix = "BOOK_SIMPLE_";
 
-    [Header("Input")]
-    public KeyCode toggleKey = KeyCode.V;
-    public float holdSecondsToStoreOrPlace = 1.0f;
-    public KeyCode nextPageKey = KeyCode.UpArrow;
-    public KeyCode prevPageKey = KeyCode.DownArrow;
-
-    [Header("Movement (store/place)")]
-    public float moveSpeed = 10f;
-    public float snapDistance = 0.03f;
-    public Vector3 fallbackStoreOffset = new Vector3(0f, 1.2f, 0f);
-    public Vector3 fallbackPlacedOffset = new Vector3(0f, -0.2f, 0f);
-
-    [Header("Auto Store When Far (closes even if open)")]
-    public bool autoStoreWhenFar = true;
-    public float autoStoreDistance = 3.5f;
-
-    [Header("Sound (optional)")]
-    public AudioSource audioSource;
-    public AudioClip pageFlipClip;
-    [Range(0f, 1f)] public float pageFlipVolume = 0.8f;
-    public bool playFlipOnReveal = true;
+    [Header("Optional Movement Lock")]
+    public MonoBehaviour lunaMovementScript;
+    public string horizontalLockBoolName = "MovementForbidden";
 
     [Header("Debug")]
     public bool debugLogs = false;
 
-    // --------------------
-    // Runtime state
-    // --------------------
-    public bool IsOpen => isOpen;
-    public bool IsStored => isStored;
+    public bool IsOpen => bookOpen;
 
-    private Transform player;
-    private Transform storePoint;
-    private Transform placedPoint;
-
-    private bool isOpen = false;
-    private bool isStored = false;
-
-    private bool vHeld = false;
-    private float vHeldTime = 0f;
-    private bool holdActionTriggered = false;
-
-    private bool isMovingToTarget = false;
-    private Vector3 moveTarget;
-    private System.Action onArrive;
-
-    // Page state
-    // unlockedCount counts only unlockableSpreads[]
+    private int currentPage = 0;
+    private bool bookOpen = false;
     private int unlockedCount = 0;
-    private int currentIndex = 0; // index in the computed page list
+    private readonly HashSet<string> usedLocationIds = new HashSet<string>();
 
-    // Used location IDs so each mist location only reveals once
-    private HashSet<string> usedLocationIds = new HashSet<string>();
-
-    // Save keys
     private string KeyUnlocked => saveKeyPrefix + "UnlockedCount";
     private string KeyIndex => saveKeyPrefix + "CurrentIndex";
     private string KeyUsedIds => saveKeyPrefix + "UsedLocationIds";
 
-    // --------------------
-    // Unity lifecycle
-    // --------------------
     void Awake()
     {
-        if (tinyClosedRenderer == null)
-            tinyClosedRenderer = GetComponent<SpriteRenderer>();
+        if (saveProgress)
+            Load();
+    }
 
-        FindPlayerAndPoints();
-        EnsureAudio();
+    void Start()
+    {
+        ResolvePlayer();
 
-        if (saveProgress) Load();
+        if (bookUIRoot != null)
+            bookUIRoot.SetActive(false);
 
-        // Ensure initial visuals
-        if (tinyOpenRenderer != null) tinyOpenRenderer.enabled = false;
-        if (tinyClosedRenderer != null) tinyClosedRenderer.enabled = true;
+        ClampCurrentPage();
 
-        SetBigBookVisible(false);
-
-        ClampIndexToPages();
-        RenderCurrentPage(); // will render only if open (it isn't)
-        if (debugLogs) Debug.Log($"📖 Awake | unlocked={unlockedCount} idx={currentIndex} pages={GetPageCount()} stored={isStored} open={isOpen}");
+        if (debugLogs)
+        {
+            Debug.Log($"📖 BookControllerSimple Start");
+            Debug.Log($"📖 player = {(player != null ? player.name : "NULL")}");
+            Debug.Log($"📖 bookUIRoot = {(bookUIRoot != null ? bookUIRoot.name : "NULL")}");
+            Debug.Log($"📖 bookPageImage = {(bookPageImage != null ? bookPageImage.name : "NULL")}");
+            Debug.Log($"📖 unlockedCount = {unlockedCount}");
+            Debug.Log($"📖 currentPage = {currentPage}");
+        }
     }
 
     void Update()
     {
-        if (player == null) FindPlayerAndPoints();
-        else
-        {
-            if (storePoint == null) storePoint = FindDeepChildByName(player, storePointName);
-            if (placedPoint == null) placedPoint = FindDeepChildByName(player, placedPointName);
-        }
+        if (player == null)
+            ResolvePlayer();
 
-        // Auto-store check (even if open)
-        if (autoStoreWhenFar)
-            CheckAutoStoreDistance();
-
-        HandleVInput();
-
-        if (isOpen && !isStored && !isMovingToTarget)
-            HandlePagingInput();
-
-        if (isMovingToTarget)
-            MoveTowardTarget();
-    }
-
-    // --------------------
-    // Input
-    // --------------------
-    private void HandleVInput()
-    {
         if (Input.GetKeyDown(toggleKey))
         {
-            vHeld = true;
-            vHeldTime = 0f;
-            holdActionTriggered = false;
-        }
-
-        if (vHeld && Input.GetKey(toggleKey))
-        {
-            vHeldTime += Time.deltaTime;
-
-            if (!holdActionTriggered && vHeldTime >= holdSecondsToStoreOrPlace)
+            if (bookOpen)
             {
-                holdActionTriggered = true;
-
-                if (!isStored)
-                    BeginStoreToCap(forceCloseIfOpen: true);
-                else
-                    BeginPlaceFromCap(forceCloseIfOpen: true);
+                CloseBook();
+            }
+            else if (NearLilystool())
+            {
+                OpenBook();
             }
         }
 
-        if (Input.GetKeyUp(toggleKey))
-        {
-            vHeld = false;
+        if (!bookOpen) return;
 
-            // Tap behavior
-            if (!holdActionTriggered)
-            {
-                if (!isStored && !isMovingToTarget)
-                    ToggleOpenClose();
-            }
-        }
-    }
+        bool prevPressed = Input.GetKeyDown(previousPageKey) || (allowArrowKeysToo && Input.GetKeyDown(KeyCode.LeftArrow));
+        bool nextPressed = Input.GetKeyDown(nextPageKey) || (allowArrowKeysToo && Input.GetKeyDown(KeyCode.RightArrow));
 
-    private void HandlePagingInput()
-    {
-        if (Input.GetKeyDown(prevPageKey))
-        {
-            PrevPage();
-        }
+        if (prevPressed)
+            PreviousPage();
 
-        if (Input.GetKeyDown(nextPageKey))
-        {
+        if (nextPressed)
             NextPage();
-        }
     }
 
-    // --------------------
-    // Auto-store when far
-    // --------------------
-    private void CheckAutoStoreDistance()
+    void OpenBook()
     {
-        if (player == null) return;
-        if (isStored) return;
-        if (isMovingToTarget) return;
-
-        float dist = Vector2.Distance(player.position, transform.position);
-        if (dist >= autoStoreDistance)
+        if (bookUIRoot == null || bookPageImage == null)
         {
-            // IMPORTANT: store even if open (force-close)
-            BeginStoreToCap(forceCloseIfOpen: true);
+            Debug.LogWarning("BookControllerSimple: bookUIRoot or bookPageImage is missing.");
+            return;
         }
-    }
 
-    // --------------------
-    // Open / Close
-    // --------------------
-    private void ToggleOpenClose()
-    {
-        // Only allow open/close if not stored
-        if (isStored) return;
+        ClampCurrentPage();
+        ApplyNeverOpenToBlankRule();
 
-        isOpen = !isOpen;
+        bookOpen = true;
+        bookUIRoot.SetActive(true);
 
-        if (tinyClosedRenderer != null) tinyClosedRenderer.enabled = !isOpen;
-        if (tinyOpenRenderer != null) tinyOpenRenderer.enabled = isOpen;
+        ShowPage();
+        SetHorizontalMovementLocked(true);
 
-        SetBigBookVisible(isOpen);
-
-        // When opening, render whatever page we last viewed (with optional rule)
-        if (isOpen)
-        {
-            ClampIndexToPages();
-            ApplyNeverOpenToBlankRule();
-            RenderCurrentPage();
+        if (saveProgress)
             Save();
-        }
 
-        if (debugLogs) Debug.Log($"📖 ToggleOpenClose -> {isOpen} | idx={currentIndex}/{GetPageCount() - 1}");
+        if (debugLogs)
+            Debug.Log($"📖 OpenBook -> currentPage={currentPage}");
     }
 
-    private void ForceClose()
+    void CloseBook()
     {
-        if (!isOpen) return;
+        bookOpen = false;
 
-        isOpen = false;
+        if (bookUIRoot != null)
+            bookUIRoot.SetActive(false);
 
-        if (tinyOpenRenderer != null) tinyOpenRenderer.enabled = false;
-        if (tinyClosedRenderer != null) tinyClosedRenderer.enabled = true;
+        SetHorizontalMovementLocked(false);
 
-        SetBigBookVisible(false);
+        if (debugLogs)
+            Debug.Log("📖 CloseBook");
     }
 
-    private bool IsOnBlankEndPage()
-    {
-        int lastIndex = GetPageCount() - 1;
-        return (blankEndPageSprite != null && lastIndex >= 0 && currentIndex == lastIndex);
-    }
-
-    private int GetLastNonBlankIndex()
-    {
-        // Non-blank pages are: intro (optional) + unlocked spreads.
-        // Blank is always the last page.
-        int lastNonBlank = GetPageCount() - 2; // just before blank
-        if (lastNonBlank < 0) lastNonBlank = 0;
-        return lastNonBlank;
-    }
-
-    private void ApplyNeverOpenToBlankRule()
-    {
-        if (!neverOpenToBlank) return;
-        if (!IsOnBlankEndPage()) return;
-
-        currentIndex = GetLastNonBlankIndex();
-        ClampIndexToPages();
-    }
-
-    // --------------------
-    // Store / Place
-    // --------------------
-    private void BeginStoreToCap(bool forceCloseIfOpen)
-    {
-        if (forceCloseIfOpen) ForceClose();
-
-        Vector3 target = GetStoreTarget();
-        BeginMoveTo(target, () =>
-        {
-            HideTinyRenderers();
-            isStored = true;
-
-            if (debugLogs) Debug.Log("📖 Stored.");
-        });
-    }
-
-    private void BeginPlaceFromCap(bool forceCloseIfOpen)
-    {
-        if (forceCloseIfOpen) ForceClose();
-
-        Vector3 target = GetPlacedTarget();
-        BeginMoveTo(target, () =>
-        {
-            // When placed, show closed tiny book again
-            if (tinyClosedRenderer != null) tinyClosedRenderer.enabled = true;
-            if (tinyOpenRenderer != null) tinyOpenRenderer.enabled = false;
-
-            isStored = false;
-
-            if (debugLogs) Debug.Log("📖 Placed.");
-        });
-    }
-
-    private void BeginMoveTo(Vector3 target, System.Action arriveAction)
-    {
-        isMovingToTarget = true;
-        moveTarget = target;
-        onArrive = arriveAction;
-    }
-
-    private void MoveTowardTarget()
-    {
-        transform.position = Vector3.Lerp(transform.position, moveTarget, Time.deltaTime * moveSpeed);
-
-        if (Vector3.Distance(transform.position, moveTarget) <= snapDistance)
-        {
-            transform.position = moveTarget;
-            isMovingToTarget = false;
-
-            onArrive?.Invoke();
-            onArrive = null;
-        }
-    }
-
-    private Vector3 GetStoreTarget()
-    {
-        if (player == null) return transform.position;
-        if (storePoint != null) return storePoint.position;
-        return player.position + fallbackStoreOffset;
-    }
-
-    private Vector3 GetPlacedTarget()
-    {
-        if (player == null) return transform.position;
-        if (placedPoint != null) return placedPoint.position;
-        return player.position + fallbackPlacedOffset;
-    }
-
-    private void HideTinyRenderers()
-    {
-        if (tinyClosedRenderer != null) tinyClosedRenderer.enabled = false;
-        if (tinyOpenRenderer != null) tinyOpenRenderer.enabled = false;
-    }
-
-    private void SetBigBookVisible(bool visible)
-    {
-        if (bigPageRenderer == null) return;
-        bigPageRenderer.enabled = visible;
-        if (!visible) bigPageRenderer.sprite = null;
-    }
-
-    // --------------------
-    // Paging
-    // --------------------
-    public void PrevPage()
+    void NextPage()
     {
         int max = GetPageCount() - 1;
         if (max < 0) return;
-        if (currentIndex <= 0) return;
 
-        currentIndex = Mathf.Clamp(currentIndex - 1, 0, max);
-        RenderCurrentPage();
-        PlayFlip();
-        Save();
+        currentPage++;
+        if (currentPage > max)
+            currentPage = max;
 
-        if (debugLogs) Debug.Log($"📖 Prev -> idx={currentIndex} sprite={(GetCurrentSprite() ? GetCurrentSprite().name : "(null)")}");
+        ShowPage();
+
+        if (saveProgress)
+            Save();
+
+        if (debugLogs)
+            Debug.Log($"📖 NextPage -> currentPage={currentPage}");
     }
 
-    public void NextPage()
+    void PreviousPage()
     {
-        int max = GetPageCount() - 1;
-        if (max < 0) return;
-        if (currentIndex >= max) return;
+        if (GetPageCount() <= 0) return;
 
-        currentIndex = Mathf.Clamp(currentIndex + 1, 0, max);
-        RenderCurrentPage();
-        PlayFlip();
-        Save();
+        currentPage--;
+        if (currentPage < 0)
+            currentPage = 0;
 
-        if (debugLogs) Debug.Log($"📖 Next -> idx={currentIndex}/{max} sprite={(GetCurrentSprite() ? GetCurrentSprite().name : "(null)")}");
+        ShowPage();
+
+        if (saveProgress)
+            Save();
+
+        if (debugLogs)
+            Debug.Log($"📖 PreviousPage -> currentPage={currentPage}");
     }
 
-    private void RenderCurrentPage()
+    void ShowPage()
     {
-        if (bigPageRenderer == null) return;
-        if (!isOpen) return;
+        if (bookPageImage == null) return;
 
-        ClampIndexToPages();
-        bigPageRenderer.sprite = GetCurrentSprite();
+        Sprite page = GetCurrentPageSprite();
+        bookPageImage.sprite = page;
+        bookPageImage.enabled = page != null;
+
+        if (debugLogs)
+            Debug.Log($"📖 ShowPage -> {(page != null ? page.name : "NULL")}");
     }
 
-    private Sprite GetCurrentSprite()
+    Sprite GetCurrentPageSprite()
     {
-        // Indexing:
-        // [0] Intro (if enabled)
-        // [1..unlockedCount] unlocked spreads
-        // [last] blank end page
-        int introCount = GetIntroCount();
         int totalPages = GetPageCount();
-        int lastIndex = totalPages - 1;
-
         if (totalPages <= 0) return null;
 
-        // Intro
-        if (introCount == 1 && currentIndex == 0)
+        int introCount = GetIntroCount();
+        int lastIndex = totalPages - 1;
+
+        if (introCount == 1 && currentPage == 0)
             return introPageSprite;
 
-        // Blank (always last page)
-        if (currentIndex == lastIndex)
+        if (currentPage == lastIndex)
             return blankEndPageSprite;
 
-        // Unlocked spreads (inserted before blank)
-        int spreadSlot = currentIndex - introCount; // 0..unlockedCount-1
-        if (spreadSlot >= 0 && spreadSlot < unlockedCount && unlockableSpreads != null && spreadSlot < unlockableSpreads.Length)
+        int spreadSlot = currentPage - introCount;
+        if (spreadSlot >= 0 &&
+            spreadSlot < unlockedCount &&
+            unlockableSpreads != null &&
+            spreadSlot < unlockableSpreads.Length)
+        {
             return unlockableSpreads[spreadSlot];
+        }
 
         return blankEndPageSprite;
     }
 
-    private int GetIntroCount()
+    int GetIntroCount()
     {
         return (useIntroPage && introPageSprite != null) ? 1 : 0;
     }
 
-    private int GetPageCount()
+    int GetPageCount()
     {
         int introCount = GetIntroCount();
-        int blankCount = (blankEndPageSprite != null) ? 1 : 0;
-        int spreadsCount = Mathf.Max(0, unlockedCount);
+        int spreadCount = Mathf.Max(0, unlockedCount);
+        int blankCount = blankEndPageSprite != null ? 1 : 0;
 
-        int total = introCount + spreadsCount + blankCount;
-        return Mathf.Max(0, total);
+        return Mathf.Max(0, introCount + spreadCount + blankCount);
     }
 
-    private void ClampIndexToPages()
+    void ClampCurrentPage()
     {
         int max = GetPageCount() - 1;
-        if (max < 0) { currentIndex = 0; return; }
-        currentIndex = Mathf.Clamp(currentIndex, 0, max);
+
+        if (max < 0)
+        {
+            currentPage = 0;
+            return;
+        }
+
+        currentPage = Mathf.Clamp(currentPage, 0, max);
     }
 
-    // --------------------
-    // Reveal / Unlock API
-    // --------------------
+    bool IsOnBlankEndPage()
+    {
+        int lastIndex = GetPageCount() - 1;
+        return blankEndPageSprite != null && currentPage == lastIndex;
+    }
+
+    int GetLastNonBlankIndex()
+    {
+        int lastNonBlank = GetPageCount() - 2;
+        if (lastNonBlank < 0) lastNonBlank = 0;
+        return lastNonBlank;
+    }
+
+    void ApplyNeverOpenToBlankRule()
+    {
+        if (!neverOpenToBlank) return;
+        if (!IsOnBlankEndPage()) return;
+
+        currentPage = GetLastNonBlankIndex();
+        ClampCurrentPage();
+    }
+
     public bool RevealNextFromLocation(string locationId)
     {
         if (string.IsNullOrEmpty(locationId)) return false;
@@ -457,51 +272,70 @@ public class BookControllerSimple : MonoBehaviour
 
         if (usedLocationIds.Contains(locationId))
         {
-            if (debugLogs) Debug.Log($"📖 Reveal blocked (already used): {locationId}");
+            if (debugLogs)
+                Debug.Log($"📖 Reveal blocked; already used {locationId}");
             return false;
         }
 
         if (unlockedCount >= unlockableSpreads.Length)
         {
-            if (debugLogs) Debug.Log("📖 Reveal blocked (all spreads already unlocked).");
+            if (debugLogs)
+                Debug.Log("📖 Reveal blocked; all spreads unlocked");
             return false;
         }
 
         usedLocationIds.Add(locationId);
 
-        // If player was viewing the blank end page, keep them on the same index
-        // so blank "turns into" the new spread and a new blank appears at the end.
-        int prevLastIndex = GetPageCount() - 1;
-        bool wasOnBlank = (currentIndex == prevLastIndex);
+        int previousLastIndex = GetPageCount() - 1;
+        bool wasOnBlank = currentPage == previousLastIndex;
 
         unlockedCount = Mathf.Clamp(unlockedCount + 1, 0, unlockableSpreads.Length);
 
         if (wasOnBlank)
-            currentIndex = prevLastIndex;
+            currentPage = previousLastIndex;
 
-        ClampIndexToPages();
+        ClampCurrentPage();
 
-        if (isOpen)
-            RenderCurrentPage();
+        if (bookOpen)
+            ShowPage();
 
-        if (playFlipOnReveal)
-            PlayFlip();
+        if (saveProgress)
+            Save();
 
-        Save();
+        if (debugLogs)
+            Debug.Log($"📖 Reveal success -> unlockedCount={unlockedCount}");
 
-        if (debugLogs) Debug.Log($"📖 Revealed! unlocked={unlockedCount}/{unlockableSpreads.Length} wasOnBlank={wasOnBlank} idx={currentIndex}");
         return true;
     }
 
-    // --------------------
-    // Save / Load
-    // --------------------
-    private void Save()
+    bool NearLilystool()
     {
-        if (!saveProgress) return;
+        if (player == null) return false;
 
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.position, lilystoolRadius);
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit != null && hit.CompareTag(lilystoolTag))
+                return true;
+        }
+
+        return false;
+    }
+
+    void ResolvePlayer()
+    {
+        if (player != null) return;
+
+        GameObject p = GameObject.FindGameObjectWithTag(playerTag);
+        if (p != null)
+            player = p.transform;
+    }
+
+    void Save()
+    {
         PlayerPrefs.SetInt(KeyUnlocked, unlockedCount);
-        PlayerPrefs.SetInt(KeyIndex, currentIndex);
+        PlayerPrefs.SetInt(KeyIndex, currentPage);
 
         string joined = string.Join("|", usedLocationIds);
         PlayerPrefs.SetString(KeyUsedIds, joined);
@@ -509,10 +343,10 @@ public class BookControllerSimple : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void Load()
+    void Load()
     {
         unlockedCount = PlayerPrefs.GetInt(KeyUnlocked, 0);
-        currentIndex = PlayerPrefs.GetInt(KeyIndex, 0);
+        currentPage = PlayerPrefs.GetInt(KeyIndex, 0);
 
         if (unlockableSpreads != null)
             unlockedCount = Mathf.Clamp(unlockedCount, 0, unlockableSpreads.Length);
@@ -520,16 +354,19 @@ public class BookControllerSimple : MonoBehaviour
             unlockedCount = 0;
 
         usedLocationIds.Clear();
+
         string joined = PlayerPrefs.GetString(KeyUsedIds, "");
         if (!string.IsNullOrEmpty(joined))
         {
             string[] parts = joined.Split('|');
             for (int i = 0; i < parts.Length; i++)
+            {
                 if (!string.IsNullOrEmpty(parts[i]))
                     usedLocationIds.Add(parts[i]);
+            }
         }
 
-        ClampIndexToPages();
+        ClampCurrentPage();
     }
 
     [ContextMenu("DEBUG: Reset Book Save")]
@@ -541,58 +378,49 @@ public class BookControllerSimple : MonoBehaviour
         PlayerPrefs.Save();
 
         unlockedCount = 0;
-        currentIndex = 0;
+        currentPage = 0;
         usedLocationIds.Clear();
 
-        if (isOpen)
-            RenderCurrentPage();
-
-        if (debugLogs) Debug.Log("📖 Reset save.");
+        if (bookOpen)
+            ShowPage();
     }
 
-    // --------------------
-    // Helpers
-    // --------------------
-    private void FindPlayerAndPoints()
+    void SetHorizontalMovementLocked(bool locked)
     {
-        GameObject p = GameObject.FindGameObjectWithTag(playerTag);
-        if (p == null) return;
+        if (lunaMovementScript == null) return;
 
-        player = p.transform;
-        storePoint = FindDeepChildByName(player, storePointName);
-        placedPoint = FindDeepChildByName(player, placedPointName);
+        var type = lunaMovementScript.GetType();
+
+        var field = type.GetField(horizontalLockBoolName);
+        if (field != null && field.FieldType == typeof(bool))
+        {
+            field.SetValue(lunaMovementScript, locked);
+
+            if (debugLogs)
+                Debug.Log($"📖 Set field {horizontalLockBoolName} = {locked}");
+
+            return;
+        }
+
+        var prop = type.GetProperty(horizontalLockBoolName);
+        if (prop != null && prop.PropertyType == typeof(bool) && prop.CanWrite)
+        {
+            prop.SetValue(lunaMovementScript, locked, null);
+
+            if (debugLogs)
+                Debug.Log($"📖 Set property {horizontalLockBoolName} = {locked}");
+
+            return;
+        }
+
+        Debug.LogWarning($"BookControllerSimple: Could not find bool field/property '{horizontalLockBoolName}' on {lunaMovementScript.GetType().Name}");
     }
 
-    private static Transform FindDeepChildByName(Transform parent, string childName)
+    void OnDrawGizmosSelected()
     {
-        if (parent == null) return null;
+        if (player == null) return;
 
-        Transform[] all = parent.GetComponentsInChildren<Transform>(true);
-        for (int i = 0; i < all.Length; i++)
-            if (all[i].name == childName)
-                return all[i];
-
-        return null;
-    }
-
-    private void EnsureAudio()
-    {
-        if (audioSource == null)
-            audioSource = GetComponent<AudioSource>();
-
-        if (audioSource == null)
-            audioSource = gameObject.AddComponent<AudioSource>();
-
-        audioSource.playOnAwake = false;
-        audioSource.loop = false;
-        audioSource.spatialBlend = 0f;
-    }
-
-    private void PlayFlip()
-    {
-        if (audioSource == null) return;
-        if (pageFlipClip == null) return;
-
-        audioSource.PlayOneShot(pageFlipClip, pageFlipVolume);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(player.position, lilystoolRadius);
     }
 }

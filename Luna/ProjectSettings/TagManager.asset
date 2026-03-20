@@ -51,6 +51,7 @@ TagManager:
   - Moonbow
   - WindowNPC
   - Book
+  - Lilystool
   layers:
   - Default
   - TransparentFX

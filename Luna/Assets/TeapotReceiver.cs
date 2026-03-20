@@ -9,12 +9,13 @@ public class TeapotReceiver : MonoBehaviour
     public GameObject sparkleEffect;
     public Animator teapotAnimator;
 
-    private List<GameObject> storedFlowers   = new List<GameObject>();
-    private List<string>     teaIngredients  = new List<string>();
+    private List<GameObject> storedFlowers = new List<GameObject>();
+    private List<string> teaIngredients = new List<string>();
     private Dictionary<string, GameObject> ingredientIcons = new Dictionary<string, GameObject>();
     private GameObject brewIcon;
 
     public bool hasLight { get; set; }
+
     void Awake()
     {
         if (teacupPrefab == null)
@@ -38,9 +39,12 @@ public class TeapotReceiver : MonoBehaviour
         if (sparkleEffect == null)
             sparkleEffect = transform.Find("SparkleEffect")?.gameObject;
     }
+
     void Start()
     {
-        hasLight = false;
+        var lightReceiver = GetComponent<TeapotLightReceiver>();
+        hasLight = lightReceiver != null ? lightReceiver.HasLight : false;
+
         foreach (Transform t in GetComponentsInChildren<Transform>(true))
         {
             if (t.name == "TeacupBrewIcon")
@@ -55,12 +59,10 @@ public class TeapotReceiver : MonoBehaviour
                 t.gameObject.SetActive(false);
             }
         }
-        
     }
 
     public void AddFlowerToTeapot(FlowerHolder holder)
     {
-       
         if (!holder.HasFlower) return;
 
         var flower = holder.GetHeldFlower();
@@ -69,7 +71,6 @@ public class TeapotReceiver : MonoBehaviour
                       ? pickup.flowerType
                       : "Unknown";
         if (type == "Unknown") return;
-
 
         // ─── HIDE ANY HINT ICONS ───────────────────────────
         HideHintIcons(flower);
@@ -97,7 +98,7 @@ public class TeapotReceiver : MonoBehaviour
         if (idx < 0) return;
 
         var flower = storedFlowers[idx];
-        var type   = teaIngredients[idx];
+        var type = teaIngredients[idx];
 
         storedFlowers.RemoveAt(idx);
         teaIngredients.RemoveAt(idx);
@@ -127,7 +128,7 @@ public class TeapotReceiver : MonoBehaviour
         hasLight = true;
         if (sparkleEffect != null) sparkleEffect.SetActive(true);
         if (teapotAnimator != null) teapotAnimator.SetTrigger("Pulse");
-        if (brewIcon != null)       brewIcon.SetActive(true);
+        if (brewIcon != null) brewIcon.SetActive(true);
     }
 
     public GameObject BrewTea()
@@ -140,12 +141,31 @@ public class TeapotReceiver : MonoBehaviour
         Debug.Log("teacupSpawnPoint: " + (teacupSpawnPoint != null ? teacupSpawnPoint.name : "NULL"));
         Debug.Log("ScoreManager.Instance: " + (ScoreManager.Instance != null ? "set" : "NULL"));
 
-   
+        var waterReceiver = GetComponent<TeapotWaterReceiver>();
+        if (waterReceiver == null)
+        {
+            waterReceiver = GetComponentInChildren<TeapotWaterReceiver>(true);
+        }
+
+        if (waterReceiver != null)
+        {
+            if (!waterReceiver.HasWater())
+            {
+                Debug.Log("[TeapotReceiver] Brew blocked: teapot has no water.");
+                return null;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[TeapotReceiver] No TeapotWaterReceiver found; allowing brew without water check.");
+        }
 
         if (!hasLight) return null;
+
         Debug.Log("[TeapotReceiver] BrewTea() called!");
         // Remove the light point for every flower that was lit
         Debug.Log($"[TeapotReceiver] BrewTea called. storedFlowers count: {storedFlowers.Count}");
+
         foreach (var flower in storedFlowers)
         {
             if (flower != null)
@@ -172,7 +192,7 @@ public class TeapotReceiver : MonoBehaviour
         }
 
         var cup = Instantiate(teacupPrefab, teacupSpawnPoint.position, Quaternion.identity);
-        
+
         // PLAY BREW SOUND ON THE TEACUP
         var sfx = cup.GetComponent<TeacupBrewSFX>();
         Debug.Log($"[BREW] sfx is null? {sfx == null}");
@@ -185,16 +205,26 @@ public class TeapotReceiver : MonoBehaviour
         {
             Debug.LogWarning("TeacupBrewSFX not found on new Teacup! (Receiver)");
         }
-        
+
         var eff = cup.GetComponent<TeaEffectManager>();
         if (eff != null)
             eff.SetIngredients(teaIngredients, hasLight);
 
-        hasLight           = false;
+        if (waterReceiver != null)
+        {
+            bool consumed = waterReceiver.TryConsumeWaterForBrewing();
+            Debug.Log($"[TeapotReceiver] Water consumed for brewing: {consumed}");
+        }
+
+        var lightReceiver = GetComponent<TeapotLightReceiver>();
+
+        hasLight = lightReceiver != null ? !lightReceiver.requireLight : false;
         teaIngredients.Clear();
         storedFlowers.Clear();
+
         if (sparkleEffect != null) sparkleEffect.SetActive(false);
-        if (brewIcon      != null) brewIcon.SetActive(false);
+        if (brewIcon != null) brewIcon.SetActive(false);
+
         foreach (var kv in ingredientIcons)
             kv.Value.SetActive(false);
 

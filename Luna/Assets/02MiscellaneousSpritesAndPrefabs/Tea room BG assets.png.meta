@@ -1,0 +1,297 @@
+fileFormatVersion: 2
+guid: c6828d1b43f5e1d47805cee42908ae32
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Tea room BG assets_3
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 638
+        width: 933
+        height: 979
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2387a30913df78d45a82abdbaf4df766
+      internalID: -35873688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tea room BG assets_45
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 258
+        width: 364
+        height: 296
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7365721d1821d04b8fe37351090fbce
+      internalID: -760008027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tea room BG assets_48
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 256
+        width: 409
+        height: 303
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f42977f1651b80439971e2ab7c788a9
+      internalID: -441415872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Tea room BG assets_0: 329856641
+      Tea room BG assets_1: 449671377
+      Tea room BG assets_10: -1569097567
+      Tea room BG assets_11: -1763421887
+      Tea room BG assets_12: 1744088309
+      Tea room BG assets_13: 1958617430
+      Tea room BG assets_14: 1883347869
+      Tea room BG assets_15: -906629439
+      Tea room BG assets_16: -817031447
+      Tea room BG assets_17: 267299786
+      Tea room BG assets_18: 1496920604
+      Tea room BG assets_19: 1705640072
+      Tea room BG assets_2: 1609080634
+      Tea room BG assets_20: -2075197311
+      Tea room BG assets_21: -1098671657
+      Tea room BG assets_22: 492549603
+      Tea room BG assets_23: -1056974583
+      Tea room BG assets_24: -968226003
+      Tea room BG assets_25: -1272800219
+      Tea room BG assets_26: -1762902428
+      Tea room BG assets_27: 1918272070
+      Tea room BG assets_28: -1298637416
+      Tea room BG assets_29: -1276096709
+      Tea room BG assets_3: -35873688
+      Tea room BG assets_30: -377597401
+      Tea room BG assets_31: 884805331
+      Tea room BG assets_32: -1792896818
+      Tea room BG assets_33: -1906510287
+      Tea room BG assets_34: 609908469
+      Tea room BG assets_35: -2131098496
+      Tea room BG assets_36: -1915206458
+      Tea room BG assets_37: -18927206
+      Tea room BG assets_38: 542628472
+      Tea room BG assets_39: -1687458816
+      Tea room BG assets_4: -1691267507
+      Tea room BG assets_40: -272527306
+      Tea room BG assets_41: -1050934037
+      Tea room BG assets_42: 1852766746
+      Tea room BG assets_43: 195181628
+      Tea room BG assets_44: 581347664
+      Tea room BG assets_45: -760008027
+      Tea room BG assets_46: 1017908743
+      Tea room BG assets_47: -1940246483
+      Tea room BG assets_48: -441415872
+      Tea room BG assets_49: -937013734
+      Tea room BG assets_5: -611517114
+      Tea room BG assets_50: 1565404858
+      Tea room BG assets_51: -2055474729
+      Tea room BG assets_52: 35301835
+      Tea room BG assets_53: 1173820892
+      Tea room BG assets_54: 576023899
+      Tea room BG assets_55: 1417993322
+      Tea room BG assets_56: 478572507
+      Tea room BG assets_57: 979552579
+      Tea room BG assets_58: 655497283
+      Tea room BG assets_59: -1738118023
+      Tea room BG assets_6: -1111520097
+      Tea room BG assets_60: -2003156490
+      Tea room BG assets_61: -1405164413
+      Tea room BG assets_62: -76327720
+      Tea room BG assets_63: 1915819552
+      Tea room BG assets_64: -1839855546
+      Tea room BG assets_65: -254857542
+      Tea room BG assets_66: -1224079887
+      Tea room BG assets_67: 1153205620
+      Tea room BG assets_7: -269308780
+      Tea room BG assets_8: -947023750
+      Tea room BG assets_9: 1952955746
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

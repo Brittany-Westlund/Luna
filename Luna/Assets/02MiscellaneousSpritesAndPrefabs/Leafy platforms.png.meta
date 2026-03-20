@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -147,7 +147,217 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Leafy platforms_0
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 2671
+        width: 1738
+        height: 1129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7358896410e1f8147b0aa93cdbe53016
+      internalID: 397228492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_1
+      rect:
+        serializedVersion: 2
+        x: 2629
+        y: 3601
+        width: 257
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1eaee65784f14f408670d01e1441df8
+      internalID: -784438473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_2
+      rect:
+        serializedVersion: 2
+        x: 3034
+        y: 3593
+        width: 354
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76bb9a68cc3c9514ca22663c235569d4
+      internalID: 756098633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_3
+      rect:
+        serializedVersion: 2
+        x: 2603
+        y: 3220
+        width: 812
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aed7341adf873a84db4b6fec7c199c4d
+      internalID: -1571717871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_4
+      rect:
+        serializedVersion: 2
+        x: 2742
+        y: 2878
+        width: 587
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15281c568d07479408f29f07dce518fa
+      internalID: -774511680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_5
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 1224
+        width: 1929
+        height: 1244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea318dfc7c4a2844a98482d998106e4d
+      internalID: 773291794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_6
+      rect:
+        serializedVersion: 2
+        x: 2865
+        y: 2338
+        width: 378
+        height: 382
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1ffcfa32a1fe51449a7521cc27f438a
+      internalID: -263651207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_7
+      rect:
+        serializedVersion: 2
+        x: 3404
+        y: 2454
+        width: 154
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 307280a091165b8469ce2d867d04ddc3
+      internalID: -285947225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_8
+      rect:
+        serializedVersion: 2
+        x: 3397
+        y: 1702
+        width: 40
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe2735a70b64ad94ba77b78951243590
+      internalID: 1349021497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leafy platforms_10
+      rect:
+        serializedVersion: 2
+        x: 1521
+        y: 446
+        width: 1911
+        height: 718
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9f6d97df1863b745acaa3d6ec958245
+      internalID: -1017536722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -158,7 +368,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Leafy platforms_0: 397228492
+      Leafy platforms_1: -784438473
+      Leafy platforms_10: -1017536722
+      Leafy platforms_2: 756098633
+      Leafy platforms_3: -1571717871
+      Leafy platforms_4: -774511680
+      Leafy platforms_5: 773291794
+      Leafy platforms_6: -263651207
+      Leafy platforms_7: -285947225
+      Leafy platforms_8: 1349021497
+      Leafy platforms_9: -678222948
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

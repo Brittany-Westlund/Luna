@@ -3,7 +3,7 @@ using System.Linq;
 
 public class LanternLightGiver : MonoBehaviour
 {
-    public KeyCode giveKey = KeyCode.G;
+    public KeyCode giveKey = KeyCode.E;
     public float lightRadius = 1.2f;
 
     public LanternSmartToggle lanternToggle;
@@ -38,11 +38,11 @@ public class LanternLightGiver : MonoBehaviour
 
         if (teapot == null)
         {
-            Debug.Log("❌ No unlit teapot in range.");
+            Debug.Log(" No unlit teapot in range.");
             return;
         }
 
-        Debug.Log("✨ Lantern transferring light to teapot.");
+        Debug.Log("Lantern transferring light to teapot.");
 
         lanternToggle.ExtinguishLantern();   // turn lantern OFF
         teapot.ActivateBrewReadyState();     // turn teapot ON
