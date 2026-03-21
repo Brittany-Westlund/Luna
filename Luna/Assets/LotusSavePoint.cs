@@ -360,7 +360,15 @@ public class LotusSavePoint : MonoBehaviour
             SetRendererGroupAlpha(groundLotusRenderers, 1f);
         }
 
-        BrightenSpecificUILotusInstant(uiLotusIndex);
+        UILotusesController uiController = FindObjectOfType<UILotusesController>();
+        if (uiController != null)
+        {
+            uiController.RegisterLitLotus(uiLotusIndex);
+        }
+        else
+        {
+            BrightenSpecificUILotusInstant(uiLotusIndex);
+        }
 
         if (savedTextRenderers.Count > 0)
         {
@@ -374,6 +382,13 @@ public class LotusSavePoint : MonoBehaviour
         sequenceRunning = true;
 
         BrightenSpecificUILotusInstant(uiLotusIndex);
+
+        UILotusesController uiController = FindObjectOfType<UILotusesController>();
+        if (uiController != null)
+        {
+            uiController.LightLotus(uiLotusIndex);
+            uiController.TriggerSparkle(uiLotusIndex);
+        }
 
         if (perchedLotusRenderer != null)
         {
