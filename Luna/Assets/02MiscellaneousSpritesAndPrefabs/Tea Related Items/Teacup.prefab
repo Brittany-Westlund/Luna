@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.024, z: 0}
-  m_LocalScale: {x: 0.33199236, y: 0.3610417, z: 0.33199236}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8673825627037569915}
@@ -76,8 +76,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1628607475
-  m_SortingLayer: 2
+  m_SortingLayerID: 1795597123
+  m_SortingLayer: 5
   m_SortingOrder: 152
   m_Sprite: {fileID: 1813079471, guid: d29a972eb836c5048a887f3e6b0dbb05, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -344,12 +344,12 @@ PrefabInstance:
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.067
+      value: 0.081
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.743
+      value: 0.736
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
@@ -394,6 +394,11 @@ PrefabInstance:
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781180673524916828, guid: 2d4c8d254062e9f47a32382c5abf6212,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4781180673524916828, guid: 2d4c8d254062e9f47a32382c5abf6212,

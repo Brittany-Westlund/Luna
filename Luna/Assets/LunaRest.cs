@@ -36,16 +36,16 @@ public class LunaRest : MonoBehaviour
         if (_health == null) return;
 
         // -------------------------
-        // TOGGLE REST (manual Z)
+        // TOGGLE REST (manual R)
         // -------------------------
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             if (!isResting) StartResting(manual: true);
-            return; // never let Z cancel rest
+            return; // never let R cancel rest
         }
 
         // -----------------------------------------
-        // CANCEL REST — any input except Z cancels
+        // CANCEL REST — any input except R cancels
         // -----------------------------------------
         if (isResting && Time.time - _restStartTime > 0.15f)
         {
@@ -108,7 +108,7 @@ public class LunaRest : MonoBehaviour
             restingSitSprite.SetActive(false);
         }
 
-        Debug.Log("🌙 Luna started resting");
+        Debug.Log("Luna started resting");
     }
 
     private void StopResting()

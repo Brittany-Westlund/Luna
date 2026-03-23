@@ -14,40 +14,31 @@ public class StartNewGame : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        // 🌿 Clear CollectibleState JSON data
+        // Stop dialogue and reset runtime systems first.
+        GameTransitionUtility.PrepareForSceneChange(
+            resetDialogueDatabase: true,
+            resetPersistentDialogueData: true
+        );
+
+        // Clear collectible JSON / global state
         if (worldState != null)
         {
             Debug.Log("[StartNewGame] Clearing global collectible state...");
             worldState.ResetAll();
         }
 
-        // 🌿 Clear the CollectibleManager's runtime cache
+        // Clear runtime collectible cache
         if (CollectibleManager.Instance != null)
         {
             CollectibleManager.Instance.ResetAll();
             Debug.Log("[StartNewGame] CollectibleManager reset complete.");
         }
 
-        // 🗣 Reset Dialogue System (compatible with older API)
-        if (DialogueManager.instance != null)
-        {
-            // Wipe Lua globals
-            Lua.Run("for k,v in pairs(_G) do if type(v) ~= 'function' then _G[k] = nil end end");
-
-            // Reset the dialogue database (no parameters in older versions)
-            DialogueManager.ResetDatabase();
-
-            // Reset any persistent data
-            PersistentDataManager.Reset();
-
-            Debug.Log("[StartNewGame] Dialogue System reset (database + Lua + persistent data).");
-        }
-
-        // 💾 Clear Unity PlayerPrefs
+        // Clear all PlayerPrefs-backed saves
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
+        Debug.Log("[StartNewGame] PlayerPrefs cleared.");
 
-        // 🌱 Load the first scene
         SceneManager.LoadScene(firstLevel);
     }
 }

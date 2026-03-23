@@ -163,8 +163,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0cd09bcaf3b4f146a0ccfe8e62768ec
-      internalID: -2108795725
+      spriteID: 81b96d9538187ff41a050e94fae6e732
+      internalID: 633599337
       vertices: []
       indices: 
       edges: []
@@ -184,8 +184,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 875cede37ed58454dad3e8a739520aca
-      internalID: 1333471701
+      spriteID: 4272cb52903a5694ca621956662b08c0
+      internalID: -1067940873
       vertices: []
       indices: 
       edges: []
@@ -205,8 +205,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 003c4be348b86f84aaa9a1f6db82e320
-      internalID: -1152815045
+      spriteID: 8bb8c32ed634d8b45b44422fc7421d4e
+      internalID: 1883991496
       vertices: []
       indices: 
       edges: []
@@ -226,8 +226,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 64cb8570a6c888a48be890eb7bafc617
-      internalID: 233892235
+      spriteID: 314897c978acec641a19ff94eac02c78
+      internalID: 35174003
       vertices: []
       indices: 
       edges: []
@@ -247,8 +247,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79bb23c2809906b47bb553500ca52fba
-      internalID: -1967073296
+      spriteID: 53fa1e1d09dda2745a50e3b24e608c44
+      internalID: -641235316
       vertices: []
       indices: 
       edges: []
@@ -268,8 +268,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df81f480841c0dd4e9134d972a999511
-      internalID: 2112509381
+      spriteID: c61d1cf9bb6b8054389d5e972c2b5ea7
+      internalID: -1319759110
       vertices: []
       indices: 
       edges: []
@@ -289,8 +289,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 111c5561ff8b09a45b0f56efcc39cf48
-      internalID: -821784561
+      spriteID: d7c359d364a573b44b7728d30f15df57
+      internalID: -1330459765
       vertices: []
       indices: 
       edges: []
@@ -310,8 +310,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b67916a613ce7fe4e862b2d944ba0d85
-      internalID: 317209452
+      spriteID: e4a4c3afd54975c428fbbf94deac1ccc
+      internalID: 1608459940
       vertices: []
       indices: 
       edges: []
@@ -331,8 +331,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c47dc41e0b4e5ca4b9514a2b1b41093a
-      internalID: -1556166518
+      spriteID: 2a44f96a90d768a48bb6eb8048a6017b
+      internalID: -1104063513
       vertices: []
       indices: 
       edges: []
@@ -352,8 +352,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8b62228aa2ae62448a534c0c4bacf46f
-      internalID: -371862194
+      spriteID: 1be3c18397e001e4f92706d02a79670e
+      internalID: 1910624397
       vertices: []
       indices: 
       edges: []
@@ -373,8 +373,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a607bd62888f9c946ba9a7b0166275e6
-      internalID: -490657755
+      spriteID: 6b844348011b55a418865b54a53b52d0
+      internalID: -1897564111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tearoom assets_12
+      rect:
+        serializedVersion: 2
+        x: 2227
+        y: 602
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39e3902597bd524498b49badd5e5fbd2
+      internalID: -1213444242
       vertices: []
       indices: 
       edges: []
@@ -394,8 +415,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 21f19fc8558eb024fa35253b74e20aef
-      internalID: -796541781
+      spriteID: c3a922210a3d4ca40a39342f489df5b4
+      internalID: -134351384
       vertices: []
       indices: 
       edges: []
@@ -415,8 +436,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 82f4c39e171683a42bf4b7ab87e3f914
-      internalID: 1687787987
+      spriteID: 0505e6ea5b9bf0640ae049246e2fdd80
+      internalID: 1501919275
       vertices: []
       indices: 
       edges: []
@@ -436,8 +457,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b21bfa048dd768c4581a43b977c74a95
-      internalID: 2048610497
+      spriteID: ccb0807de0bf5eb44be05b8de51689b5
+      internalID: -496237736
       vertices: []
       indices: 
       edges: []
@@ -457,8 +478,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6545637f956cbf845bc5609a9d799dde
-      internalID: -1053650865
+      spriteID: 106bab7a29bb0cb40a7607a467ebe261
+      internalID: -387284255
       vertices: []
       indices: 
       edges: []
@@ -478,8 +499,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8fb65b8bea2cf114bbdb08e87ce2f143
-      internalID: -1808721402
+      spriteID: b633db64f2be4e046b93e6af7fd22d14
+      internalID: -1168485879
       vertices: []
       indices: 
       edges: []
@@ -499,8 +520,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8ed79a424f80e50438ce5b7d191b22ef
-      internalID: -1210350766
+      spriteID: 10db5bc595cb3f145903bed07242cce9
+      internalID: 1148481466
       vertices: []
       indices: 
       edges: []
@@ -520,8 +541,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 75fe3ffe9ec778447b11f20ec80ec634
-      internalID: 1937075653
+      spriteID: 87ae7fc81a4c87d49b7e53647fb2af2e
+      internalID: 1674305627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tearoom assets_21
+      rect:
+        serializedVersion: 2
+        x: 1347
+        y: 272
+        width: 7
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1657d4cec32f12243a735757d93690fe
+      internalID: 1090258619
       vertices: []
       indices: 
       edges: []
@@ -534,15 +576,15 @@ TextureImporter:
         y: 153
         width: 103
         height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c25ea718b3c0e54da94a7b5dbd6797b
-      internalID: -1089710443
+      spriteID: 2033ef4a08500304582eb8d021aafc00
+      internalID: -1110824967
       vertices: []
       indices: 
       edges: []
@@ -562,8 +604,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 72156d534c49d57409168afd28614640
-      internalID: -2073085371
+      spriteID: 21ec2f097ab5c7445bb397de8c3ca225
+      internalID: 933965028
       vertices: []
       indices: 
       edges: []
@@ -583,8 +625,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9495b4045f6dd2e409db763a747368d1
-      internalID: -1930766505
+      spriteID: a3c8e88dd27ede94da578500c0d03dc3
+      internalID: 1796148330
       vertices: []
       indices: 
       edges: []
@@ -600,31 +642,31 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Tearoom assets_0: -2108795725
-      Tearoom assets_1: 1333471701
-      Tearoom assets_10: -371862194
-      Tearoom assets_11: -490657755
-      Tearoom assets_12: -773280043
-      Tearoom assets_13: -796541781
-      Tearoom assets_14: -1158226786
-      Tearoom assets_15: 1687787987
-      Tearoom assets_16: 2048610497
-      Tearoom assets_17: -1053650865
-      Tearoom assets_18: -1808721402
-      Tearoom assets_19: -1210350766
-      Tearoom assets_2: -1152815045
-      Tearoom assets_20: 1937075653
-      Tearoom assets_21: -359934100
-      Tearoom assets_22: -1089710443
-      Tearoom assets_23: -2073085371
-      Tearoom assets_24: -1930766505
-      Tearoom assets_3: 233892235
-      Tearoom assets_4: -1967073296
-      Tearoom assets_5: 2112509381
-      Tearoom assets_6: -821784561
-      Tearoom assets_7: 317209452
-      Tearoom assets_8: 1784963035
-      Tearoom assets_9: -1556166518
+      Tearoom assets_0: 633599337
+      Tearoom assets_1: -1067940873
+      Tearoom assets_10: 1910624397
+      Tearoom assets_11: -1897564111
+      Tearoom assets_12: -1213444242
+      Tearoom assets_13: -134351384
+      Tearoom assets_14: 1640238892
+      Tearoom assets_15: 1501919275
+      Tearoom assets_16: -496237736
+      Tearoom assets_17: -387284255
+      Tearoom assets_18: -1168485879
+      Tearoom assets_19: 1148481466
+      Tearoom assets_2: 1883991496
+      Tearoom assets_20: 1674305627
+      Tearoom assets_21: 1090258619
+      Tearoom assets_22: -1110824967
+      Tearoom assets_23: 933965028
+      Tearoom assets_24: 1796148330
+      Tearoom assets_3: 35174003
+      Tearoom assets_4: -641235316
+      Tearoom assets_5: -1319759110
+      Tearoom assets_6: -1330459765
+      Tearoom assets_7: 1608459940
+      Tearoom assets_8: -2055798124
+      Tearoom assets_9: -1104063513
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

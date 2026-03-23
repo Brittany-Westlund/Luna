@@ -12,6 +12,12 @@ public class CustomInteractionFeedback : MonoBehaviour
         ManualList
     }
 
+    public enum VisibilityControlMode
+    {
+        GameObjectActive,
+        SpriteRendererAlpha
+    }
+
     public enum TriggerActionType
     {
         None,
@@ -47,6 +53,14 @@ public class CustomInteractionFeedback : MonoBehaviour
 
     [Tooltip("Used only if Feedback Source Mode is ManualList.")]
     public List<GameObject> manualFeedbackObjects = new List<GameObject>();
+
+    [Header("Visibility")]
+    public VisibilityControlMode visibilityControlMode = VisibilityControlMode.GameObjectActive;
+
+    [Tooltip("If true, inserts a small delay between one feedback object turning off and the next turning on.")]
+    public bool useGracePeriodBetweenObjects = false;
+
+    public float gracePeriodDuration = 0.05f;
 
     [Header("Behavior")]
     public bool autoPlayOnEnable = true;
@@ -138,6 +152,7 @@ public class CustomInteractionFeedback : MonoBehaviour
     {
         fadeDuration = Mathf.Max(0f, fadeDuration);
         holdDuration = Mathf.Max(0f, holdDuration);
+        gracePeriodDuration = Mathf.Max(0f, gracePeriodDuration);
         externalAlphaMultiplier = Mathf.Clamp01(externalAlphaMultiplier);
     }
 
@@ -367,7 +382,7 @@ public class CustomInteractionFeedback : MonoBehaviour
         if (target == null)
             yield break;
 
-        SetFeedbackObjectActive(target, true);
+        ShowFeedbackObject(target);
         PlayConfiguredSFX(cycleStepSFX, target.transform.position);
 
         SpriteRenderer sr = GetFeedbackSpriteRenderer(target);
@@ -401,7 +416,7 @@ public class CustomInteractionFeedback : MonoBehaviour
 
             if (current != null)
             {
-                SetFeedbackObjectActive(current, true);
+                ShowFeedbackObject(current);
                 PlayConfiguredSFX(cycleStepSFX, current.transform.position);
 
                 SpriteRenderer sr = GetFeedbackSpriteRenderer(current);
@@ -421,7 +436,12 @@ public class CustomInteractionFeedback : MonoBehaviour
                     }
                 }
 
-                SetFeedbackObjectActive(current, false);
+                HideFeedbackObject(current);
+
+                if (useGracePeriodBetweenObjects)
+                {
+                    yield return new WaitForSeconds(gracePeriodDuration);
+                }
             }
 
             currentIndex++;
@@ -469,15 +489,55 @@ public class CustomInteractionFeedback : MonoBehaviour
                 SetAlpha(sr, 0f);
             }
 
-            obj.SetActive(false);
+            if (visibilityControlMode == VisibilityControlMode.GameObjectActive)
+            {
+                obj.SetActive(false);
+            }
+            else
+            {
+                obj.SetActive(true);
+            }
         }
     }
 
-    private void SetFeedbackObjectActive(GameObject obj, bool state)
+    private void ShowFeedbackObject(GameObject obj)
     {
-        if (obj != null)
+        if (obj == null)
+            return;
+
+        if (visibilityControlMode == VisibilityControlMode.GameObjectActive)
         {
-            obj.SetActive(state);
+            obj.SetActive(true);
+        }
+        else
+        {
+            obj.SetActive(true);
+
+            SpriteRenderer sr = GetFeedbackSpriteRenderer(obj);
+            if (sr != null)
+            {
+                sr.enabled = true;
+            }
+        }
+    }
+
+    private void HideFeedbackObject(GameObject obj)
+    {
+        if (obj == null)
+            return;
+
+        if (visibilityControlMode == VisibilityControlMode.GameObjectActive)
+        {
+            obj.SetActive(false);
+        }
+        else
+        {
+            SpriteRenderer sr = GetFeedbackSpriteRenderer(obj);
+            if (sr != null)
+            {
+                SetAlpha(sr, 0f);
+                sr.enabled = true;
+            }
         }
     }
 
@@ -508,7 +568,10 @@ public class CustomInteractionFeedback : MonoBehaviour
         if (settings == null || !settings.playSFX || settings.clip == null)
             return;
 
-        Vector3 playPosition = settings.spatialize ? defaultPosition : Camera.main != null ? Camera.main.transform.position : defaultPosition;
+        Vector3 playPosition = settings.spatialize
+            ? defaultPosition
+            : Camera.main != null ? Camera.main.transform.position : defaultPosition;
+
         AudioSource.PlayClipAtPoint(settings.clip, playPosition, settings.volume);
 
         if (debugLogging)

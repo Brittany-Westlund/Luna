@@ -6,6 +6,10 @@ public class Pulsate : MonoBehaviour
     public float scaleAmount = 0.1f;
     public float fadeAmount = 0.5f;
 
+    [Header("External Control")]
+    public float externalScaleMultiplier = 1f;
+    public float externalSpeedMultiplier = 1f;
+
     private SpriteRenderer spriteRenderer;
     private Vector3 originalScale;
 
@@ -24,61 +28,15 @@ public class Pulsate : MonoBehaviour
 
     void Update()
     {
-        // Calculate the scale and fade factor based on a Sin wave
-        float pulse = Mathf.Sin(Time.time * pulseSpeed) * scaleAmount + 1;
-        float fade = Mathf.Sin(Time.time * pulseSpeed) * fadeAmount + 1 - fadeAmount;
+        float speed = pulseSpeed * externalSpeedMultiplier;
 
-        // Apply the scale changes
-        transform.localScale = originalScale * pulse;
+        float pulse = Mathf.Sin(Time.time * speed) * scaleAmount + 1f;
+        float fade = Mathf.Sin(Time.time * speed) * fadeAmount + 1f - fadeAmount;
 
-        // Only modify the alpha, leave the RGB alone
+        transform.localScale = originalScale * pulse * externalScaleMultiplier;
+
         Color current = spriteRenderer.color;
         current.a = fade;
         spriteRenderer.color = current;
     }
 }
-
-
-/* using UnityEngine;
-
-public class Pulsate : MonoBehaviour
-{
-    public float pulseSpeed = 2f;
-    public float scaleAmount = 0.1f;
-    public float fadeAmount = 0.5f;
-
-    private SpriteRenderer spriteRenderer;
-    private Vector3 originalScale;
-    private Color originalColor;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer == null)
-        {
-            Debug.LogError("Pulsate script requires a SpriteRenderer component");
-            enabled = false;
-            return;
-        }
-
-        originalScale = transform.localScale;
-        originalColor = spriteRenderer.color;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // Calculate the scale and fade factor based on a Sin wave
-        float pulse = Mathf.Sin(Time.time * pulseSpeed) * scaleAmount + 1;
-        float fade = Mathf.Sin(Time.time * pulseSpeed) * fadeAmount + 1 - fadeAmount;
-
-        // Apply the scale and fade changes
-        transform.localScale = originalScale * pulse;
-
-        Color newColor = originalColor;
-        newColor.a = fade;
-        spriteRenderer.color = newColor;
-    }
-}
-*/

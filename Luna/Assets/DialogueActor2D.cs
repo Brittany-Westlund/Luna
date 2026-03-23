@@ -40,7 +40,7 @@ public class DialogueActor2D : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInRange || dialogueManager == null)
+        if (dialogueManager == null)
         {
             SetPromptVisible(false);
             return;
@@ -60,14 +60,24 @@ public class DialogueActor2D : MonoBehaviour
             return;
         }
 
+        // ✅ Apply alpha regardless of range
         if (customInteractionFeedback != null)
         {
             customInteractionFeedback.SetExternalAlphaMultiplier(promptState.alpha);
         }
 
-        SetPromptVisible(true);
+        // 🔥 NEW LOGIC
+        // Bright prompts (alpha == 1) show from anywhere
+        // Dim prompts (fallback) require proximity
+        bool isBrightPrompt = promptState.alpha >= 0.99f;
 
-        if (Input.GetKeyDown(interactKey))
+        bool shouldShow =
+            isBrightPrompt || playerInRange;
+
+        SetPromptVisible(shouldShow);
+
+        // ❗ Interaction still requires proximity
+        if (playerInRange && Input.GetKeyDown(interactKey))
         {
             Transform conversant = conversantOverride != null ? conversantOverride : transform;
 
@@ -104,7 +114,9 @@ public class DialogueActor2D : MonoBehaviour
 
         playerInRange = false;
         playerTransform = null;
-        SetPromptVisible(false);
+
+        // ⚠️ DO NOT force-hide here anymore
+        // because bright prompts may still need to show
 
         if (debugLogging)
         {

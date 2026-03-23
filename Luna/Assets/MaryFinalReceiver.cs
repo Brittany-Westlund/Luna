@@ -1,91 +1,68 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MaryFinalReceiver : MonoBehaviour
 {
-    [Header("Book (New)")]
-    public BookControllerSimple bookSimple; // drag BookControllerSimple here (preferred)
-
-    [Header("Book (Old / Legacy)")]
-    public BookPageController bookLegacy;   // drag BookPageController here if you're still using it anywhere
-
     [Header("Fade")]
     public float fadeSeconds = 1.0f;
 
-    [Header("Optional")]
+    [Header("Main Visual Root")]
     public GameObject visualRoot; // leave empty if sprites are on Mary
+
+    [Header("Optional Additional Fade Roots")]
+    public GameObject[] additionalFadeRoots;
+
+    [Header("Optional Objects To Disable At End")]
+    public GameObject[] additionalObjectsToDisable;
+
+    [Header("Optional")]
     public Collider2D interactionCollider;
 
     [Header("Debug")]
     public bool debugLogs = false;
 
-    private bool convoFinished = false;
     private bool fading = false;
-
     private SpriteRenderer[] renderers;
 
     void Awake()
     {
-        ResolveBookRefs();
+        BuildRendererList();
+    }
+
+    void BuildRendererList()
+    {
+        List<SpriteRenderer> allRenderers = new List<SpriteRenderer>();
 
         if (visualRoot == null)
             visualRoot = gameObject;
 
-        renderers = visualRoot.GetComponentsInChildren<SpriteRenderer>(true);
+        if (visualRoot != null)
+        {
+            allRenderers.AddRange(visualRoot.GetComponentsInChildren<SpriteRenderer>(true));
+        }
+
+        if (additionalFadeRoots != null)
+        {
+            foreach (GameObject root in additionalFadeRoots)
+            {
+                if (root == null) continue;
+                allRenderers.AddRange(root.GetComponentsInChildren<SpriteRenderer>(true));
+            }
+        }
+
+        renderers = allRenderers.ToArray();
     }
 
-    void Update()
-    {
-        ResolveBookRefs();
-
-        // If convo has finished and the book is currently closed, fade.
-        TryFadeIfReady();
-    }
-
-    void ResolveBookRefs()
-    {
-        // Prefer the new controller if present/assigned
-        if (bookSimple == null)
-            bookSimple = FindFirstObjectByTypeCompat<BookControllerSimple>();
-
-        // Legacy fallback
-        if (bookLegacy == null && BookPageController.Instance != null)
-            bookLegacy = BookPageController.Instance;
-
-        if (bookLegacy == null)
-            bookLegacy = FindFirstObjectByTypeCompat<BookPageController>();
-    }
-
-    bool IsBookOpen()
-    {
-        if (bookSimple != null) return bookSimple.IsOpen;
-        if (bookLegacy != null) return bookLegacy.IsOpen;
-        return false; // if no book found, treat as closed so Mary can still fade
-    }
-
-    // 🔥 Dialogue System Trigger calls this at end of MaryGiveBook
+    // Call this at the end of Mary's final conversation
     public void MarkConversationFinished()
     {
-        convoFinished = true;
+        if (fading) return;
 
         if (interactionCollider != null)
             interactionCollider.enabled = false;
 
-        if (debugLogs) Debug.Log("🌿 MaryFinalReceiver: convo finished.");
-
-        // If the player already closed the book mid-convo, this will now fade immediately:
-        TryFadeIfReady();
-    }
-
-    void TryFadeIfReady()
-    {
-        if (fading) return;
-        if (!convoFinished) return;
-
-        // Must be closed at fade time:
-        if (IsBookOpen()) return;
-
-        if (debugLogs) Debug.Log("🌿 MaryFinalReceiver: ready to fade (convoFinished && bookClosed).");
+        if (debugLogs) Debug.Log("🌿 MaryFinalReceiver: convo finished, fading Mary and extras.");
 
         StartCoroutine(FadeThenDisable());
     }
@@ -96,15 +73,17 @@ public class MaryFinalReceiver : MonoBehaviour
 
         if (renderers == null || renderers.Length == 0)
         {
-            if (debugLogs) Debug.LogWarning("🌿 MaryFinalReceiver: no SpriteRenderers; disabling instantly.");
-            gameObject.SetActive(false);
+            if (debugLogs) Debug.LogWarning("🌿 MaryFinalReceiver: no SpriteRenderers found; disabling instantly.");
+            DisableAllTargets();
             yield break;
         }
 
-        // capture original colors
         Color[] start = new Color[renderers.Length];
         for (int i = 0; i < renderers.Length; i++)
-            start[i] = renderers[i].color;
+        {
+            if (renderers[i] != null)
+                start[i] = renderers[i].color;
+        }
 
         float t = 0f;
         float dur = Mathf.Max(0.01f, fadeSeconds);
@@ -117,6 +96,8 @@ public class MaryFinalReceiver : MonoBehaviour
 
             for (int i = 0; i < renderers.Length; i++)
             {
+                if (renderers[i] == null) continue;
+
                 Color c = start[i];
                 c.a = a;
                 renderers[i].color = c;
@@ -125,20 +106,23 @@ public class MaryFinalReceiver : MonoBehaviour
             yield return null;
         }
 
-        if (debugLogs) Debug.Log("🌿 MaryFinalReceiver: faded; disabling Mary.");
+        if (debugLogs) Debug.Log("🌿 MaryFinalReceiver: faded; disabling Mary and extras.");
 
-        gameObject.SetActive(false);
+        DisableAllTargets();
     }
 
-    // -------------------------
-    // Unity version compatibility helper
-    // -------------------------
-    static T FindFirstObjectByTypeCompat<T>() where T : Object
+    void DisableAllTargets()
     {
-#if UNITY_2023_1_OR_NEWER
-        return Object.FindFirstObjectByType<T>();
-#else
-        return Object.FindObjectOfType<T>();
-#endif
+        if (gameObject != null)
+            gameObject.SetActive(false);
+
+        if (additionalObjectsToDisable != null)
+        {
+            foreach (GameObject obj in additionalObjectsToDisable)
+            {
+                if (obj != null)
+                    obj.SetActive(false);
+            }
+        }
     }
 }

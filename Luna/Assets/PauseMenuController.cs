@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
-    [SerializeField] private GameObject pauseRoot; 
+    [SerializeField] private GameObject pauseRoot;
     [SerializeField] private string mainMenuSceneName = "MainMenu";
 
     private bool isPaused = false;
@@ -18,20 +18,16 @@ public class PauseMenuController : MonoBehaviour
 
     private void Update()
     {
-        // Prevent pause on main menu scene
         if (SceneManager.GetActiveScene().name == mainMenuSceneName)
             return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
             TogglePause();
-        }
     }
 
     public void TogglePause()
     {
         isPaused = !isPaused;
-
         pauseRoot.SetActive(isPaused);
         Time.timeScale = isPaused ? 0f : 1f;
     }
@@ -45,13 +41,25 @@ public class PauseMenuController : MonoBehaviour
 
     public void RestartLevel()
     {
-        Time.timeScale = 1f;
+        Resume();
+
+        GameTransitionUtility.PrepareForSceneChange(
+            resetDialogueDatabase: false,
+            resetPersistentDialogueData: false
+        );
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GoToMainMenu()
     {
-        Time.timeScale = 1f;
+        Resume();
+
+        GameTransitionUtility.PrepareForSceneChange(
+            resetDialogueDatabase: false,
+            resetPersistentDialogueData: false
+        );
+
         SceneManager.LoadScene(mainMenuSceneName);
     }
 }

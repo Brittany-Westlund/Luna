@@ -9,6 +9,11 @@ public class ContinueGame : MonoBehaviour
     {
         Time.timeScale = 1f;
 
+        GameTransitionUtility.PrepareForSceneChange(
+            resetDialogueDatabase: false,
+            resetPersistentDialogueData: false
+        );
+
         if (LotusSavePoint.HasSavedGame())
         {
             string scene = LotusSavePoint.GetSavedScene(fallbackScene);

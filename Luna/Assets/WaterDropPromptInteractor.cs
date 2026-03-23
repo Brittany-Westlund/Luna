@@ -5,7 +5,7 @@ using UnityEngine;
 public class WaterDropPromptInteractor : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private PromptCycleFader promptCycleFader;
+    [SerializeField] private CustomInteractionFeedback customInteractionFeedback;
     [SerializeField] private SpriteRenderer mainWaterSpriteRenderer;
 
     [Header("Search")]
@@ -64,22 +64,13 @@ public class WaterDropPromptInteractor : MonoBehaviour
 
     private void OnEnable()
     {
-        if (promptCycleFader != null)
+        if (customInteractionFeedback != null)
         {
-            promptCycleFader.OnPromptDismissed.AddListener(OnPromptDismissed);
-            promptCycleFader.gameObject.SetActive(false);
+            customInteractionFeedback.gameObject.SetActive(false);
         }
 
         promptShowing = false;
         holdTimer = 0f;
-    }
-
-    private void OnDisable()
-    {
-        if (promptCycleFader != null)
-        {
-            promptCycleFader.OnPromptDismissed.RemoveListener(OnPromptDismissed);
-        }
     }
 
     private void Update()
@@ -97,7 +88,7 @@ public class WaterDropPromptInteractor : MonoBehaviour
             if (holdTimer >= holdDuration)
             {
                 holdTimer = 0f;
-                OnPromptDismissed();
+                HandleInteraction();
             }
         }
         else
@@ -184,15 +175,14 @@ public class WaterDropPromptInteractor : MonoBehaviour
 
     private void ShowPrompt()
     {
-        if (promptCycleFader == null)
+        if (customInteractionFeedback == null)
             return;
 
-        if (!promptCycleFader.gameObject.activeSelf)
+        if (!customInteractionFeedback.gameObject.activeSelf)
         {
-            promptCycleFader.gameObject.SetActive(true);
+            customInteractionFeedback.gameObject.SetActive(true);
         }
 
-        promptCycleFader.RefreshDisplay();
         promptShowing = true;
         holdTimer = 0f;
 
@@ -204,9 +194,9 @@ public class WaterDropPromptInteractor : MonoBehaviour
 
     private void HidePrompt()
     {
-        if (promptCycleFader != null && promptCycleFader.gameObject.activeSelf)
+        if (customInteractionFeedback != null && customInteractionFeedback.gameObject.activeSelf)
         {
-            promptCycleFader.gameObject.SetActive(false);
+            customInteractionFeedback.gameObject.SetActive(false);
         }
 
         promptShowing = false;
@@ -258,11 +248,11 @@ public class WaterDropPromptInteractor : MonoBehaviour
         return closest;
     }
 
-    private void OnPromptDismissed()
+    private void HandleInteraction()
     {
         if (debugLogging)
         {
-            Debug.Log("[WaterDropPromptInteractor] Prompt dismissed.");
+            Debug.Log("[WaterDropPromptInteractor] Interaction triggered.");
         }
 
         promptShowing = false;
@@ -283,7 +273,7 @@ public class WaterDropPromptInteractor : MonoBehaviour
         {
             if (debugLogging)
             {
-                Debug.LogWarning("[WaterDropPromptInteractor] No teapot receiver found on dismiss.");
+                Debug.LogWarning("[WaterDropPromptInteractor] No teapot receiver found on interaction.");
             }
             return;
         }

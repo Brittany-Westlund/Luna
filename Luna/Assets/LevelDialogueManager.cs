@@ -1,14 +1,35 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using PixelCrushers.DialogueSystem;
 
 public class LevelDialogueManager : MonoBehaviour
 {
-   [Header("Player Save/Load")]
-public string playerTag = "Player";
-public bool loadSavedPositionOnStart = true;
+    [Header("Player Save/Load")]
+    public string playerTag = "Player";
+    public bool loadSavedPositionOnStart = true;
+
+    [Header("Dialogue Persistence")]
+    public bool persistDialogueState = true;
+    public string saveKeyPrefix = "LDM_";
+
+    [Header("Conversation Cancellation")]
+    [Tooltip("If true, active conversations will be cancelled when the player changes scenes or the scene reloads.")]
+    public bool cancelConversationOnSceneChange = true;
+
+    [Tooltip("If true, active conversations can be cancelled when the player walks too far away from the conversant.")]
+    public bool cancelConversationWhenWalkingAway = true;
+
+    [Tooltip("Default max distance allowed before cancelling if the entry does not override it.")]
+    public float defaultCancelDistance = 2.5f;
+
+    [Header("Prompt Refresh")]
+    [Tooltip("This increments whenever dialogue state changes. Prompt scripts can watch this to refresh without requiring re-collision.")]
+    [SerializeField] private int dialogueStateVersion = 0;
+
     public enum ConditionType
     {
         ConversationPlayed,
@@ -106,6 +127,19 @@ public bool loadSavedPositionOnStart = true;
         public bool isFallback = false;
         public bool markPlayedAfterStart = false;
 
+        [Header("Immediate Play")]
+        [Tooltip("If true, this conversation can auto-play as soon as it becomes newly available.")]
+        public bool playImmediatelyWhenAvailable = false;
+
+        [Tooltip("Optional conversant transform to use for immediate play. Recommended for auto-play entries.")]
+        public Transform immediateConversantOverride;
+
+        [Tooltip("If true, walking away can cancel this conversation.")]
+        public bool cancelIfPlayerWalksAway = true;
+
+        [Tooltip("If > 0, overrides the manager's default cancel distance for this entry.")]
+        public float cancelDistanceOverride = 0f;
+
         [Header("Availability Conditions")]
         public List<DialogueCondition> conditions = new List<DialogueCondition>();
 
@@ -145,54 +179,246 @@ public bool loadSavedPositionOnStart = true;
     [Header("Debug")]
     public bool debugLogging = false;
 
+    public static event Action OnDialogueStateChanged;
+
+    public int DialogueStateVersion => dialogueStateVersion;
+
     private DialogueEntry activeEntry;
     private bool activeEntryWasAlreadyPlayed = false;
+    private bool activeConversationWasCancelled = false;
+
+    private Transform activePlayerTransform;
+    private Transform activeConversantTransform;
+    private string activeActorID;
+
+    private Transform cachedPlayerTransform;
+
+    // Tracks whether an entry was available last frame, for immediate-play transitions.
+    private readonly Dictionary<string, bool> lastAvailabilityByEntryID = new Dictionary<string, bool>();
 
     private void Start()
-{
-    if (DialogueManager.instance != null)
     {
-        DialogueManager.instance.conversationEnded -= OnConversationEnded;
-        DialogueManager.instance.conversationEnded += OnConversationEnded;
-    }
+        RestoreDialogueStateToLua();
+        CachePlayerTransform();
 
-    if (loadSavedPositionOnStart)
-    {
-        StartCoroutine(LoadSavedPositionRoutine());
+        if (DialogueManager.instance != null)
+        {
+            DialogueManager.instance.conversationEnded -= OnConversationEnded;
+            DialogueManager.instance.conversationEnded += OnConversationEnded;
+        }
+
+        SceneManager.activeSceneChanged += OnActiveSceneChanged;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        InitializeAvailabilityTracking();
+
+        if (loadSavedPositionOnStart)
+            StartCoroutine(LoadSavedPositionRoutine());
+
+        if (debugLogging)
+            Debug.Log($"[LevelDialogueManager] Start complete on scene '{SceneManager.GetActiveScene().name}'.");
     }
-}
 
     private void OnDisable()
     {
         if (DialogueManager.instance != null)
-        {
             DialogueManager.instance.conversationEnded -= OnConversationEnded;
-        }
+
+        SceneManager.activeSceneChanged -= OnActiveSceneChanged;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void Update()
     {
+        CachePlayerTransform();
         UpdateTerminationStates();
+        UpdateImmediatePlayEntries();
+        UpdateActiveConversationCancellation();
+    }
+
+    private void CachePlayerTransform()
+    {
+        if (cachedPlayerTransform != null)
+            return;
+
+        GameObject player = GameObject.FindGameObjectWithTag(playerTag);
+        if (player != null)
+            cachedPlayerTransform = player.transform;
+    }
+
+    private void InitializeAvailabilityTracking()
+    {
+        lastAvailabilityByEntryID.Clear();
+
+        foreach (DialogueEntry entry in entries)
+        {
+            if (entry == null || string.IsNullOrWhiteSpace(entry.entryID))
+                continue;
+
+            bool available = IsEntryAvailableForSelection(entry);
+            lastAvailabilityByEntryID[entry.entryID] = available;
+        }
+    }
+
+    private void UpdateImmediatePlayEntries()
+    {
+        if (entries == null || entries.Count == 0)
+            return;
+
+        if (DialogueManager.isConversationActive)
+            return;
+
+        foreach (DialogueEntry entry in entries.OrderBy(e => e != null ? e.order : int.MaxValue))
+        {
+            if (entry == null)
+                continue;
+
+            if (!entry.playImmediatelyWhenAvailable)
+                continue;
+
+            if (string.IsNullOrWhiteSpace(entry.entryID))
+                continue;
+
+            bool nowAvailable = IsEntryAvailableForSelection(entry);
+            bool wasAvailable = lastAvailabilityByEntryID.TryGetValue(entry.entryID, out bool previous) && previous;
+
+            lastAvailabilityByEntryID[entry.entryID] = nowAvailable;
+
+            // Only auto-fire on transition from unavailable -> available.
+            if (!nowAvailable || wasAvailable)
+                continue;
+
+            Transform playerTransform = cachedPlayerTransform;
+            Transform conversantTransform = entry.immediateConversantOverride;
+
+            if (playerTransform == null)
+            {
+                if (debugLogging)
+                    Debug.LogWarning($"[LevelDialogueManager] Cannot immediate-play '{entry.entryID}' because player transform is missing.");
+                continue;
+            }
+
+            if (conversantTransform == null)
+            {
+                if (debugLogging)
+                    Debug.LogWarning($"[LevelDialogueManager] Cannot immediate-play '{entry.entryID}' because immediateConversantOverride is not assigned.");
+                continue;
+            }
+
+            if (debugLogging)
+                Debug.Log($"[LevelDialogueManager] Immediate-playing entry '{entry.entryID}' because it just became available.");
+
+            TryStartConversationByEntryID(entry.entryID, playerTransform, conversantTransform);
+            return;
+        }
+    }
+
+    private void UpdateActiveConversationCancellation()
+    {
+        if (!cancelConversationWhenWalkingAway)
+            return;
+
+        if (!DialogueManager.isConversationActive)
+            return;
+
+        if (activeEntry == null)
+            return;
+
+        if (!activeEntry.cancelIfPlayerWalksAway)
+            return;
+
+        if (activePlayerTransform == null || activeConversantTransform == null)
+            return;
+
+        float allowedDistance = activeEntry.cancelDistanceOverride > 0f
+            ? activeEntry.cancelDistanceOverride
+            : defaultCancelDistance;
+
+        float distance = Vector2.Distance(activePlayerTransform.position, activeConversantTransform.position);
+
+        if (distance > allowedDistance)
+        {
+            CancelActiveConversation($"Player walked away from '{activeEntry.entryID}' (distance {distance:0.00} > {allowedDistance:0.00}).");
+        }
+    }
+
+    private void OnActiveSceneChanged(Scene oldScene, Scene newScene)
+    {
+        if (!cancelConversationOnSceneChange)
+            return;
+
+        if (DialogueManager.isConversationActive)
+            CancelActiveConversation($"Scene changed from '{oldScene.name}' to '{newScene.name}'.");
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (!cancelConversationOnSceneChange)
+            return;
+
+        if (DialogueManager.isConversationActive)
+            CancelActiveConversation($"Scene '{scene.name}' loaded.");
+    }
+
+    public void CancelActiveConversation(string reason)
+    {
+        if (!DialogueManager.isConversationActive)
+            return;
+
+        if (debugLogging)
+            Debug.Log($"[LevelDialogueManager] Cancelling conversation. Reason: {reason}");
+
+        activeConversationWasCancelled = true;
+
+        try
+        {
+            DialogueManager.StopConversation();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"[LevelDialogueManager] StopConversation threw exception: {ex.Message}");
+        }
+
+        // Safety cleanup in case the dialogue system doesn't fire conversationEnded in this scenario.
+        if (!DialogueManager.isConversationActive)
+        {
+            ClearActiveConversationState();
+            NotifyDialogueStateChanged();
+        }
+    }
+
+    private void ClearActiveConversationState()
+    {
+        activeEntry = null;
+        activeEntryWasAlreadyPlayed = false;
+        activeConversationWasCancelled = false;
+        activePlayerTransform = null;
+        activeConversantTransform = null;
+        activeActorID = null;
     }
 
     private void UpdateTerminationStates()
     {
-        if (entries == null || entries.Count == 0) return;
+        if (entries == null || entries.Count == 0)
+            return;
 
         foreach (DialogueEntry entry in entries)
         {
-            if (entry == null) continue;
-            if (!entry.terminateWhenConditionsMet) continue;
-            if (HasBeenTerminated(entry.entryID)) continue;
+            if (entry == null)
+                continue;
+
+            if (!entry.terminateWhenConditionsMet)
+                continue;
+
+            if (HasBeenTerminated(entry.entryID))
+                continue;
 
             if (AreAllConditionsMet(entry.terminationConditions))
             {
                 MarkTerminated(entry.entryID);
 
                 if (debugLogging)
-                {
                     Debug.Log($"[LevelDialogueManager] Permanently terminated entry '{entry.entryID}'.");
-                }
             }
         }
     }
@@ -218,7 +444,11 @@ public bool loadSavedPositionOnStart = true;
                 continue;
 
             if (HasBeenTerminated(entry.entryID))
+            {
+                if (debugLogging)
+                    Debug.Log($"[LevelDialogueManager] Skipping terminated entry '{entry.entryID}'.");
                 continue;
+            }
 
             if (!AreConditionsMet(entry))
                 continue;
@@ -237,9 +467,7 @@ public bool loadSavedPositionOnStart = true;
             }
 
             if (debugLogging)
-            {
                 Debug.Log($"[LevelDialogueManager] Bright prompt for actor '{actorID}' using entry '{entry.entryID}'.");
-            }
 
             return new PromptState(true, 1f, entry);
         }
@@ -250,9 +478,7 @@ public bool loadSavedPositionOnStart = true;
             float alpha = fallbackPlayed ? repeatedFallbackAlpha : 1f;
 
             if (debugLogging)
-            {
                 Debug.Log($"[LevelDialogueManager] Fallback prompt for actor '{actorID}' using entry '{fallbackCandidate.entryID}'. Alpha: {alpha}");
-            }
 
             return new PromptState(true, alpha, fallbackCandidate);
         }
@@ -270,12 +496,64 @@ public bool loadSavedPositionOnStart = true;
         if (!state.showPrompt || state.entry == null)
             return false;
 
-        activeEntry = state.entry;
+        return StartEntryInternal(state.entry, actorID, playerTransform, conversantTransform);
+    }
+
+    public bool TryStartConversationByEntryID(string entryID, Transform playerTransform = null, Transform conversantTransform = null)
+    {
+        if (DialogueManager.isConversationActive)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(entryID))
+            return false;
+
+        DialogueEntry entry = entries.FirstOrDefault(e => e != null && e.entryID == entryID);
+        if (entry == null)
+        {
+            if (debugLogging)
+                Debug.LogWarning($"[LevelDialogueManager] TryStartConversationByEntryID could not find entryID '{entryID}'.");
+            return false;
+        }
+
+        if (!EntryExistsInDatabase(entry))
+            return false;
+
+        if (HasBeenTerminated(entry.entryID))
+            return false;
+
+        if (!AreConditionsMet(entry))
+            return false;
+
+        bool played = HasBeenPlayed(entry.entryID);
+        if (!entry.repeatable && played)
+            return false;
+
+        Transform resolvedPlayer = playerTransform != null ? playerTransform : cachedPlayerTransform;
+        Transform resolvedConversant = conversantTransform != null ? conversantTransform : entry.immediateConversantOverride;
+
+        if (resolvedPlayer == null || resolvedConversant == null)
+        {
+            if (debugLogging)
+                Debug.LogWarning($"[LevelDialogueManager] Cannot start entry '{entryID}' because player or conversant transform is missing.");
+            return false;
+        }
+
+        return StartEntryInternal(entry, entry.actorID, resolvedPlayer, resolvedConversant);
+    }
+
+    private bool StartEntryInternal(DialogueEntry entry, string actorID, Transform playerTransform, Transform conversantTransform)
+    {
+        activeEntry = entry;
         activeEntryWasAlreadyPlayed = HasBeenPlayed(activeEntry.entryID);
+        activeConversationWasCancelled = false;
+
+        activePlayerTransform = playerTransform;
+        activeConversantTransform = conversantTransform;
+        activeActorID = actorID;
 
         if (debugLogging)
         {
-            Debug.Log($"[LevelDialogueManager] Starting conversation '{activeEntry.conversationTitle}' for actor '{actorID}'. Already played: {activeEntryWasAlreadyPlayed}");
+            Debug.Log($"[LevelDialogueManager] Starting conversation '{activeEntry.conversationTitle}' for actor '{actorID}'. EntryID='{activeEntry.entryID}'. Already played: {activeEntryWasAlreadyPlayed}");
         }
 
         ApplyEffects(activeEntry, EffectTiming.OnConversationStart, activeEntryWasAlreadyPlayed);
@@ -291,11 +569,10 @@ public bool loadSavedPositionOnStart = true;
             MarkPlayed(activeEntry.entryID);
 
             if (debugLogging)
-            {
                 Debug.Log($"[LevelDialogueManager] Marked played on start: {activeEntry.entryID}");
-            }
         }
 
+        NotifyDialogueStateChanged();
         return true;
     }
 
@@ -364,6 +641,27 @@ public bool loadSavedPositionOnStart = true;
         return false;
     }
 
+    private bool IsEntryAvailableForSelection(DialogueEntry entry)
+    {
+        if (entry == null)
+            return false;
+
+        if (!EntryExistsInDatabase(entry))
+            return false;
+
+        if (HasBeenTerminated(entry.entryID))
+            return false;
+
+        if (!AreConditionsMet(entry))
+            return false;
+
+        bool played = HasBeenPlayed(entry.entryID);
+        if (!entry.repeatable && played)
+            return false;
+
+        return true;
+    }
+
     private void ApplyEffects(DialogueEntry entry, EffectTiming timing, bool wasAlreadyPlayed)
     {
         if (entry == null || entry.effects == null || entry.effects.Count == 0)
@@ -417,9 +715,7 @@ public bool loadSavedPositionOnStart = true;
                     effect.targetObject.SetActive(true);
 
                     if (debugLogging)
-                    {
                         Debug.Log($"[LevelDialogueManager] Effect on '{entryID}': SetActive(true) on GameObject '{effect.targetObject.name}'.");
-                    }
                 }
                 break;
 
@@ -429,9 +725,7 @@ public bool loadSavedPositionOnStart = true;
                     effect.targetObject.SetActive(false);
 
                     if (debugLogging)
-                    {
                         Debug.Log($"[LevelDialogueManager] Effect on '{entryID}': SetActive(false) on GameObject '{effect.targetObject.name}'.");
-                    }
                 }
                 break;
 
@@ -441,9 +735,7 @@ public bool loadSavedPositionOnStart = true;
                     effect.targetSpriteRenderer.enabled = true;
 
                     if (debugLogging)
-                    {
                         Debug.Log($"[LevelDialogueManager] Effect on '{entryID}': SpriteRenderer enabled on '{effect.targetSpriteRenderer.name}'.");
-                    }
                 }
                 break;
 
@@ -453,9 +745,7 @@ public bool loadSavedPositionOnStart = true;
                     effect.targetSpriteRenderer.enabled = false;
 
                     if (debugLogging)
-                    {
                         Debug.Log($"[LevelDialogueManager] Effect on '{entryID}': SpriteRenderer disabled on '{effect.targetSpriteRenderer.name}'.");
-                    }
                 }
                 break;
         }
@@ -467,21 +757,15 @@ public bool loadSavedPositionOnStart = true;
             if (effect.spatializeSFX)
             {
                 if (effect.targetObject != null)
-                {
                     playPosition = effect.targetObject.transform.position;
-                }
                 else if (effect.targetSpriteRenderer != null)
-                {
                     playPosition = effect.targetSpriteRenderer.transform.position;
-                }
             }
 
             AudioSource.PlayClipAtPoint(effect.sfxClip, playPosition, effect.sfxVolume);
 
             if (debugLogging)
-            {
                 Debug.Log($"[LevelDialogueManager] Effect on '{entryID}': Played SFX '{effect.sfxClip.name}'.");
-            }
         }
     }
 
@@ -490,7 +774,19 @@ public bool loadSavedPositionOnStart = true;
         if (string.IsNullOrWhiteSpace(entryID))
             return;
 
-        DialogueLua.SetVariable(GetPlayedVariableName(entryID), true);
+        string luaVar = GetPlayedVariableName(entryID);
+        DialogueLua.SetVariable(luaVar, true);
+
+        if (persistDialogueState)
+        {
+            PlayerPrefs.SetInt(GetPlayedPrefKey(entryID), 1);
+            PlayerPrefs.Save();
+        }
+
+        if (debugLogging)
+            Debug.Log($"[LevelDialogueManager] MarkPlayed -> entryID='{entryID}', luaVar='{luaVar}'");
+
+        NotifyDialogueStateChanged();
     }
 
     public bool HasBeenPlayed(string entryID)
@@ -511,7 +807,19 @@ public bool loadSavedPositionOnStart = true;
         if (string.IsNullOrWhiteSpace(entryID))
             return;
 
-        DialogueLua.SetVariable(GetTerminatedVariableName(entryID), true);
+        string luaVar = GetTerminatedVariableName(entryID);
+        DialogueLua.SetVariable(luaVar, true);
+
+        if (persistDialogueState)
+        {
+            PlayerPrefs.SetInt(GetTerminatedPrefKey(entryID), 1);
+            PlayerPrefs.Save();
+        }
+
+        if (debugLogging)
+            Debug.Log($"[LevelDialogueManager] MarkTerminated -> entryID='{entryID}', luaVar='{luaVar}'");
+
+        NotifyDialogueStateChanged();
     }
 
     public bool HasBeenTerminated(string entryID)
@@ -543,35 +851,104 @@ public bool loadSavedPositionOnStart = true;
         if (activeEntry == null)
             return;
 
-        ApplyEffects(activeEntry, EffectTiming.OnConversationEnd, activeEntryWasAlreadyPlayed);
-
-        if (!activeEntry.markPlayedAfterStart)
+        if (!activeConversationWasCancelled)
         {
-            MarkPlayed(activeEntry.entryID);
+            ApplyEffects(activeEntry, EffectTiming.OnConversationEnd, activeEntryWasAlreadyPlayed);
 
-            if (debugLogging)
+            if (!activeEntry.markPlayedAfterStart)
             {
-                Debug.Log($"[LevelDialogueManager] Marked played on end: {activeEntry.entryID}");
+                MarkPlayed(activeEntry.entryID);
+
+                if (debugLogging)
+                    Debug.Log($"[LevelDialogueManager] Marked played on end: {activeEntry.entryID}");
             }
         }
+        else if (debugLogging)
+        {
+            Debug.Log($"[LevelDialogueManager] Conversation '{activeEntry.entryID}' ended due to cancellation. Not marking played.");
+        }
 
-        activeEntry = null;
-        activeEntryWasAlreadyPlayed = false;
+        ClearActiveConversationState();
+        NotifyDialogueStateChanged();
     }
 
-    private System.Collections.IEnumerator LoadSavedPositionRoutine()
-{
-    yield return null; // wait 1 frame so player is spawned
-
-    GameObject player = GameObject.FindGameObjectWithTag(playerTag);
-
-    if (player != null)
+    private IEnumerator LoadSavedPositionRoutine()
     {
-        LotusSavePoint.TryLoadSavedPosition(player.transform, debugLogging);
+        yield return null;
+
+        GameObject player = GameObject.FindGameObjectWithTag(playerTag);
+
+        if (player != null)
+            LotusSavePoint.TryLoadSavedPosition(player.transform, debugLogging);
+        else if (debugLogging)
+            Debug.LogWarning("[LevelDialogueManager] Player not found with tag: " + playerTag);
     }
-    else if (debugLogging)
+
+    private void RestoreDialogueStateToLua()
     {
-        Debug.LogWarning("[LevelDialogueManager] Player not found with tag: " + playerTag);
+        if (entries == null || entries.Count == 0)
+            return;
+
+        foreach (DialogueEntry entry in entries)
+        {
+            if (entry == null || string.IsNullOrWhiteSpace(entry.entryID))
+                continue;
+
+            bool played = persistDialogueState && PlayerPrefs.GetInt(GetPlayedPrefKey(entry.entryID), 0) == 1;
+            bool terminated = persistDialogueState && PlayerPrefs.GetInt(GetTerminatedPrefKey(entry.entryID), 0) == 1;
+
+            DialogueLua.SetVariable(GetPlayedVariableName(entry.entryID), played);
+            DialogueLua.SetVariable(GetTerminatedVariableName(entry.entryID), terminated);
+
+            if (debugLogging)
+                Debug.Log($"[LevelDialogueManager] RestoreDialogueStateToLua -> entryID='{entry.entryID}', played={played}, terminated={terminated}");
+        }
+
+        NotifyDialogueStateChanged();
     }
-}
+
+    private string GetPlayedPrefKey(string entryID)
+    {
+        return $"{saveKeyPrefix}{SceneManager.GetActiveScene().name}_Played_{entryID}";
+    }
+
+    private string GetTerminatedPrefKey(string entryID)
+    {
+        return $"{saveKeyPrefix}{SceneManager.GetActiveScene().name}_Terminated_{entryID}";
+    }
+
+    private void NotifyDialogueStateChanged()
+    {
+        dialogueStateVersion++;
+        OnDialogueStateChanged?.Invoke();
+
+        if (debugLogging)
+            Debug.Log($"[LevelDialogueManager] Dialogue state changed. Version={dialogueStateVersion}");
+    }
+
+    [ContextMenu("DEBUG: Reset Dialogue State For This Scene")]
+    public void DebugResetDialogueStateForScene()
+    {
+        if (entries == null)
+            return;
+
+        foreach (DialogueEntry entry in entries)
+        {
+            if (entry == null || string.IsNullOrWhiteSpace(entry.entryID))
+                continue;
+
+            PlayerPrefs.DeleteKey(GetPlayedPrefKey(entry.entryID));
+            PlayerPrefs.DeleteKey(GetTerminatedPrefKey(entry.entryID));
+
+            DialogueLua.SetVariable(GetPlayedVariableName(entry.entryID), false);
+            DialogueLua.SetVariable(GetTerminatedVariableName(entry.entryID), false);
+        }
+
+        PlayerPrefs.Save();
+        InitializeAvailabilityTracking();
+        NotifyDialogueStateChanged();
+
+        if (debugLogging)
+            Debug.Log($"[LevelDialogueManager] Reset dialogue state for scene '{SceneManager.GetActiveScene().name}'.");
+    }
 }

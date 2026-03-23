@@ -12,15 +12,41 @@ public class BookControllerSimple : MonoBehaviour
     public GameObject bookUIRoot;
     public Image bookPageImage;
 
-    [Header("Lilystool Detection")]
-    public float lilystoolRadius = 2f;
-    public string lilystoolTag = "Lilystool";
+    [Header("World Book Sync")]
+    [Tooltip("If true, MoonbowBookUI mirrors the state of any world OpenBook sprite renderer.")]
+    public bool syncToWorldOpenBook = true;
 
-    [Header("Input")]
-    public KeyCode toggleKey = KeyCode.V;
+    [Tooltip("Exact GameObject name to search for in the scene.")]
+    public string openBookObjectName = "OpenBook";
+
+    [Tooltip("How often to refresh the list of OpenBook renderers.")]
+    public float openBookRefreshInterval = 0.5f;
+
+    [Tooltip("If true, logs which OpenBook objects were found and when sync changes.")]
+    public bool logOpenBookSearch = false;
+
+    [Header("Input While Book Is Open")]
     public KeyCode previousPageKey = KeyCode.A;
     public KeyCode nextPageKey = KeyCode.D;
     public bool allowArrowKeysToo = true;
+
+    [Header("Jump To Close")]
+    [Tooltip("If true, pressing Jump while the book is open will turn off the visible world OpenBook.")]
+    public bool allowJumpToCloseBook = true;
+
+    [Tooltip("Uses Unity's default Jump button name.")]
+    public string jumpButtonName = "Jump";
+
+    [Tooltip("Optional fallback key if Input.GetButtonDown(\"Jump\") is not set up the way you want.")]
+    public KeyCode jumpFallbackKey = KeyCode.Space;
+
+    [Tooltip("If true, disables the whole OpenBook GameObject instead of only its SpriteRenderer.")]
+    public bool jumpCloseDisablesWholeObject = false;
+
+    [Header("Optional Manual Close")]
+    [Tooltip("Optional fallback close key. Usually leave off if world book should be the sole authority.")]
+    public bool allowManualCloseKey = false;
+    public KeyCode manualCloseKey = KeyCode.Space;
 
     [Header("Pages")]
     public bool useIntroPage = true;
@@ -47,6 +73,10 @@ public class BookControllerSimple : MonoBehaviour
     private int unlockedCount = 0;
     private readonly HashSet<string> usedLocationIds = new HashSet<string>();
 
+    private readonly List<SpriteRenderer> openBookRenderers = new List<SpriteRenderer>();
+    private float nextOpenBookRefreshTime = 0f;
+    private bool lastDetectedWorldBookVisible = false;
+
     private string KeyUnlocked => saveKeyPrefix + "UnlockedCount";
     private string KeyIndex => saveKeyPrefix + "CurrentIndex";
     private string KeyUsedIds => saveKeyPrefix + "UsedLocationIds";
@@ -66,6 +96,9 @@ public class BookControllerSimple : MonoBehaviour
 
         ClampCurrentPage();
 
+        if (syncToWorldOpenBook)
+            RefreshOpenBookRenderers();
+
         if (debugLogs)
         {
             Debug.Log($"📖 BookControllerSimple Start");
@@ -82,19 +115,52 @@ public class BookControllerSimple : MonoBehaviour
         if (player == null)
             ResolvePlayer();
 
-        if (Input.GetKeyDown(toggleKey))
+        if (syncToWorldOpenBook)
         {
-            if (bookOpen)
+            if (Time.time >= nextOpenBookRefreshTime)
             {
-                CloseBook();
+                RefreshOpenBookRenderers();
+                nextOpenBookRefreshTime = Time.time + Mathf.Max(0.05f, openBookRefreshInterval);
             }
-            else if (NearLilystool())
+
+            bool shouldBeOpen = AnyOpenBookVisible();
+
+            if (shouldBeOpen != lastDetectedWorldBookVisible)
             {
-                OpenBook();
+                lastDetectedWorldBookVisible = shouldBeOpen;
+
+                if (debugLogs || logOpenBookSearch)
+                    Debug.Log($"📖 World OpenBook visible changed -> {shouldBeOpen}");
+            }
+
+            if (shouldBeOpen && !bookOpen)
+            {
+                OpenBookFromWorldSync();
+            }
+            else if (!shouldBeOpen && bookOpen)
+            {
+                CloseBookFromWorldSync();
             }
         }
 
-        if (!bookOpen) return;
+        if (!bookOpen)
+            return;
+
+        if (bookOpen && allowJumpToCloseBook && JumpPressedThisFrame())
+        {
+            bool turnedOff = TurnOffVisibleOpenBook();
+
+            if (debugLogs)
+                Debug.Log($"📖 Jump close attempted -> turnedOff={turnedOff}");
+
+            return;
+        }
+
+        if (allowManualCloseKey && Input.GetKeyDown(manualCloseKey))
+        {
+            CloseBookFromWorldSync();
+            return;
+        }
 
         bool prevPressed = Input.GetKeyDown(previousPageKey) || (allowArrowKeysToo && Input.GetKeyDown(KeyCode.LeftArrow));
         bool nextPressed = Input.GetKeyDown(nextPageKey) || (allowArrowKeysToo && Input.GetKeyDown(KeyCode.RightArrow));
@@ -106,7 +172,7 @@ public class BookControllerSimple : MonoBehaviour
             NextPage();
     }
 
-    void OpenBook()
+    void OpenBookFromWorldSync()
     {
         if (bookUIRoot == null || bookPageImage == null)
         {
@@ -127,10 +193,10 @@ public class BookControllerSimple : MonoBehaviour
             Save();
 
         if (debugLogs)
-            Debug.Log($"📖 OpenBook -> currentPage={currentPage}");
+            Debug.Log($"📖 OpenBookFromWorldSync -> currentPage={currentPage}");
     }
 
-    void CloseBook()
+    void CloseBookFromWorldSync()
     {
         bookOpen = false;
 
@@ -139,11 +205,183 @@ public class BookControllerSimple : MonoBehaviour
 
         SetHorizontalMovementLocked(false);
 
+        if (saveProgress)
+            Save();
+
         if (debugLogs)
-            Debug.Log("📖 CloseBook");
+            Debug.Log("📖 CloseBookFromWorldSync");
     }
 
-    void NextPage()
+    public void ForceRefreshOpenBooks()
+    {
+        RefreshOpenBookRenderers();
+    }
+
+    void RefreshOpenBookRenderers()
+    {
+        openBookRenderers.Clear();
+
+        Transform[] allTransforms = Resources.FindObjectsOfTypeAll<Transform>();
+
+        for (int i = 0; i < allTransforms.Length; i++)
+        {
+            Transform t = allTransforms[i];
+            if (t == null)
+                continue;
+
+            if (t.name != openBookObjectName)
+                continue;
+
+            if (!t.gameObject.scene.IsValid())
+                continue;
+
+            if ((t.hideFlags & HideFlags.NotEditable) != 0 || (t.hideFlags & HideFlags.HideAndDontSave) != 0)
+                continue;
+
+            SpriteRenderer sr = t.GetComponent<SpriteRenderer>();
+            if (sr == null)
+                sr = t.GetComponentInChildren<SpriteRenderer>(true);
+
+            if (sr != null)
+            {
+                openBookRenderers.Add(sr);
+
+                if (logOpenBookSearch)
+                    Debug.Log($"📖 Found OpenBook renderer on: {t.gameObject.name} (path: {GetHierarchyPath(t)})");
+            }
+            else if (logOpenBookSearch)
+            {
+                Debug.LogWarning($"📖 Found object named '{openBookObjectName}' but no SpriteRenderer on it or its children: {GetHierarchyPath(t)}");
+            }
+        }
+
+        if (logOpenBookSearch)
+            Debug.Log($"📖 RefreshOpenBookRenderers complete. Found {openBookRenderers.Count} matching renderer(s).");
+    }
+
+    bool AnyOpenBookVisible()
+    {
+        for (int i = openBookRenderers.Count - 1; i >= 0; i--)
+        {
+            SpriteRenderer sr = openBookRenderers[i];
+
+            if (sr == null)
+            {
+                openBookRenderers.RemoveAt(i);
+                continue;
+            }
+
+            if (!sr.gameObject.scene.IsValid())
+            {
+                openBookRenderers.RemoveAt(i);
+                continue;
+            }
+
+            if (IsSpriteRendererActuallyVisible(sr))
+                return true;
+        }
+
+        return false;
+    }
+
+    bool IsSpriteRendererActuallyVisible(SpriteRenderer sr)
+    {
+        if (sr == null)
+            return false;
+
+        if (!sr.enabled)
+            return false;
+
+        if (!sr.gameObject.activeInHierarchy)
+            return false;
+
+        Color c = sr.color;
+        if (c.a <= 0.001f)
+            return false;
+
+        return true;
+    }
+
+    bool JumpPressedThisFrame()
+    {
+        bool jumpPressed = false;
+
+        if (!string.IsNullOrEmpty(jumpButtonName))
+        {
+            try
+            {
+                jumpPressed = Input.GetButtonDown(jumpButtonName);
+            }
+            catch
+            {
+                // Ignore if Jump button is not configured in Input Manager
+            }
+        }
+
+        if (!jumpPressed)
+            jumpPressed = Input.GetKeyDown(jumpFallbackKey);
+
+        return jumpPressed;
+    }
+
+    bool TurnOffVisibleOpenBook()
+    {
+        for (int i = openBookRenderers.Count - 1; i >= 0; i--)
+        {
+            SpriteRenderer sr = openBookRenderers[i];
+
+            if (sr == null)
+            {
+                openBookRenderers.RemoveAt(i);
+                continue;
+            }
+
+            if (!sr.gameObject.scene.IsValid())
+            {
+                openBookRenderers.RemoveAt(i);
+                continue;
+            }
+
+            if (!IsSpriteRendererActuallyVisible(sr))
+                continue;
+
+            if (jumpCloseDisablesWholeObject)
+            {
+                sr.gameObject.SetActive(false);
+
+                if (debugLogs)
+                    Debug.Log($"📖 Jump closed OpenBook by disabling GameObject: {sr.gameObject.name}");
+            }
+            else
+            {
+                sr.enabled = false;
+
+                if (debugLogs)
+                    Debug.Log($"📖 Jump closed OpenBook by disabling SpriteRenderer: {sr.gameObject.name}");
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    string GetHierarchyPath(Transform t)
+    {
+        if (t == null)
+            return "NULL";
+
+        string path = t.name;
+        while (t.parent != null)
+        {
+            t = t.parent;
+            path = t.name + "/" + path;
+        }
+
+        return path;
+    }
+
+    public void NextPage()
     {
         int max = GetPageCount() - 1;
         if (max < 0) return;
@@ -161,7 +399,7 @@ public class BookControllerSimple : MonoBehaviour
             Debug.Log($"📖 NextPage -> currentPage={currentPage}");
     }
 
-    void PreviousPage()
+    public void PreviousPage()
     {
         if (GetPageCount() <= 0) return;
 
@@ -308,21 +546,6 @@ public class BookControllerSimple : MonoBehaviour
         return true;
     }
 
-    bool NearLilystool()
-    {
-        if (player == null) return false;
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(player.position, lilystoolRadius);
-
-        foreach (Collider2D hit in hits)
-        {
-            if (hit != null && hit.CompareTag(lilystoolTag))
-                return true;
-        }
-
-        return false;
-    }
-
     void ResolvePlayer()
     {
         if (player != null) return;
@@ -416,11 +639,24 @@ public class BookControllerSimple : MonoBehaviour
         Debug.LogWarning($"BookControllerSimple: Could not find bool field/property '{horizontalLockBoolName}' on {lunaMovementScript.GetType().Name}");
     }
 
-    void OnDrawGizmosSelected()
+    public bool HasUsedRevealId(string locationId)
     {
-        if (player == null) return;
+        return !string.IsNullOrEmpty(locationId) && usedLocationIds.Contains(locationId);
+    }
 
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(player.position, lilystoolRadius);
+    public bool IsShowingRevealableBlankPage()
+    {
+        if (!bookOpen)
+            return false;
+
+        if (blankEndPageSprite == null)
+            return false;
+
+        return IsOnBlankEndPage();
+    }
+
+    public bool IsBookOpen()
+    {
+        return bookOpen;
     }
 }

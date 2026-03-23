@@ -60,4 +60,12 @@ public class OpenBookTrigger : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, interactionRadius);
     }
+
+    public void ForceClose()
+    {
+        if (bookRenderer != null)
+        {
+            bookRenderer.enabled = false;
+        }
+    }
 }

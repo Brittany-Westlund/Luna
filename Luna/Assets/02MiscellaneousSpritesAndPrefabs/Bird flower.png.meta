@@ -163,8 +163,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67d6262094384c84e87d39a4679ace3f
-      internalID: -57003401
+      spriteID: eb63311d9b0266543ab24fbaced14dec
+      internalID: -954905060
       vertices: []
       indices: 
       edges: []
@@ -184,8 +184,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb737ddefefff3a4a980c40c4eda76e9
-      internalID: -1983966502
+      spriteID: 4b1632958393f4649856c858f4355e1e
+      internalID: -477117586
       vertices: []
       indices: 
       edges: []
@@ -205,8 +205,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4d70bc8a628d6e40b7a7cd1b8d41a21
-      internalID: -609543129
+      spriteID: c0f2369ffcb612749a7bd778f6d8b7e5
+      internalID: -651057431
       vertices: []
       indices: 
       edges: []
@@ -226,8 +226,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 166e81a87eb6ee94a9c0a2d8d512d193
-      internalID: 2013707749
+      spriteID: 728fdb2af56881c43bb51f0061e30a7c
+      internalID: 831762349
       vertices: []
       indices: 
       edges: []
@@ -247,8 +247,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dbfce0ff2c201994a9bd42d681631dde
-      internalID: -336204839
+      spriteID: 9fd1aa9ca00078848bca371cbd1c2ad8
+      internalID: -30638652
       vertices: []
       indices: 
       edges: []
@@ -264,21 +264,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Bird flower_0: -57003401
-      Bird flower_1: -1983966502
-      Bird flower_10: 2013707749
-      Bird flower_11: -2142159856
-      Bird flower_12: -2054643899
-      Bird flower_13: -336204839
-      Bird flower_14: 555239226
-      Bird flower_2: -1916168557
-      Bird flower_3: 446464241
-      Bird flower_4: -609543129
-      Bird flower_5: -195406184
-      Bird flower_6: 828660892
-      Bird flower_7: -1786942343
-      Bird flower_8: -1646315633
-      Bird flower_9: 224086767
+      Bird flower_0: -954905060
+      Bird flower_1: -477117586
+      Bird flower_10: 831762349
+      Bird flower_11: -1408348616
+      Bird flower_12: 827393189
+      Bird flower_13: -30638652
+      Bird flower_14: -1303381148
+      Bird flower_2: 305236621
+      Bird flower_3: 1050301989
+      Bird flower_4: -651057431
+      Bird flower_5: 57279030
+      Bird flower_6: 1242289900
+      Bird flower_7: -1681751255
+      Bird flower_8: 38519250
+      Bird flower_9: -2122615852
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

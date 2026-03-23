@@ -1,53 +1,33 @@
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 public class MystMoonbowRevealOnce : MonoBehaviour
 {
-    [Header("Auto-generated per mist instance; do not edit")]
-    [SerializeField] private string locationId;
+    [Header("Reveal ID")]
+    [SerializeField] private string revealId = "MarySpread1";
 
     [Header("Detection")]
-    public float alphaThreshold = 0.15f;
+    [SerializeField] private float alphaThreshold = 0.15f;
+    [SerializeField] private float pollInterval = 0.1f;
 
-    [Header("References (optional; will auto-find if empty)")]
-    public MystRestTransitionAuto mistTransition;
-
-    [Tooltip("NEW book controller (preferred)")]
-    public BookControllerSimple bookSimple;
-
-    [Tooltip("OLD book controller (optional fallback)")]
-    public BookPageController bookLegacy;
-
-    [Header("Polling")]
-    public float pollInterval = 0.1f;
+    [Header("Optional Dialogue Termination")]
+    [SerializeField] private string entryIDToTerminate;
 
     [Header("Debug")]
-    public bool debugLogs = false;
+    [SerializeField] private bool debugLogs = false;
+
+    private MystRestTransitionAuto mistTransition;
+    private BookControllerSimple bookSimple;
+    private LevelDialogueManager levelDialogueManager;
 
     private float nextPollTime;
     private bool didReveal;
 
-    void Reset()
+    private void Awake()
     {
-        EnsureId();
         AutoWire();
     }
 
-    void OnValidate()
-    {
-        EnsureId();
-    }
-
-    void Awake()
-    {
-        EnsureId();
-        AutoWire();
-    }
-
-    void Update()
+    private void Update()
     {
         if (didReveal) return;
 
@@ -57,83 +37,74 @@ public class MystMoonbowRevealOnce : MonoBehaviour
         if (mistTransition == null)
             mistTransition = GetComponent<MystRestTransitionAuto>();
 
-        ResolveBookRefs();
+        if (bookSimple == null || levelDialogueManager == null)
+            AutoWire();
 
-        if (mistTransition == null) return;
+        if (mistTransition == null || bookSimple == null)
+            return;
 
-        // Only trigger when moonbow sprite is active and visible enough
         var moonbowRenderer = mistTransition.moonbowRenderer;
         if (moonbowRenderer == null) return;
         if (!moonbowRenderer.gameObject.activeInHierarchy) return;
+        if (moonbowRenderer.color.a < alphaThreshold) return;
 
-        float a = moonbowRenderer.color.a;
-        if (a < alphaThreshold) return;
-
-        bool success = Reveal();
+        bool success = bookSimple.RevealNextFromLocation(revealId);
 
         if (debugLogs)
-            Debug.Log($"📖 {name}: Reveal attempt. Success={success}. LocationId={locationId} (alpha={a:0.00})");
-
-        // IMPORTANT: only latch + disable if SUCCESS.
-        if (success)
         {
-            didReveal = true;
-            enabled = false;
+            Debug.Log($"📖 {name}: Reveal attempt success={success}, revealId={revealId}");
         }
+
+        if (!success) return;
+
+        didReveal = true;
+
+        if (!string.IsNullOrWhiteSpace(entryIDToTerminate) && levelDialogueManager != null)
+        {
+            levelDialogueManager.MarkTerminated(entryIDToTerminate);
+
+            if (debugLogs)
+                Debug.Log($"📖 {name}: Terminated '{entryIDToTerminate}'");
+        }
+
+        enabled = false;
     }
 
-    bool Reveal()
+    private void AutoWire()
     {
-        // Prefer new controller
-        if (bookSimple != null)
-            return bookSimple.RevealNextFromLocation(locationId);
-
-        // Optional fallback to legacy
-        if (bookLegacy != null)
-            return bookLegacy.RevealNextFromLocation(locationId);
-
-        return false;
-    }
-
-    void ResolveBookRefs()
-    {
-        // Prefer new controller
-        if (bookSimple == null)
-            bookSimple = FindFirstObjectByTypeCompat<BookControllerSimple>();
-
-        // Legacy fallback
-        if (bookLegacy == null && BookPageController.Instance != null)
-            bookLegacy = BookPageController.Instance;
-
-        if (bookLegacy == null)
-            bookLegacy = FindFirstObjectByTypeCompat<BookPageController>();
-    }
-
-    void AutoWire()
-    {
+        // Find mist transition locally
         if (mistTransition == null)
             mistTransition = GetComponent<MystRestTransitionAuto>();
 
-        ResolveBookRefs();
+        // 🔥 Find ClosedBookTiny specifically
+        if (bookSimple == null)
+        {
+            GameObject bookObj = GameObject.Find("ClosedBookTiny");
+
+            if (bookObj != null)
+            {
+                bookSimple = bookObj.GetComponent<BookControllerSimple>();
+
+                if (debugLogs)
+                    Debug.Log($"📖 Found ClosedBookTiny: {bookObj.name}");
+            }
+            else if (debugLogs)
+            {
+                Debug.LogWarning("📖 Could not find GameObject named 'ClosedBookTiny'");
+            }
+        }
+
+        // 🔥 Find LevelDialogueManager anywhere in scene
+        if (levelDialogueManager == null)
+        {
+            levelDialogueManager = FindFirstObjectByTypeCompat<LevelDialogueManager>();
+
+            if (debugLogs && levelDialogueManager != null)
+                Debug.Log($"📖 Found LevelDialogueManager: {levelDialogueManager.name}");
+        }
     }
 
-    void EnsureId()
-    {
-        if (!string.IsNullOrEmpty(locationId)) return;
-
-        // Stable-ish unique ID per scene instance serialized into the component
-        locationId = System.Guid.NewGuid().ToString("N");
-
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-            EditorUtility.SetDirty(this);
-#endif
-    }
-
-    // -------------------------
-    // Unity version compatibility helper
-    // -------------------------
-    static T FindFirstObjectByTypeCompat<T>() where T : Object
+    private static T FindFirstObjectByTypeCompat<T>() where T : Object
     {
 #if UNITY_2023_1_OR_NEWER
         return Object.FindFirstObjectByType<T>();

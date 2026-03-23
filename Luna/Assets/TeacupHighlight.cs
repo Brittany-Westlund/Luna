@@ -8,8 +8,16 @@ public class TeacupHighlight : MonoBehaviour
     public GameObject highlightObject;
 
     [Header("Temporary Prompt Suppression")]
+    [Tooltip("Only children under this parent will be temporarily suppressed. Leave null to suppress nothing.")]
     public Transform promptParent;
+
     public bool ignoreHighlightObject = true;
+
+    [Tooltip("Optional objects that should NEVER be disabled by this highlight system.")]
+    public List<GameObject> protectedObjects = new List<GameObject>();
+
+    [Tooltip("Optional transforms whose children should NEVER be disabled by this highlight system.")]
+    public List<Transform> protectedRoots = new List<Transform>();
 
     [Tooltip("Optional extra objects to force off while teacup highlight is active.")]
     public List<GameObject> extraObjectsToSuppress = new List<GameObject>();
@@ -20,11 +28,9 @@ public class TeacupHighlight : MonoBehaviour
     public bool restartFeedbackCycleOnRemove = true;
 
     [Header("Optional Components To Disable")]
-    [Tooltip("Optional components that should be temporarily disabled while teacup highlight is active.")]
     public List<Behaviour> componentsToDisable = new List<Behaviour>();
 
     [Header("Restore Delay")]
-    [Tooltip("Delay before restoring prompts after tea is given.")]
     public float restoreDelay = 1.5f;
 
     private readonly List<GameObject> previouslyActiveObjects = new List<GameObject>();
@@ -36,25 +42,13 @@ public class TeacupHighlight : MonoBehaviour
     private void Awake()
     {
         if (highlightObject != null)
-        {
             highlightObject.SetActive(false);
-        }
-
-        if (promptParent == null)
-        {
-            promptParent = transform;
-        }
     }
 
     public void Highlight()
     {
         if (highlightObject == null)
             return;
-
-        if (promptParent == null)
-        {
-            promptParent = transform;
-        }
 
         if (restoreCoroutine != null)
         {
@@ -69,9 +63,7 @@ public class TeacupHighlight : MonoBehaviour
         }
 
         if (customInteractionFeedback != null && stopFeedbackCycleOnHighlight)
-        {
             customInteractionFeedback.StopCycling();
-        }
 
         DisableSpecifiedComponents();
         CacheAndDisableOtherPromptObjects();
@@ -86,21 +78,16 @@ public class TeacupHighlight : MonoBehaviour
         if (!highlightIsRunning)
         {
             if (highlightObject != null)
-            {
                 highlightObject.SetActive(false);
-            }
+
             return;
         }
 
         if (highlightObject != null)
-        {
             highlightObject.SetActive(false);
-        }
 
         if (restoreCoroutine != null)
-        {
             StopCoroutine(restoreCoroutine);
-        }
 
         restoreCoroutine = StartCoroutine(RestoreAfterDelay());
         highlightIsRunning = false;
@@ -116,9 +103,7 @@ public class TeacupHighlight : MonoBehaviour
         if (customInteractionFeedback != null && restartFeedbackCycleOnRemove)
         {
             if (!customInteractionFeedback.gameObject.activeInHierarchy)
-            {
                 customInteractionFeedback.gameObject.SetActive(true);
-            }
 
             customInteractionFeedback.StartCycling();
         }
@@ -146,6 +131,9 @@ public class TeacupHighlight : MonoBehaviour
             if (ignoreHighlightObject && highlightObject != null && childObject == highlightObject)
                 continue;
 
+            if (IsProtected(childObject))
+                continue;
+
             if (childObject.activeSelf && !previouslyActiveObjects.Contains(childObject))
             {
                 previouslyActiveObjects.Add(childObject);
@@ -162,11 +150,13 @@ public class TeacupHighlight : MonoBehaviour
         for (int i = 0; i < extraObjectsToSuppress.Count; i++)
         {
             GameObject obj = extraObjectsToSuppress[i];
-
             if (obj == null)
                 continue;
 
             if (highlightObject != null && obj == highlightObject)
+                continue;
+
+            if (IsProtected(obj))
                 continue;
 
             if (obj.activeSelf && !previouslyActiveObjects.Contains(obj))
@@ -177,16 +167,37 @@ public class TeacupHighlight : MonoBehaviour
         }
     }
 
+    private bool IsProtected(GameObject obj)
+    {
+        if (obj == null)
+            return true;
+
+        if (protectedObjects != null && protectedObjects.Contains(obj))
+            return true;
+
+        if (protectedRoots != null)
+        {
+            for (int i = 0; i < protectedRoots.Count; i++)
+            {
+                Transform root = protectedRoots[i];
+                if (root == null)
+                    continue;
+
+                if (obj.transform == root || obj.transform.IsChildOf(root))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     private void RestorePreviouslyActivePromptObjects()
     {
         for (int i = 0; i < previouslyActiveObjects.Count; i++)
         {
             GameObject obj = previouslyActiveObjects[i];
-
             if (obj != null)
-            {
                 obj.SetActive(true);
-            }
         }
 
         previouslyActiveObjects.Clear();
@@ -202,7 +213,6 @@ public class TeacupHighlight : MonoBehaviour
         for (int i = 0; i < componentsToDisable.Count; i++)
         {
             Behaviour behaviour = componentsToDisable[i];
-
             if (behaviour == null)
                 continue;
 
@@ -219,11 +229,8 @@ public class TeacupHighlight : MonoBehaviour
         for (int i = 0; i < previouslyEnabledComponents.Count; i++)
         {
             Behaviour behaviour = previouslyEnabledComponents[i];
-
             if (behaviour != null)
-            {
                 behaviour.enabled = true;
-            }
         }
 
         previouslyEnabledComponents.Clear();

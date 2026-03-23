@@ -100,6 +100,8 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
 --- !u!1 &1294090981752880739
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,7 +209,7 @@ SpriteRenderer:
   m_SortingLayerID: 1795597123
   m_SortingLayer: 5
   m_SortingOrder: 102
-  m_Sprite: {fileID: -1930766505, guid: 79e4ab9e12682bd4b913ae62bba15a4a, type: 3}
+  m_Sprite: {fileID: 1796148330, guid: 79e4ab9e12682bd4b913ae62bba15a4a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -225,10 +227,10 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2730258619779888622}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2e66f0795156e42f1bb55316f73f568e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d5464a571673a454c8bf9c409babae7e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.562
   m_Pitch: 1
@@ -404,9 +406,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7533044798531644183}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -498,12 +500,12 @@ SpriteRenderer:
   m_SortingLayerID: -1053558941
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 233892235, guid: 79e4ab9e12682bd4b913ae62bba15a4a, type: 3}
+  m_Sprite: {fileID: 35174003, guid: 79e4ab9e12682bd4b913ae62bba15a4a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.4, y: 0.63}
+  m_Size: {x: 0.55, y: 0.4201253}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -650,6 +652,8 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
 --- !u!1 &8308154078857029960
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,7 +692,6 @@ Transform:
   - {fileID: 2824188946021297341}
   - {fileID: 6424213306071011574}
   - {fileID: 6384377617417147063}
-  - {fileID: 5835684012797732071}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &8268683254502281893
@@ -820,7 +823,6 @@ MonoBehaviour:
   requireLight: 0
   sparkleEffect: {fileID: 8862739019459660855}
   brewingIndicatorIcon: {fileID: 2604572122904626640}
-  teacupSpawnPoint: {fileID: 6424213306071011574}
   lightHintIcon: {fileID: 744773261491835505}
   audioSource: {fileID: 6771445048931914876}
 --- !u!82 &6771445048931914876
@@ -1123,6 +1125,8 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
 --- !u!1001 &193931650112573616
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2289,103 +2293,4 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2637987647217426883, guid: b1e476be16ca2f247a031082dfbdbed7,
     type: 3}
   m_PrefabInstance: {fileID: 8254669617521598761}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &8949738762341644486
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 973381728572564826}
-    m_Modifications:
-    - target: {fileID: 1229727218434237678, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.8909822
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.0962296
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.8909822
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.43
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5931761229795122745, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_Name
-      value: MoonlightCandle
-      objectReference: {fileID: 0}
-    - target: {fileID: 8324078861083662997, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4fbadcb479d0cca4cbdcc44339769bca, type: 3}
---- !u!4 &5835684012797732071 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3228896542594620449, guid: 4fbadcb479d0cca4cbdcc44339769bca,
-    type: 3}
-  m_PrefabInstance: {fileID: 8949738762341644486}
   m_PrefabAsset: {fileID: 0}

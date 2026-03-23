@@ -43,13 +43,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 611, z: 1039, w: 1210}
+  spriteBorder: {x: 39, y: 959, z: 1664, w: 1725}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -147,7 +147,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Tearoom_3
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 960
+        width: 325
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2137ee6b77cdd9347a77e5347d1cef5a
+      internalID: -1781907567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -158,7 +179,41 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Tearoom_0: -228230724
+      Tearoom_1: 12494331
+      Tearoom_10: -476148890
+      Tearoom_11: -1517250723
+      Tearoom_12: -1410218592
+      Tearoom_13: -768156970
+      Tearoom_14: 1728537560
+      Tearoom_15: 259718121
+      Tearoom_16: -681471694
+      Tearoom_17: 984393149
+      Tearoom_18: -1543358018
+      Tearoom_19: 110831221
+      Tearoom_2: -1797191883
+      Tearoom_20: -837257842
+      Tearoom_21: -678664445
+      Tearoom_22: -271624991
+      Tearoom_23: -409656609
+      Tearoom_24: 626239103
+      Tearoom_25: 73548446
+      Tearoom_26: 765037882
+      Tearoom_27: -566963776
+      Tearoom_28: -134247355
+      Tearoom_29: 1418934662
+      Tearoom_3: -1781907567
+      Tearoom_30: -1151623122
+      Tearoom_31: -1667974924
+      Tearoom_32: 1341650978
+      Tearoom_33: 1794682182
+      Tearoom_4: 1942503819
+      Tearoom_5: 2120620984
+      Tearoom_6: -715822706
+      Tearoom_7: 1053502410
+      Tearoom_8: 1460141257
+      Tearoom_9: -108853259
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
