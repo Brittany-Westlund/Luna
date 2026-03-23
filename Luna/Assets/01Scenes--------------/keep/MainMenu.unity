@@ -8130,7 +8130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4c0f86373b802b4b9b5316241f89644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level0_Beginning
+  levelName: Level0_Glade
 --- !u!1 &841344807 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7739679434270547682, guid: 863c1e37e621d5f42940dac6ab522fac,
@@ -13126,6 +13126,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feedbackSourceMode: 0
   manualFeedbackObjects: []
+  visibilityControlMode: 0
+  useGracePeriodBetweenObjects: 0
+  gracePeriodDuration: 0.05
   autoPlayOnEnable: 1
   cycleFeedbackObjects: 1
   fadeInAndOut: 1
