@@ -2,44 +2,75 @@ using UnityEngine;
 using System.Collections;
 using MoreMountains.CorgiEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class FlowerSway : MonoBehaviour
 {
+    [Header("Sway")]
     public float swayAmount = 5f;
     public float swaySpeed = 2f;
     public Transform pivotPoint;
+    public Transform[] swayTargets;
+
+    [Header("State")]
+    public bool isBeingPickedUp = false;
 
     private GameObject player;
     private CorgiController playerController;
-    private float currentSwayAngle = 0f;
-    private Coroutine swayCoroutine;
-    private const float angleTolerance = 0.01f;
-
-    public bool isBeingPickedUp = false;
-
     private Collider2D myTrigger;
+    private Coroutine swayCoroutine;
+    private bool playerInside = false;
 
-    void Awake()
+    private Quaternion[] baseLocalRotations;
+
+    private void Awake()
     {
-        if (pivotPoint == null) pivotPoint = transform;
-        myTrigger = GetComponent<Collider2D>() ?? GetComponentInChildren<Collider2D>();
+        myTrigger = GetComponent<Collider2D>();
+
+        if (pivotPoint == null)
+            pivotPoint = transform;
+
+        CacheBaseRotations();
     }
 
-    void Start()
+    private void Start()
     {
         TryRebindPlayer();
         KickIfOverlapping();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
+        if (pivotPoint == null)
+            pivotPoint = transform;
+
+        CacheBaseRotations();
         TryRebindPlayer();
         KickIfOverlapping();
     }
 
-    void Update()
+    private void Update()
     {
-        if (playerController == null || player == null || !player.activeInHierarchy)
+        if (player == null || !player.activeInHierarchy || playerController == null)
+        {
             TryRebindPlayer();
+        }
+    }
+
+    private void CacheBaseRotations()
+    {
+        if (swayTargets == null)
+        {
+            baseLocalRotations = new Quaternion[0];
+            return;
+        }
+
+        baseLocalRotations = new Quaternion[swayTargets.Length];
+
+        for (int i = 0; i < swayTargets.Length; i++)
+        {
+            if (swayTargets[i] != null)
+                baseLocalRotations[i] = swayTargets[i].localRotation;
+        }
     }
 
     private void TryRebindPlayer()
@@ -50,34 +81,85 @@ public class FlowerSway : MonoBehaviour
 
     private void KickIfOverlapping()
     {
-        if (!isActiveAndEnabled || isBeingPickedUp || myTrigger == null || player == null) return;
+        if (!isActiveAndEnabled || isBeingPickedUp || myTrigger == null || player == null)
+            return;
 
-        var playerCols = player.GetComponentsInChildren<Collider2D>(true);
-        foreach (var pc in playerCols)
+        Collider2D[] playerColliders = player.GetComponentsInChildren<Collider2D>(true);
+        foreach (Collider2D col in playerColliders)
         {
-            if (pc && myTrigger.IsTouching(pc))
+            if (col != null && myTrigger.IsTouching(col))
             {
-                StartSwayCoroutine(playerController && playerController.Speed.magnitude > 0.1f);
+                playerInside = true;
+                StartSway();
                 return;
             }
         }
     }
 
-    private IEnumerator UpdateSway(bool isPlayerMoving)
+    private bool IsPlayerMoving()
+    {
+        return playerController != null && playerController.Speed.magnitude > 0.1f;
+    }
+
+    private void StartSway()
+    {
+        if (!isActiveAndEnabled || isBeingPickedUp || swayTargets == null || swayTargets.Length == 0)
+            return;
+
+        if (swayCoroutine != null)
+            StopCoroutine(swayCoroutine);
+
+        swayCoroutine = StartCoroutine(SwayRoutine());
+    }
+
+    private IEnumerator SwayRoutine()
     {
         while (!isBeingPickedUp)
         {
-            float moving = (playerController != null && playerController.Speed.magnitude > 0.1f) ? 1f : 0f;
-            float targetSwayAngle = (isPlayerMoving || moving > 0f)
-                ? Mathf.Sin(Time.time * swaySpeed) * swayAmount
-                : 0f;
+            float targetAngle = 0f;
 
-            currentSwayAngle = Mathf.Lerp(currentSwayAngle, targetSwayAngle, Time.deltaTime * swaySpeed);
-            float angleDifference = currentSwayAngle - transform.localEulerAngles.z;
-            transform.RotateAround(pivotPoint.position, Vector3.forward, angleDifference);
+            if (playerInside)
+            {
+                float motionMultiplier = IsPlayerMoving() ? 1f : 0.45f;
+                targetAngle = Mathf.Sin(Time.time * swaySpeed) * swayAmount * motionMultiplier;
+            }
 
-            if (Mathf.Abs(currentSwayAngle - targetSwayAngle) < angleTolerance)
-                break;
+            for (int i = 0; i < swayTargets.Length; i++)
+            {
+                if (swayTargets[i] == null)
+                    continue;
+
+                Quaternion targetRotation = baseLocalRotations[i] * Quaternion.Euler(0f, 0f, targetAngle);
+                swayTargets[i].localRotation = Quaternion.Lerp(
+                    swayTargets[i].localRotation,
+                    targetRotation,
+                    Time.deltaTime * swaySpeed
+                );
+            }
+
+            if (!playerInside)
+            {
+                bool allClose = true;
+
+                for (int i = 0; i < swayTargets.Length; i++)
+                {
+                    if (swayTargets[i] == null)
+                        continue;
+
+                    float angleDelta = Quaternion.Angle(swayTargets[i].localRotation, baseLocalRotations[i]);
+                    if (angleDelta >= 0.05f)
+                    {
+                        allClose = false;
+                        break;
+                    }
+                }
+
+                if (allClose)
+                {
+                    ResetTargetsToBaseRotation();
+                    break;
+                }
+            }
 
             yield return null;
         }
@@ -85,38 +167,58 @@ public class FlowerSway : MonoBehaviour
         swayCoroutine = null;
     }
 
-    private void StartSwayCoroutine(bool isPlayerMoving)
+    private void ResetTargetsToBaseRotation()
     {
-        if (!isActiveAndEnabled || isBeingPickedUp) return;
+        if (swayTargets == null || baseLocalRotations == null)
+            return;
 
-        if (swayCoroutine != null)
+        for (int i = 0; i < swayTargets.Length; i++)
         {
-            StopCoroutine(swayCoroutine);
-            swayCoroutine = null;
-        }
-
-        swayCoroutine = StartCoroutine(UpdateSway(isPlayerMoving));
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (!isBeingPickedUp && other.GetComponentInParent<CorgiController>() != null)
-        {
-            StartSwayCoroutine(true);
+            if (swayTargets[i] != null)
+                swayTargets[i].localRotation = baseLocalRotations[i];
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!isBeingPickedUp && other.CompareTag("Player"))
+        if (isBeingPickedUp)
+            return;
+
+        if (other.GetComponentInParent<CorgiController>() != null)
         {
-            StartSwayCoroutine(false);
+            playerInside = true;
+            StartSway();
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (isBeingPickedUp)
+            return;
+
+        if (other.GetComponentInParent<CorgiController>() != null && swayCoroutine == null)
+        {
+            playerInside = true;
+            StartSway();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (isBeingPickedUp)
+            return;
+
+        if (other.GetComponentInParent<CorgiController>() != null)
+        {
+            playerInside = false;
+            StartSway();
         }
     }
 
     public void DisableSwayOnPickup()
     {
         isBeingPickedUp = true;
+        playerInside = false;
 
         if (swayCoroutine != null)
         {
@@ -124,16 +226,29 @@ public class FlowerSway : MonoBehaviour
             swayCoroutine = null;
         }
 
+        ResetTargetsToBaseRotation();
         enabled = false;
     }
 
-    // Optional external kick point (not required by GardenStickySlot now)
-    public void ReactivateAfterReattach(bool assumePlayerMoving)
+    public void ReactivateAfterReattach(bool assumePlayerNearby)
     {
         isBeingPickedUp = false;
         enabled = true;
+
+        if (pivotPoint == null)
+            pivotPoint = transform;
+
+        CacheBaseRotations();
         TryRebindPlayer();
-        if (swayCoroutine == null)
-            StartSwayCoroutine(assumePlayerMoving);
+
+        playerInside = assumePlayerNearby;
+
+        if (swayCoroutine != null)
+        {
+            StopCoroutine(swayCoroutine);
+            swayCoroutine = null;
+        }
+
+        StartSway();
     }
 }

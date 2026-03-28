@@ -100,6 +100,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!1 &3936642202393308735
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +321,8 @@ MonoBehaviour:
   healPercentage: 0.25
   suppressionDuration: 3
   collectSFXSource: {fileID: 5206251577379475605}
+  flashDuration: 2
+  holdWhiteTime: 1
 --- !u!1 &4873108042490749163
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +423,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!1 &7666902824400841755
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,6 +527,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!1 &8329272483153305063
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,6 +631,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!1 &8835967751043322737
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,6 +735,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!1 &8837688655605825940
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,6 +839,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!1 &8888104986214335982
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,6 +943,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!1 &9029260003254461497
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,3 +1047,7 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0

@@ -6810,9 +6810,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 30
-        width: 160
+        x: 618.5951
+        y: 89.34417
+        width: 640
         height: 30
     - id: 1
       fields:
@@ -6885,9 +6885,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 80
-        width: 160
+        x: 618.5951
+        y: 139.34418
+        width: 640
         height: 30
     - id: 2
       fields:
@@ -6956,9 +6956,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 130
-        width: 160
+        x: 618.5951
+        y: 189.34418
+        width: 640
         height: 30
     - id: 3
       fields:
@@ -6987,8 +6987,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Well\u2026 the villagers have decided.\nThey\u2019re going to replace
-          the tea room with a stall.\nIt\u2019s considered wasted space\u2026 keeping
+        value: "Well\u2026 the villagers have decided. They\u2019re replacing the
+          tea room with a stall.\nIt\u2019s considered wasted space\u2026 keeping
           an entire room for just one kind of tea."
         type: 0
         typeString: CustomFieldType_Text
@@ -7029,9 +7029,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 180
-        width: 160
+        x: 618.5951
+        y: 239.34418
+        width: 640
         height: 30
     - id: 4
       fields:
@@ -7100,9 +7100,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 230
-        width: 160
+        x: 618.5951
+        y: 289.34418
+        width: 640
         height: 30
     - id: 5
       fields:
@@ -7131,8 +7131,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Well...\n...all anyone wants anymore is moonflower tea.\nSo\u2026
-          there won\u2019t really be a place for me here."
+        value: "Well... all anyone wants anymore is moonflower tea.\nSo\u2026 there
+          won\u2019t really be a place for me here."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -7172,9 +7172,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 280
-        width: 160
+        x: 618.5951
+        y: 339.34418
+        width: 640
         height: 30
     - id: 6
       fields:
@@ -7243,9 +7243,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 330
-        width: 160
+        x: 618.5951
+        y: 389.34418
+        width: 640
         height: 30
     - id: 7
       fields:
@@ -7274,8 +7274,10 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "I wanted to show you something. \nThis book... Teas of the Moonbow.\nIt's
-          been passed down through generations of teamakers."
+        value: 'I wanted to show you something. This book... Teas of the Moonbow.
+
+          It''s
+          been passed down through generations of teamakers.'
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -7315,9 +7317,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 380
-        width: 160
+        x: 618.5951
+        y: 439.34418
+        width: 640
         height: 30
     - id: 8
       fields:
@@ -7386,9 +7388,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 430
-        width: 160
+        x: 618.5951
+        y: 489.34418
+        width: 640
         height: 30
     - id: 9
       fields:
@@ -7459,9 +7461,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 480
-        width: 160
+        x: 618.5951
+        y: 539.34424
+        width: 640
         height: 30
     - id: 10
       fields:
@@ -7524,13 +7526,13 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 530
-        width: 160
+        x: 618.5951
+        y: 589.3445
+        width: 640
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 22.485764}
-    canvasZoom: 0.6252528
+    canvasScrollPosition: {x: 8.829105, y: 22.59206}
+    canvasZoom: 0.48024952
   - id: 49
     fields:
     - title: Title
@@ -17257,8 +17259,8 @@ MonoBehaviour:
       - title: Dialogue Text
         value: 'What a beautiful wreath, Luna.
 
-          Dear... could you pour
-          me a cup of tea?'
+          Would you pour me a cup
+          of tea, dear?'
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -17487,9 +17489,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 30
-        width: 160
+        x: 444.51788
+        y: 86.4814
+        width: 640
         height: 30
     - id: 1
       fields:
@@ -17518,7 +17520,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "It's blank, you see. It only reveals itself beneath moonbow light.\nAnd
+        value: "It's blank, you see. \nIt only reveals itself beneath moonbow light.\nAnd
           even then\u2026 just a couple pages at a time."
         type: 0
         typeString: CustomFieldType_Text
@@ -17559,9 +17561,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 80
-        width: 160
+        x: 444.51788
+        y: 136.4814
+        width: 640
         height: 30
     - id: 2
       fields:
@@ -17630,9 +17632,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 130
-        width: 160
+        x: 444.51788
+        y: 186.4814
+        width: 640
         height: 30
     - id: 3
       fields:
@@ -17702,9 +17704,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 180
-        width: 160
+        x: 444.51788
+        y: 236.48138
+        width: 640
         height: 30
     - id: 4
       fields:
@@ -17733,7 +17735,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: ...oh, I see.
+        value: Oh... I see.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -17773,9 +17775,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 230
-        width: 160
+        x: 444.51788
+        y: 286.48145
+        width: 640
         height: 30
     - id: 5
       fields:
@@ -17844,9 +17846,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 280
-        width: 160
+        x: 444.51788
+        y: 336.48145
+        width: 640
         height: 30
     - id: 6
       fields:
@@ -17909,13 +17911,13 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 330
-        width: 160
+        x: 444.51788
+        y: 386.48145
+        width: 640
         height: 30
     entryGroups: []
     canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.5604997
+    canvasZoom: 0.5400008
   - id: 76
     fields:
     - title: Title
@@ -18064,7 +18066,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "A lovely cup, indeed...\nOh Luna, look... \nSilvermist."
+        value: "A lovely cup, indeed. Oh Luna, look... \nSilvermist."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18206,13 +18208,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 'Yes, what moonbows are made of.
-
-          Our caps bend the light
-          into radiant arcs... little fleeting bridges we can stand on.
-
-          A
-          gift of sorts from the forest.'
+        value: "Yes, what moonbows are made of. Our caps bend the light into radiant
+          arcs... \nlittle fleeting bridges we can stand on. A gift from the forest."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18466,7 +18463,7 @@ MonoBehaviour:
         height: 30
     entryGroups: []
     canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1
+    canvasZoom: 0.80150205
   - id: 77
     fields:
     - title: Title
@@ -18584,9 +18581,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 50
-        width: 160
+        x: 1160.5175
+        y: 233.90808
+        width: 640
         height: 30
     - id: 1
       fields:
@@ -18616,7 +18613,7 @@ MonoBehaviour:
         typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: "Keep the book with you. And your teapot and candle, too. \nYou never
-          know when you might come across silvermist."
+          know where you might find silvermist."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18656,9 +18653,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 134
-        width: 160
+        x: 1160.5175
+        y: 317.90808
+        width: 640
         height: 30
     - id: 2
       fields:
@@ -18687,7 +18684,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: ...
+        value: humm...
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18727,9 +18724,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 218
-        width: 160
+        x: 1160.5175
+        y: 401.90808
+        width: 640
         height: 30
     - id: 3
       fields:
@@ -18758,7 +18755,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Whenever you find a dewey lilystool, \nthere's often silvermist nearby."
+        value: Look for dewy lilystools. They signal when silvermist is nearby.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18798,9 +18795,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 302
-        width: 160
+        x: 1160.5175
+        y: 485.90802
+        width: 640
         height: 30
     - id: 4
       fields:
@@ -18869,9 +18866,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 554
-        width: 160
+        x: 1160.5175
+        y: 737.9081
+        width: 640
         height: 30
     - id: 5
       fields:
@@ -18941,9 +18938,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 638
-        width: 160
+        x: 1160.5175
+        y: 821.9081
+        width: 640
         height: 30
     - id: 6
       fields:
@@ -19012,9 +19009,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 76.32353
-        y: 708.2132
-        width: 160
+        x: 1160.5175
+        y: 905.9081
+        width: 640
         height: 30
     - id: 7
       fields:
@@ -19083,9 +19080,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 386
-        width: 160
+        x: 1160.5175
+        y: 569.908
+        width: 640
         height: 30
     - id: 8
       fields:
@@ -19154,9 +19151,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 470
-        width: 160
+        x: 1160.5175
+        y: 653.908
+        width: 640
         height: 30
     - id: 9
       fields:
@@ -19225,9 +19222,9 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 772
-        width: 160
+        x: 1160.5175
+        y: 989.9078
+        width: 640
         height: 30
     - id: 10
       fields:
@@ -19256,7 +19253,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: ...bye.
+        value: ...bye, Mary.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -19290,13 +19287,13 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 822
-        width: 160
+        x: 1160.5175
+        y: 1073.908
+        width: 640
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 19.169062, y: 72.41648}
-    canvasZoom: 0.39325038
+    canvasScrollPosition: {x: 703.60065, y: 206.1984}
+    canvasZoom: 0.5177494
   - id: 78
     fields:
     - title: Title
@@ -19445,7 +19442,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Worn books, moonflowers, and a scattered tea set line the shelves.
+        value: "Shelves of moonflower encyclopedias fill the space, nearly all alike\u2026
+          \na scattered tea set rests between them."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical

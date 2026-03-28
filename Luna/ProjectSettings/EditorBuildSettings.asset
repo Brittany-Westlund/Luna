@@ -10,31 +10,73 @@ EditorBuildSettings:
     guid: ce82c55f1f1ac0c4d99c7452dad77fe5
   - enabled: 1
     path: Assets/01Scenes--------------/keep/MainMenuNoManager.unity
-    guid: fa15f5e9c1566f340a45d456296e2f48
+    guid: c1e95fdea2380db48a364ed673711d43
   - enabled: 1
-    path: Assets/01Scenes--------------/BackupKeep/Level0_Tearoom.unity
-    guid: 4d9a85fda4fc7134782ef4a067a11c1a
-  - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level1_Meadow_old.unity
-    guid: 2bac7a4bf3c9a9e42a17d9b9feb3833d
+    path: Assets/01Scenes--------------/keep/Level1_Tearoom.unity
+    guid: 8dedbc30839574f4eb073442c1da0416
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0_Village.unity
+    path: Assets/01Scenes--------------/keep/Level2_Garden.unity
+    guid: aacbe27b335d15e449ec2914524ee783
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level3_Village.unity
     guid: bf82cbc8f5ec17c42ac74a0868bb1d71
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0_Glade.unity
+    path: Assets/01Scenes--------------/keep/Level4_Glade.unity
     guid: 9cc30fa34504456418310077dd4e2370
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0_Meadow.unity
+    path: Assets/01Scenes--------------/keep/Level5_Meadow.unity
     guid: 1dab5f4a25f167d408dbdb2eabf2e536
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0_BramblePatch.unity
+    path: Assets/01Scenes--------------/keep/Level6_Brambles.unity
     guid: 9a489feb2b607fc42880bd638301f0f0
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level7_Myre.unity
+    guid: e21d85da21cb0af428292a7fa1611111
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level8_River.unity
+    guid: 7beec4c5a609ca6499932e3c36271a50
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level9_Treehouse.unity
+    guid: 869be7508a9f60f41852ce0a04719f2b
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level10_Fairydell.unity
+    guid: 258bd5afe9a68d94786878e1edc39d71
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level11_Cave.unity
+    guid: ffe38a780fdb3fd4b98ec852574f2327
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level12_Approach.unity
+    guid: 40c248947ccef7843aceeb194efcfbe2
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level13_Settlement.unity
+    guid: 5761939989f91ad48a2fbaf60e94bcfe
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level14_Teahouse.unity
+    guid: e9465a8b9651e064c8fd1dc7ac9874b2
+  - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level15_Fairyveil.unity
+    guid: b46703ee91a210e4f9c3776c846301aa
   - enabled: 1
     path: Assets/01Scenes--------------/keep/Level_Beautiful.unity
     guid: 4d76a53605c671648b7e07135525c38a
   - enabled: 1
     path: Assets/01Scenes--------------/keep/Credits.unity
     guid: 07af134f32288f94d880e6e9e914fa82
+  - enabled: 0
+    path: Assets/01Scenes--------------/keep/LoadingScreen.unity
+    guid: 888394d52616e5e42b3b54c3f2bbd3eb
+  - enabled: 0
+    path: Assets/01Scenes--------------/keep/GameOver.unity
+    guid: b1cad753955e25f468e7313353c26c6b
+  - enabled: 0
+    path: Assets/01Scenes--------------/keep/XMainMenuNoManager_old.unity
+    guid: fa15f5e9c1566f340a45d456296e2f48
+  - enabled: 0
+    path: Assets/01Scenes--------------/BackupKeep/Level0_Tearoom.unity
+    guid: 4d9a85fda4fc7134782ef4a067a11c1a
+  - enabled: 0
+    path: Assets/01Scenes--------------/BackupKeep/Level1_Meadow_old.unity
+    guid: 2bac7a4bf3c9a9e42a17d9b9feb3833d
   - enabled: 0
     path: Assets/01Scenes--------------/keep/Level3_BramblePatch.unity
     guid: 76ba1ad90617a694e9fd5473b6c78977
@@ -48,14 +90,8 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/BackupKeep/Level0_Tutorial_old.unity
     guid: f0c0b18dd71938a46b805864a352d33a
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/LoadingScreen.unity
-    guid: 888394d52616e5e42b3b54c3f2bbd3eb
-  - enabled: 0
     path: Assets/CorgiEngine/Demos/LevelSelection/SplashScreen.unity
     guid: 7b96552fd1198fa4eaae54a2f975645e
-  - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level2_Mire.unity
-    guid: e21d85da21cb0af428292a7fa1611111
   - enabled: 0
     path: Assets/01Scenes--------------/Level3.unity
     guid: e063db0b755e9004ba3e8d48c5eae777
@@ -282,23 +318,11 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/LevelTesting.unity
     guid: ac03db28cf0954baf916a11624256a35
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/GameOver.unity
-    guid: b1cad753955e25f468e7313353c26c6b
-  - enabled: 0
     path: Assets/01Scenes--------------/Level2NewerOld.unity
     guid: 700882a1bd89c8347a4e283b7827ad65
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level5_RiverBank.unity
-    guid: 258bd5afe9a68d94786878e1edc39d71
-  - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level6_Cave.unity
-    guid: ffe38a780fdb3fd4b98ec852574f2327
-  - enabled: 0
     path: Assets/01Scenes--------------/StartScreen.unity
     guid: b1f070345301ccb46a6db77a5f4cd83a
-  - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0_SafeTearoom.unity
-    guid: 8dedbc30839574f4eb073442c1da0416
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 0c4807857f184584597ede5fbce1cc26,
       type: 2}

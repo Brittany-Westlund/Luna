@@ -11,7 +11,14 @@ public class StandInSwap_TargetScaledLuna : MonoBehaviour
     [SerializeField] private string lunaChildName = "Luna";
 
     [Header("Timing")]
-    [SerializeField] private float exitGraceTime = 0.1f;
+    [SerializeField] private float exitGraceTime = 0.03f;
+
+    [Header("Sensitivity")]
+    [Tooltip("If true, swaps immediately once the player is clearly outside the trigger bounds by this margin.")]
+    [SerializeField] private bool useImmediateOutsideMargin = true;
+
+    [Tooltip("How far outside the trigger bounds the player must be before swapping immediately.")]
+    [SerializeField] private float immediateOutsideMargin = 0.02f;
 
     [Header("Cleanup")]
     [SerializeField] private bool destroyAfterSwap = true;
@@ -94,6 +101,13 @@ public class StandInSwap_TargetScaledLuna : MonoBehaviour
 
         if (!hasEverBeenInside) return;
 
+        // If Luna is clearly outside, swap immediately
+        if (useImmediateOutsideMargin && IsClearlyOutside())
+        {
+            PerformSwap();
+            return;
+        }
+
         outsideTimer += Time.deltaTime;
 
         if (outsideTimer >= exitGraceTime)
@@ -107,10 +121,24 @@ public class StandInSwap_TargetScaledLuna : MonoBehaviour
         return triggerCollider.bounds.Intersects(playerCollider.bounds);
     }
 
+    private bool IsClearlyOutside()
+    {
+        Bounds triggerBounds = triggerCollider.bounds;
+        Bounds playerBounds = playerCollider.bounds;
+
+        bool outsideLeft = playerBounds.max.x < triggerBounds.min.x - immediateOutsideMargin;
+        bool outsideRight = playerBounds.min.x > triggerBounds.max.x + immediateOutsideMargin;
+        bool outsideBelow = playerBounds.max.y < triggerBounds.min.y - immediateOutsideMargin;
+        bool outsideAbove = playerBounds.min.y > triggerBounds.max.y + immediateOutsideMargin;
+
+        return outsideLeft || outsideRight || outsideBelow || outsideAbove;
+    }
+
     private void PerformSwap()
     {
-        hasSwapped = true;
+        if (hasSwapped) return;
 
+        hasSwapped = true;
         lunaRenderer.enabled = true;
 
         if (standInObject != null)

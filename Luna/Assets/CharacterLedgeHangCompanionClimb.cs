@@ -8,14 +8,16 @@ namespace MoreMountains.CorgiEngine
     public class CharacterLedgeClimbStabilizer : CharacterAbility
     {
         [Header("Behavior")]
-        [Tooltip("If true, smoothly moves from HangOffset to ClimbOffset during climb. If false, holds at HangOffset until teleport.")]
         public bool LerpDuringClimb = true;
-
-        [Tooltip("If true, forces gravity off during LedgeClimbing.")]
         public bool ForceGravityOffDuringClimb = true;
-
-        [Tooltip("Optional extra padding time to keep stabilizing after climb starts.")]
         public float ExtraHoldTime = 0f;
+
+        [Header("Timing")]
+        [Tooltip("How long to stay locked at the actual climb start position before moving upward.")]
+        public float MoveStartDelay = 0.07f;
+
+        [Tooltip("How long the move to ClimbOffset should take after the delay.")]
+        public float MoveDuration = 0.03f;
 
         protected CharacterLedgeHang _ledgeHang;
         protected FieldInfo _ledgeField;
@@ -24,6 +26,9 @@ namespace MoreMountains.CorgiEngine
         protected float _climbStartTime;
         protected bool _wasClimbing;
 
+        // NEW: store the real starting position when climb begins
+        protected Vector3 _actualClimbStartPosition;
+
         protected override void Initialization()
         {
             base.Initialization();
@@ -31,7 +36,6 @@ namespace MoreMountains.CorgiEngine
             _ledgeHang = _character?.FindAbility<CharacterLedgeHang>();
             if (_ledgeHang != null)
             {
-                // CharacterLedgeHang has: protected Ledge _ledge;
                 _ledgeField = typeof(CharacterLedgeHang).GetField("_ledge", BindingFlags.Instance | BindingFlags.NonPublic);
             }
         }
@@ -46,6 +50,9 @@ namespace MoreMountains.CorgiEngine
             {
                 _climbStartTime = Time.time;
                 _currentLedge = GetCurrentLedge();
+
+                // Capture the actual world position at the instant climbing begins
+                _actualClimbStartPosition = _controller.transform.position;
             }
 
             if (isClimbing && _currentLedge != null)
@@ -56,31 +63,39 @@ namespace MoreMountains.CorgiEngine
                     _controller.SetForce(Vector2.zero);
                 }
 
-                Vector3 hangPos = _currentLedge.transform.position + _currentLedge.HangOffset;
                 Vector3 climbPos = _currentLedge.transform.position + _currentLedge.ClimbOffset;
 
                 if (!LerpDuringClimb)
                 {
-                    _controller.transform.position = hangPos;
+                    _controller.transform.position = _actualClimbStartPosition;
                 }
                 else
                 {
-                    float duration = (_ledgeHang != null) ? _ledgeHang.ClimbingAnimationDuration : 0.5f;
-                    duration = Mathf.Max(0.01f, duration);
+                    float elapsed = Time.time - _climbStartTime;
 
-                    float t = (Time.time - _climbStartTime) / duration;
-                    t = Mathf.Clamp01(t);
+                    if (elapsed < MoveStartDelay)
+                    {
+                        // Hold exactly where Luna actually was when climb started
+                        _controller.transform.position = _actualClimbStartPosition;
+                    }
+                    else
+                    {
+                        float duration = Mathf.Max(0.001f, MoveDuration);
+                        float t = (elapsed - MoveStartDelay) / duration;
+                        t = Mathf.Clamp01(t);
 
-                    _controller.transform.position = Vector3.Lerp(hangPos, climbPos, t);
+                        // Smoothstep easing
+                        t = t * t * (3f - 2f * t);
+
+                        _controller.transform.position = Vector3.Lerp(_actualClimbStartPosition, climbPos, t);
+                    }
                 }
             }
 
-            // optional: continue holding for a tiny beat after climb state starts
             if (!isClimbing && _wasClimbing && ExtraHoldTime > 0f && _currentLedge != null)
             {
-                if (Time.time - _climbStartTime < ((_ledgeHang != null ? _ledgeHang.ClimbingAnimationDuration : 0.5f) + ExtraHoldTime))
+                if (Time.time - _climbStartTime < (MoveStartDelay + MoveDuration + ExtraHoldTime))
                 {
-                    // keep gravity off briefly (MM will re-enable gravity after teleport/detach)
                     _controller.GravityActive(false);
                 }
                 else
@@ -88,13 +103,21 @@ namespace MoreMountains.CorgiEngine
                     _currentLedge = null;
                 }
             }
+            else if (!isClimbing && _wasClimbing)
+            {
+                _currentLedge = null;
+            }
 
             _wasClimbing = isClimbing;
         }
 
         protected Ledge GetCurrentLedge()
         {
-            if (_ledgeHang == null || _ledgeField == null) { return null; }
+            if (_ledgeHang == null || _ledgeField == null)
+            {
+                return null;
+            }
+
             return _ledgeField.GetValue(_ledgeHang) as Ledge;
         }
     }

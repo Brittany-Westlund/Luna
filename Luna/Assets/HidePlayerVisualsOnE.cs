@@ -15,8 +15,6 @@ public class HidePlayerVisualsAndAudioOnE : MonoBehaviour
 
     private GameObject player;
     private Transform playerRoot;
-    private SpriteRenderer sr;
-    private Animator anim;
     private AudioSource[] audioSources;
     private Transform teacupHoldPoint;
 
@@ -54,16 +52,6 @@ public class HidePlayerVisualsAndAudioOnE : MonoBehaviour
     {
         isHidden = !isHidden;
 
-        if (sr != null)
-        {
-            sr.enabled = !isHidden;
-        }
-
-        if (anim != null)
-        {
-            anim.enabled = !isHidden;
-        }
-
         ApplyAudioState(isHidden);
         ApplyHeldTeacupVisualState(isHidden);
     }
@@ -71,16 +59,6 @@ public class HidePlayerVisualsAndAudioOnE : MonoBehaviour
     private void RestorePlayer()
     {
         isHidden = false;
-
-        if (sr != null)
-        {
-            sr.enabled = true;
-        }
-
-        if (anim != null)
-        {
-            anim.enabled = true;
-        }
 
         ApplyAudioState(false);
         ApplyHeldTeacupVisualState(false);
@@ -151,11 +129,7 @@ public class HidePlayerVisualsAndAudioOnE : MonoBehaviour
 
         player = targetPlayer;
         playerRoot = targetPlayer.transform.root;
-
-        sr = player.GetComponentInChildren<SpriteRenderer>(true);
-        anim = player.GetComponentInChildren<Animator>(true);
         audioSources = player.GetComponentsInChildren<AudioSource>(true);
-
         teacupHoldPoint = FindChildRecursive(playerRoot, teacupHoldPointName);
     }
 
@@ -174,7 +148,6 @@ public class HidePlayerVisualsAndAudioOnE : MonoBehaviour
         for (int i = 0; i < parent.childCount; i++)
         {
             Transform child = parent.GetChild(i);
-
             Transform result = FindChildRecursive(child, childName);
             if (result != null)
             {

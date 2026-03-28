@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using PixelCrushers.DialogueSystem;
 
 public class BookControllerSimple : MonoBehaviour
 {
@@ -115,15 +116,37 @@ public class BookControllerSimple : MonoBehaviour
         if (player == null)
             ResolvePlayer();
 
-        if (syncToWorldOpenBook)
-        {
-            if (Time.time >= nextOpenBookRefreshTime)
-            {
-                RefreshOpenBookRenderers();
-                nextOpenBookRefreshTime = Time.time + Mathf.Max(0.05f, openBookRefreshInterval);
-            }
+       if (syncToWorldOpenBook)
+{
+    if (Time.time >= nextOpenBookRefreshTime)
+    {
+        RefreshOpenBookRenderers();
+        nextOpenBookRefreshTime = Time.time + Mathf.Max(0.05f, openBookRefreshInterval);
+    }
 
-            bool shouldBeOpen = AnyOpenBookVisible();
+    bool shouldBeOpen = AnyOpenBookVisible();
+
+    if (shouldBeOpen != lastDetectedWorldBookVisible)
+    {
+        lastDetectedWorldBookVisible = shouldBeOpen;
+
+        if (debugLogs || logOpenBookSearch)
+            Debug.Log($"📖 World OpenBook visible changed -> {shouldBeOpen}");
+    }
+
+    // Only block OPEN/CLOSE syncing during dialogue.
+    // Do NOT return from Update(), so page turning still works.
+    if (!DialogueManager.isConversationActive)
+    {
+        if (shouldBeOpen && !bookOpen)
+        {
+            OpenBookFromWorldSync();
+        }
+        else if (!shouldBeOpen && bookOpen)
+        {
+            CloseBookFromWorldSync();
+        }
+    }
 
             if (shouldBeOpen != lastDetectedWorldBookVisible)
             {

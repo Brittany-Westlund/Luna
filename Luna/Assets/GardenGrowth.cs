@@ -1,85 +1,292 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
+[DisallowMultipleComponent]
 public class GardenGrowth : MonoBehaviour
 {
     [Header("References")]
-    public GameObject grassObject;         // Grass GameObject (can start disabled)
-    public SpriteRenderer grassRenderer;   // SpriteRenderer on Grass
+    public GameObject grassObject;
+    public SpriteRenderer grassRenderer;
+    public GardenSpot gardenSpot;
 
-    [Header("Settings")]
-    public float restDuration = 3f;        // Time Luna must rest
-    public float fadeDuration = 1f;        // Fade-in duration
+    [Header("Initial State")]
+    public bool startGrown = false;
+
+    [Header("Save Settings")]
+    public string saveKey = "";
+    public bool includeSceneNameInKey = true;
+
+    [Header("Growth Settings")]
+    public float restDuration = 3f;
+    public float fadeDuration = 1f;
+    public bool onlyGrowOnce = true;
+
+    [Header("Colors")]
+    public Color grownIdleColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+    public Color grownCollideColor = Color.white;
+    public float colorShiftDuration = 0.25f;
 
     [Header("Audio")]
-    public AudioClip growthSFX;            // Growth sound
+    public AudioClip growthSFX;
     [Range(0f, 1f)] public float growthVolume = 1f;
-    public float soundDelay = 0f;          // Delay after restDuration before sound plays
+    public float soundDelay = 0f;
 
     private Coroutine restCoroutine;
+    private Coroutine fadeCoroutine;
+    private Coroutine colorShiftCoroutine;
     private AudioSource audioSource;
 
-    void Awake()
-    {
-        // Make sure grass is inactive at start if not already
-        if (grassObject != null)
-            grassObject.SetActive(false);
+    private bool hasGrown = false;
+    private bool isGrowing = false;
+    private bool feetInside = false;
 
+    private string resolvedSaveKey;
+
+    private void Awake()
+    {
         if (grassRenderer == null && grassObject != null)
             grassRenderer = grassObject.GetComponent<SpriteRenderer>();
 
-        // Ensure AudioSource
+        if (gardenSpot == null)
+            gardenSpot = GetComponent<GardenSpot>();
+
+        resolvedSaveKey = BuildResolvedSaveKey();
+
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
-        {
             audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.playOnAwake = false;
-        }
-    }
 
-    void OnTriggerStay2D(Collider2D other)
-    {
-        var rest = other.GetComponent<LunaRest>();
-        if (rest != null && rest.isResting)
-        {
-            if (restCoroutine == null)
-                restCoroutine = StartCoroutine(WaitAndGrow(rest));
-        }
-    }
+        audioSource.playOnAwake = false;
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        var rest = other.GetComponent<LunaRest>();
-        if (rest != null)
+        hasGrown = LoadGrowthState();
+        isGrowing = false;
+        feetInside = false;
+
+        if (hasGrown)
         {
-            if (restCoroutine != null)
+            ApplyGrownVisualImmediate();
+
+            if (gardenSpot != null)
             {
-                StopCoroutine(restCoroutine);
-                restCoroutine = null;
+                gardenSpot.Reveal();
+                gardenSpot.SetSparkleActive(false);
             }
+        }
+        else
+        {
+            ApplyHiddenVisual();
+
+            if (gardenSpot != null)
+                gardenSpot.Hide();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (!hasGrown || isGrowing)
+            return;
+
+        if (grassObject != null && !grassObject.activeSelf)
+            grassObject.SetActive(true);
+
+        if (grassRenderer != null)
+        {
+            Color c = grassRenderer.color;
+            c.a = 1f;
+            grassRenderer.color = c;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.CompareTag("PlayerFeet"))
+            return;
+
+        if (other.GetComponentInParent<LunaRest>() == null)
+            return;
+
+        feetInside = true;
+
+        if (hasGrown)
+        {
+            ForceStopFade();
+            ShiftToCollideColor();
+
+            if (gardenSpot != null)
+                gardenSpot.SetSparkleActive(true);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (!other.CompareTag("PlayerFeet"))
+            return;
+
+        LunaRest rest = other.GetComponentInParent<LunaRest>();
+        if (rest == null)
+            return;
+
+        feetInside = true;
+
+        if (hasGrown || isGrowing)
+            return;
+
+        if (rest.isResting && restCoroutine == null)
+            restCoroutine = StartCoroutine(WaitAndGrow(rest));
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("PlayerFeet"))
+            return;
+
+        if (other.GetComponentInParent<LunaRest>() == null)
+            return;
+
+        feetInside = false;
+        StopRestCoroutine();
+
+        if (hasGrown)
+        {
+            ForceStopFade();
+            ApplyGrownIdle();
+
+            if (gardenSpot != null)
+                gardenSpot.SetSparkleActive(false);
         }
     }
 
     private IEnumerator WaitAndGrow(LunaRest rest)
     {
-        yield return null; // ensures trigger and rest state both settled
-
         float elapsed = 0f;
+
         while (elapsed < restDuration)
         {
-            if (!rest.isResting) yield break;
+            if (rest == null || !rest.isResting || !feetInside)
+            {
+                restCoroutine = null;
+                yield break;
+            }
+
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        if (grassObject != null && !grassObject.activeSelf)
-        {
+        restCoroutine = null;
+
+        if (onlyGrowOnce && hasGrown)
+            yield break;
+
+        Grow();
+    }
+
+    private void Grow()
+    {
+        hasGrown = true;
+        isGrowing = true;
+
+        SaveGrowthState(true);
+
+        if (grassObject != null)
             grassObject.SetActive(true);
-            StartCoroutine(FadeInGrass());
-            if (growthSFX != null) StartCoroutine(PlayGrowthSound());
+
+        if (gardenSpot != null)
+        {
+            gardenSpot.Reveal();
+            gardenSpot.SetSparkleActive(feetInside);
         }
 
-        restCoroutine = null;
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeIn());
+
+        if (growthSFX != null)
+            StartCoroutine(PlayGrowthSound());
+    }
+
+    private IEnumerator FadeIn()
+    {
+        if (grassRenderer == null)
+        {
+            isGrowing = false;
+            fadeCoroutine = null;
+            yield break;
+        }
+
+        Color target = feetInside ? grownCollideColor : grownIdleColor;
+        target.a = 1f;
+
+        Color start = target;
+        start.a = 0f;
+
+        grassRenderer.color = start;
+
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / fadeDuration);
+
+            Color c = Color.Lerp(start, target, t);
+            c.a = t;
+            grassRenderer.color = c;
+
+            yield return null;
+        }
+
+        grassRenderer.color = target;
+        isGrowing = false;
+        fadeCoroutine = null;
+    }
+
+    private void ShiftToCollideColor()
+    {
+        StartColorShift(grownCollideColor);
+    }
+
+    private void ShiftToIdleColor()
+    {
+        StartColorShift(grownIdleColor);
+    }
+
+    private void StartColorShift(Color target)
+    {
+        if (!hasGrown || grassRenderer == null || isGrowing)
+            return;
+
+        target.a = 1f;
+
+        if (colorShiftCoroutine != null)
+            StopCoroutine(colorShiftCoroutine);
+
+        colorShiftCoroutine = StartCoroutine(ColorShift(target));
+    }
+
+    private IEnumerator ColorShift(Color target)
+    {
+        Color start = grassRenderer.color;
+        start.a = 1f;
+        target.a = 1f;
+
+        float elapsed = 0f;
+
+        while (elapsed < colorShiftDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / colorShiftDuration);
+
+            Color c = Color.Lerp(start, target, t);
+            c.a = 1f;
+            grassRenderer.color = c;
+
+            yield return null;
+        }
+
+        grassRenderer.color = target;
+        colorShiftCoroutine = null;
     }
 
     private IEnumerator PlayGrowthSound()
@@ -87,27 +294,82 @@ public class GardenGrowth : MonoBehaviour
         if (soundDelay > 0f)
             yield return new WaitForSeconds(soundDelay);
 
-        audioSource.PlayOneShot(growthSFX, growthVolume);
+        if (audioSource != null && growthSFX != null)
+            audioSource.PlayOneShot(growthSFX, growthVolume);
     }
 
-    private IEnumerator FadeInGrass()
+    private void ForceStopFade()
     {
-        float elapsed = 0f;
-        Color c = grassRenderer.color;
-
-        while (elapsed < fadeDuration)
+        if (fadeCoroutine != null)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / fadeDuration);
-            c.a = t;
-            grassRenderer.color = c;
-            yield return null;
+            StopCoroutine(fadeCoroutine);
+            fadeCoroutine = null;
         }
 
-        // lock to fully visible
-        c.a = 1f;
-        grassRenderer.color = c;
+        isGrowing = false;
+    }
+
+    private void ApplyGrownVisualImmediate()
+    {
+        if (grassObject != null)
+            grassObject.SetActive(true);
+
+        ApplyGrownIdle();
+    }
+
+    private void ApplyGrownIdle()
+    {
+        if (grassRenderer != null)
+        {
+            Color c = grownIdleColor;
+            c.a = 1f;
+            grassRenderer.color = c;
+        }
+    }
+
+    private void ApplyHiddenVisual()
+    {
+        if (grassObject != null)
+            grassObject.SetActive(false);
+
+        if (grassRenderer != null)
+        {
+            Color c = grownIdleColor;
+            c.a = 0f;
+            grassRenderer.color = c;
+        }
+    }
+
+    private void StopRestCoroutine()
+    {
+        if (restCoroutine != null)
+        {
+            StopCoroutine(restCoroutine);
+            restCoroutine = null;
+        }
+    }
+
+    private bool LoadGrowthState()
+    {
+        if (PlayerPrefs.HasKey(resolvedSaveKey))
+            return PlayerPrefs.GetInt(resolvedSaveKey) == 1;
+
+        return startGrown;
+    }
+
+    private void SaveGrowthState(bool grown)
+    {
+        PlayerPrefs.SetInt(resolvedSaveKey, grown ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    private string BuildResolvedSaveKey()
+    {
+        string baseKey = string.IsNullOrWhiteSpace(saveKey) ? transform.name : saveKey;
+
+        if (includeSceneNameInKey)
+            return SceneManager.GetActiveScene().name + "_" + baseKey;
+
+        return baseKey;
     }
 }
-
-/// perfect

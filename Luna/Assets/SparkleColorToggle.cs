@@ -1,4 +1,4 @@
-using UnityEngine;
+/* using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
@@ -67,4 +67,4 @@ public class SparkleColorToggle : MonoBehaviour
         sr.color = target;
         fadeRoutine = null;
     }
-}
+} */

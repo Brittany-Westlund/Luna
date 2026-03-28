@@ -1,12 +1,16 @@
 using UnityEngine;
+using PixelCrushers.DialogueSystem;
 
 public class OpenBookTrigger : MonoBehaviour
 {
     [Header("Interaction")]
-    public KeyCode openKey = KeyCode.R;
+    public KeyCode openKey = KeyCode.E;
 
     [Header("Distance Settings")]
     public float interactionRadius = 2f;
+
+    [Header("Dialogue Blocking")]
+    public bool blockWhileDialogueActive = true;
 
     private Transform player;
     private SpriteRenderer bookRenderer;
@@ -36,10 +40,17 @@ public class OpenBookTrigger : MonoBehaviour
 
     void Update()
     {
-        if (player == null) return;
+        if (player == null)
+            return;
 
         float distance = Vector2.Distance(player.position, transform.position);
         bool playerInRange = distance <= interactionRadius;
+
+        // If dialogue is active, this trigger should not respond to input.
+        if (blockWhileDialogueActive && DialogueManager.isConversationActive)
+        {
+            return;
+        }
 
         // Toggle book
         if (playerInRange && Input.GetKeyDown(openKey))

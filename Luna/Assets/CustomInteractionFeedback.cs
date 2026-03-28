@@ -77,7 +77,10 @@ public class CustomInteractionFeedback : MonoBehaviour
 
     [Header("Dismiss / Turn Off")]
     public bool allowPressEToTurnOff = false;
-    public KeyCode dismissKey = KeyCode.E;
+    public List<KeyCode> dismissKeys = new List<KeyCode>()
+    {
+        KeyCode.E
+    };
 
     [Tooltip("If true, the player must be inside this feedback trigger to dismiss it.")]
     public bool mustPlayerBeInTrigger = true;
@@ -164,9 +167,13 @@ public class CustomInteractionFeedback : MonoBehaviour
         if (mustPlayerBeInTrigger && !playerInRange)
             return;
 
-        if (Input.GetKeyDown(dismissKey))
+        foreach (KeyCode key in dismissKeys)
         {
-            DismissFeedback();
+            if (Input.GetKeyDown(key))
+            {
+                DismissFeedback();
+                break;
+            }
         }
     }
 

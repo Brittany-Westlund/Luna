@@ -3,15 +3,26 @@ using System.Collections;
 
 public class SproutAndLightManager : MonoBehaviour
 {
-    [HideInInspector] public bool isHeld, isPlanted, isPlayerNearby;
+    [HideInInspector] public bool isHeld;
+    [HideInInspector] public bool isPlanted;
+    [HideInInspector] public bool isPlayerNearby;
 
     [Header("Growth Settings")]
     public int maxGrowthStages = 3;
-    public float growthIncrement = 0.1f;
+    public float growthScalePerStage = 0.15f;
+    public float growthRisePerStage = 0.08f;
+
+    [Header("Growth Target")]
+    [Tooltip("Only this transform will scale/rise as the flower grows. Do NOT use the flower root.")]
+    public Transform growthTarget;
+
+    [Header("Hint Anchor")]
+    [Tooltip("Optional anchor for hint positioning. Defaults to the flower root.")]
+    public Transform hintAnchor;
 
     [Header("Spore Hint Icon (prefers child)")]
     public GameObject sporeHintPrefab;
-    public string sporeChildName = "SporeIcon";
+    public string sporeChildName = "SporePrompt";
     public Vector3 sporeHintOffset = new Vector3(0f, 0.5f, 0f);
     public float sporeHintScale = 1f;
 
@@ -20,77 +31,145 @@ public class SproutAndLightManager : MonoBehaviour
     public Vector3 lightHintOffset = new Vector3(0f, 0.5f, 0f);
     public float lightHintScale = 1f;
 
+    [Header("Hint Rise While Growing")]
+    [Tooltip("Extra upward motion for hints as the flower grows, without scaling the hints themselves.")]
+    public float hintRisePerStage = 0.08f;
+
+    [Header("Player Prompt Detection")]
+    [Tooltip("Optional dedicated player prompt trigger. If left empty, the script will try to find a child named PlayerHead under the Player.")]
+    public Transform playerHeadOverride;
+    [Tooltip("Child name searched under the Player object when playerHeadOverride is not assigned.")]
+    public string playerHeadName = "PlayerHead";
+    [Tooltip("Fallback distance check from the PlayerHead/root to this flower if touching is not detected.")]
+    public float playerPromptDistance = 0.5f;
+
     [Header("Lit Flower Sprite")]
     public SpriteRenderer litFlowerRenderer;
 
     [Header("Debug")]
     public bool debugLogs = false;
 
-    private Vector3 _initialWorldScale;
     private Vector3 _initialWorldPos;
     private int _currentStage;
     private bool _isFullyGrown;
     public bool IsFullyGrown => _isFullyGrown;
 
     private bool hasBeenLit = false;
+    private bool hasBeenLitAlreadyCounted = false;
+
     private GameObject _sporeHintGO;
     private GameObject _lightHintGO;
 
-    const float GARDEN_CHECK_RADIUS = 0.1f;
+    private Vector3 _growthBaseLocalScale = Vector3.one;
+    private Vector3 _growthBaseLocalPosition = Vector3.zero;
 
-    void Awake()
+    private Vector3 _sporeHintBaseLocalScale = Vector3.one;
+    private Vector3 _lightHintBaseLocalScale = Vector3.one;
+
+    private const float GARDEN_CHECK_RADIUS = 0.1f;
+    private const float MIN_SCALE_EPSILON = 0.0001f;
+
+    private Transform _cachedPlayerRoot;
+    private Transform _cachedPlayerHead;
+    private Collider2D _cachedFlowerCollider;
+    private Collider2D _cachedPlayerHeadCollider;
+
+    private void Awake()
     {
-        _initialWorldScale = transform.lossyScale;
+        if (growthTarget == null)
+            growthTarget = transform;
+
+        if (hintAnchor == null)
+            hintAnchor = transform;
+
         _initialWorldPos = transform.position;
         _currentStage = 0;
         _isFullyGrown = false;
 
+        _growthBaseLocalScale = growthTarget.localScale;
+        _growthBaseLocalPosition = growthTarget.localPosition;
+
         if (litFlowerRenderer != null)
             litFlowerRenderer.enabled = false;
 
-        // locate existing spore child
-        var child = transform.Find(sporeChildName);
-        if (child != null)
-        {
-            _sporeHintGO = child.gameObject;
-            _sporeHintGO.SetActive(false);
-        }
+        _cachedFlowerCollider = GetComponent<Collider2D>();
+
+        CacheSporeHintReference();
+        CacheLightHintReference();
+        CachePlayerPromptReferences();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnEnable()
     {
-        if (!other.CompareTag("Player")) return;
+        CachePlayerPromptReferences();
+    }
+
+    private void Update()
+    {
+        isPlayerNearby = IsPlayerPromptCloseEnough();
+        TryShowHint();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!IsPromptCollider(other))
+            return;
+
         isPlayerNearby = true;
         TryShowHint(force: true);
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
-        if (!other.CompareTag("Player")) return;
+        if (!IsPromptCollider(other))
+            return;
+
+        isPlayerNearby = true;
         TryShowHint(force: true);
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag("Player")) return;
+        if (!IsPromptCollider(other))
+            return;
+
         isPlayerNearby = false;
         HideSporeHint();
         HideLightHint();
     }
 
-    bool IsInOrNearGarden()
+    private bool IsPromptCollider(Collider2D other)
+    {
+        if (other == null)
+            return false;
+
+        CachePlayerPromptReferences();
+
+        if (_cachedPlayerHeadCollider != null)
+            return other == _cachedPlayerHeadCollider;
+
+        return other.CompareTag("Player");
+    }
+
+    private bool IsInOrNearGarden()
     {
         for (Transform t = transform; t != null; t = t.parent)
-            if (t.CompareTag("Garden")) return true;
+        {
+            if (t.CompareTag("Garden"))
+                return true;
+        }
 
-        var hits = Physics2D.OverlapCircleAll(transform.position, GARDEN_CHECK_RADIUS);
-        foreach (var c in hits)
-            if (c.CompareTag("Garden")) return true;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, GARDEN_CHECK_RADIUS);
+        foreach (Collider2D c in hits)
+        {
+            if (c.CompareTag("Garden"))
+                return true;
+        }
 
         return false;
     }
 
-    void TryShowHint(bool force = false)
+    private void TryShowHint(bool force = false)
     {
         if (!isPlayerNearby || isHeld || !IsInOrNearGarden())
         {
@@ -101,774 +180,384 @@ public class SproutAndLightManager : MonoBehaviour
 
         if (!_isFullyGrown)
             ShowSporeHint(force);
-        else
+        else if (!hasBeenLit)
             ShowLightHint(force);
+        else
+            HideLightHint();
     }
 
     public void ResetOnGrowth()
     {
-        if (!IsInOrNearGarden()) return;
-        if (_isFullyGrown) return;
+        if (!IsInOrNearGarden())
+        {
+            if (debugLogs)
+                Debug.Log($"[SproutAndLightManager] {name} cannot grow outside of a garden.");
+            return;
+        }
+
+        if (_isFullyGrown)
+        {
+            if (debugLogs)
+                Debug.Log($"[SproutAndLightManager] {name} is already fully grown.");
+            return;
+        }
 
         isPlanted = true;
 
-// Grow first so collider & transform are settled
-_currentStage = Mathf.Min(_currentStage + 1, maxGrowthStages);
-float targetScale = _initialWorldScale.x + growthIncrement * _currentStage;
-transform.localScale = Vector3.one * targetScale;
-
-// 🌱 Now safely show the spore hint
-StartCoroutine(ShowSporeHintNextFrame());
-ForceShowSporeHint();
-
-
-        // Continue with growth logic
         _currentStage = Mathf.Min(_currentStage + 1, maxGrowthStages);
-
-        // grow flower only
-        targetScale = _initialWorldScale.x + growthIncrement * _currentStage;
-        transform.localScale = Vector3.one * targetScale;
+        ApplyGrowthVisuals();
 
         if (_currentStage >= maxGrowthStages)
         {
             _isFullyGrown = true;
             HideSporeHint();
-            if (isPlayerNearby) ShowLightHint(true);
+
+            if (!hasBeenLit && isPlayerNearby)
+                ShowLightHint(true);
         }
         else
         {
-            if (isPlayerNearby) ShowSporeHint(true);
+            StartCoroutine(ShowSporeHintNextFrame());
+
+            if (isPlayerNearby)
+                ShowSporeHint(true);
+        }
+
+        if (debugLogs)
+        {
+            Debug.Log($"[SproutAndLightManager] {name} grew to stage {_currentStage}/{maxGrowthStages}. FullyGrown={_isFullyGrown}");
         }
     }
-    
-   private IEnumerator ShowSporeHintNextFrame()
-{
-    // Wait one frame so Unity updates physics and trigger states
-    yield return new WaitForFixedUpdate();
 
-
-    // Check player and colliders manually
-    var player = GameObject.FindGameObjectWithTag("Player");
-    if (player == null) yield break;
-
-    var playerCollider = player.GetComponent<Collider2D>();
-    var myCollider = GetComponent<Collider2D>();
-
-    if (playerCollider == null || myCollider == null) yield break;
-
-    // If Luna is overlapping OR within a short distance
-    bool closeEnough = myCollider.IsTouching(playerCollider) ||
-                       Vector2.Distance(transform.position, player.transform.position) < 0.5f;
-
-    if (closeEnough && !_isFullyGrown && !isHeld)
+    private void ApplyGrowthVisuals()
     {
-        ShowSporeHint();
-        if (debugLogs)
-            Debug.Log($"🌱 Forced spore hint shown for {name} right after planting.");
+        if (growthTarget == null)
+            return;
+
+        float scaleMultiplier = 1f + (growthScalePerStage * _currentStage);
+        float riseAmount = growthRisePerStage * _currentStage;
+
+        growthTarget.localScale = _growthBaseLocalScale * scaleMultiplier;
+        growthTarget.localPosition = _growthBaseLocalPosition + new Vector3(0f, riseAmount, 0f);
     }
-}
 
-   
-    /// <summary>
-/// Forces the spore hint to show immediately if Luna is colliding,
-/// regardless of stage or trigger state. Use this to guarantee visibility.
-/// </summary>
-public void ForceShowSporeHint()
-{
-    if (_isFullyGrown || isHeld) return;
-
-    // Check if Luna is colliding with this flower
-    var player = GameObject.FindGameObjectWithTag("Player");
-    if (player == null) return;
-
-    var myCollider = GetComponent<Collider2D>();
-    var playerCollider = player.GetComponent<Collider2D>();
-    if (myCollider == null || playerCollider == null) return;
-
-    if (myCollider.IsTouching(playerCollider))
+    private IEnumerator ShowSporeHintNextFrame()
     {
-        ShowSporeHint();
-        if (debugLogs)
-            Debug.Log($"🌱 Force showing spore hint for {name} because Luna is touching.");
+        yield return new WaitForFixedUpdate();
+
+        if (_isFullyGrown || isHeld)
+            yield break;
+
+        if (IsPlayerPromptCloseEnough())
+        {
+            ShowSporeHint(true);
+
+            if (debugLogs)
+                Debug.Log($"🌱 Forced spore hint shown for {name} right after planting.");
+        }
     }
-}
 
-
-    void ShowSporeHint(bool force = false)
+    public void ForceShowSporeHint()
     {
-        if (_currentStage >= maxGrowthStages || !IsInOrNearGarden()) { HideSporeHint(); return; }
+        if (_isFullyGrown || isHeld)
+            return;
+
+        if (IsPlayerPromptCloseEnough())
+        {
+            ShowSporeHint(true);
+
+            if (debugLogs)
+                Debug.Log($"🌱 Force showing spore hint for {name} because PlayerHead is close.");
+        }
+    }
+
+    private bool IsPlayerPromptCloseEnough()
+    {
+        CachePlayerPromptReferences();
+
+        Transform promptTarget = _cachedPlayerHead != null ? _cachedPlayerHead : _cachedPlayerRoot;
+        if (promptTarget == null)
+            return false;
+
+        if (_cachedFlowerCollider == null)
+            _cachedFlowerCollider = GetComponent<Collider2D>();
+
+        if (_cachedFlowerCollider != null && _cachedPlayerHeadCollider != null)
+        {
+            if (_cachedFlowerCollider.IsTouching(_cachedPlayerHeadCollider))
+                return true;
+        }
+
+        float distance = Vector2.Distance(transform.position, promptTarget.position);
+        return distance < playerPromptDistance;
+    }
+
+    private void ShowSporeHint(bool force = false)
+    {
+        if (_currentStage >= maxGrowthStages || !IsInOrNearGarden())
+        {
+            HideSporeHint();
+            return;
+        }
 
         if (_sporeHintGO == null)
+            CacheSporeHintReference();
+
+        if (_sporeHintGO == null && sporeHintPrefab != null)
         {
-            var child = transform.Find(sporeChildName);
-            if (child != null)
-                _sporeHintGO = child.gameObject;
-            else if (sporeHintPrefab != null)
-                _sporeHintGO = Instantiate(sporeHintPrefab, transform);
+            _sporeHintGO = Instantiate(sporeHintPrefab, transform);
+            _sporeHintBaseLocalScale = _sporeHintGO.transform.localScale;
         }
 
         if (_sporeHintGO != null)
         {
             _sporeHintGO.SetActive(true);
             _sporeHintGO.transform.localPosition = sporeHintOffset;
-            // Keep constant world size each frame (see LateUpdate)
+
             if (debugLogs && force)
                 Debug.Log($"🌱 Spore hint active for {name}");
         }
     }
 
-    void HideSporeHint()
+    private void HideSporeHint()
     {
-        if (_sporeHintGO != null) _sporeHintGO.SetActive(false);
+        if (_sporeHintGO != null)
+            _sporeHintGO.SetActive(false);
     }
 
-    void ShowLightHint(bool force = false)
+    private void ShowLightHint(bool force = false)
     {
-        if (!_isFullyGrown || lightHintPrefab == null || !IsInOrNearGarden()) return;
+        if (!_isFullyGrown || !IsInOrNearGarden() || hasBeenLit)
+            return;
 
         if (_lightHintGO == null)
+            CacheLightHintReference();
+
+        if (_lightHintGO == null && lightHintPrefab != null)
         {
             _lightHintGO = Instantiate(lightHintPrefab, transform);
+            _lightHintBaseLocalScale = _lightHintGO.transform.localScale;
             _lightHintGO.transform.localPosition = lightHintOffset;
-            _lightHintGO.transform.localScale = Vector3.one * lightHintScale;
         }
 
-        _lightHintGO.SetActive(true);
-        if (debugLogs && force)
-            Debug.Log($"🌕 Light hint active for {name}");
+        if (_lightHintGO != null)
+        {
+            _lightHintGO.SetActive(true);
+
+            if (debugLogs && force)
+                Debug.Log($"🌕 Light hint active for {name}");
+        }
     }
 
     public void HideLightHint()
     {
-        if (_lightHintGO != null) _lightHintGO.SetActive(false);
-    }
-
-    public void GiveLight()
-    {
-        if (!_isFullyGrown || !isPlayerNearby || !IsInOrNearGarden()) return;
-
-        if (litFlowerRenderer != null)
-            litFlowerRenderer.enabled = true;
-
-        if (!hasBeenLit)
-        {
-            ScoreManager.Instance.AddPoint();
-            hasBeenLit = true;
-        }
-
-        HideLightHint();
-    }
-
-    void LateUpdate()
-    {
-        // keep hint offsets & constant world size
-        if (_sporeHintGO && _sporeHintGO.activeSelf)
-        {
-            _sporeHintGO.transform.position = transform.position + sporeHintOffset;
-            _sporeHintGO.transform.rotation = Quaternion.identity;
-
-            // counter-scale so it stays constant
-            Vector3 invScale = new Vector3(
-                1f / transform.lossyScale.x,
-                1f / transform.lossyScale.y,
-                1f / transform.lossyScale.z
-            );
-            _sporeHintGO.transform.localScale = Vector3.Scale(invScale, Vector3.one * sporeHintScale);
-        }
-
-        if (_lightHintGO && _lightHintGO.activeSelf)
-        {
-            _lightHintGO.transform.position = transform.position + lightHintOffset;
-            _lightHintGO.transform.rotation = Quaternion.identity;
-
-            Vector3 invScale = new Vector3(
-                1f / transform.lossyScale.x,
-                1f / transform.lossyScale.y,
-                1f / transform.lossyScale.z
-            );
-            _lightHintGO.transform.localScale = Vector3.Scale(invScale, Vector3.one * lightHintScale);
-        }
-    }
-
-    // Optional compatibility
-    public void ResetInitialPosition()
-    {
-        _initialWorldPos = transform.position;
-    }
-    // Restore for callers in Garden* / Flower* managers
-public void ClearAllHints()
-{
-    HideSporeHint();
-    HideLightHint();
-}
-
-// Restore for TeapotReceiver
-public void BrewFlower()
-{
-    if (debugLogs) Debug.Log($"[BrewFlower] {name} — hasBeenLit={hasBeenLit}");
-
-    if (hasBeenLit)
-    {
-        // remove a point if already lit
-        ScoreManager.Instance.points = Mathf.Max(0, ScoreManager.Instance.points - 1);
-        ScoreManager.Instance.UpdatePointsText();
-        hasBeenLit = false;
-
-        if (litFlowerRenderer != null)
-            litFlowerRenderer.enabled = false;
-    }
-}
-
-}
-
-
-
-/* using UnityEngine;
-using System.Collections;
-
-public class SproutAndLightManager : MonoBehaviour
-{
-    [HideInInspector] public bool isHeld, isPlanted, isPlayerNearby;
-
-    [Header("Growth Settings")]
-    public int   maxGrowthStages    = 3;
-    public float growthIncrement    = 0.1f;
-
-    [Header("Spore Hint Icon")]
-    public GameObject sporeHintPrefab;
-    public Vector3[]   hintOffsets;   // length ≥ maxGrowthStages
-    public float[]     hintScales;    // length ≥ maxGrowthStages
-
-    [Header("Light Hint Icon")]
-    public GameObject lightHintPrefab;
-    public Vector3    lightHintOffset;
-    public float      lightHintScale  = 1f;
-
-    [Header("Lit Flower Sprite")]
-    public SpriteRenderer litFlowerRenderer;
-
-    [Header("Debug")]
-    public bool debugLogs = false;
-
-    // Internals
-    Vector3   _initialWorldScale;
-    Vector3   _initialWorldPos;
-    int       _currentStage;
-    bool      _isFullyGrown;
-    public bool IsFullyGrown => _isFullyGrown;
-
-    private bool hasBeenLit = false;
-
-    GameObject _sporeHintGO;
-    Vector3    _sporeHintOffset;
-    GameObject _lightHintGO;
-
-    // Only‑one‑hint globals
-    static SproutAndLightManager _activeSporeOwner;
-    static SproutAndLightManager _activeLightOwner;
-
-    // how close counts as "near" a garden if not parented under one
-    const float GARDEN_CHECK_RADIUS = 0.1f;
-
-    void Awake()
-    {
-        _initialWorldScale = transform.lossyScale;
-        _initialWorldPos   = transform.position;
-        _currentStage      = 0;
-        _isFullyGrown      = false;
-
-        if (litFlowerRenderer != null)
-            litFlowerRenderer.enabled = false;
-
-        HideSporeHint();
-        HideLightHint();
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-{
-    if (!other.CompareTag("Player")) return;
-    isPlayerNearby = true;
-
-    // Re-show hint immediately upon entry
-    TryShowHint();
-}
-
-void OnTriggerStay2D(Collider2D other)
-{
-    if (!other.CompareTag("Player")) return;
-
-    // Safety: if something hid it mid-stay (e.g., a quick growth or reposition), show again
-    if (!_isFullyGrown && (_sporeHintGO == null || !_sporeHintGO.activeSelf))
-    {
-        TryShowHint();
-    }
-    else if (_isFullyGrown && (_lightHintGO == null || !_lightHintGO.activeSelf))
-    {
-        TryShowHint();
-    }
-}
-
-void OnTriggerExit2D(Collider2D other)
-{
-    if (!other.CompareTag("Player")) return;
-    isPlayerNearby = false;
-
-    // Hide both hints on exit
-    HideSporeHint();
-    HideLightHint();
-}
-
-    /// <summary>
-    /// Central gatekeeper for hint‑spawning logic.
-    /// </summary>
-    void TryShowHint()
-    {
-        // only if player is nearby, not held, and in/near a Garden
-        if (!isPlayerNearby || isHeld || !IsInOrNearGarden())
-        {
-            HideSporeHint();
-            HideLightHint();
-            return;
-        }
-
-        // show spore if not fully grown, otherwise light
-        if (!_isFullyGrown)
-            ShowSporeHint();
-        else
-            ShowLightHint();
-    }
-
-    /// <summary>
-    /// Checks if this flower is parented under a "Garden" or near one by overlap.
-    /// </summary>
-    bool IsInOrNearGarden()
-    {
-        // 1) parent‐tag check
-        for (Transform t = transform; t != null; t = t.parent)
-            if (t.CompareTag("Garden"))
-                return true;
-
-        // 2) overlap check
-        var hits = Physics2D.OverlapCircleAll(transform.position, GARDEN_CHECK_RADIUS);
-        foreach (var c in hits)
-            if (c.CompareTag("Garden"))
-                return true;
-
-        return false;
-    }
-
-    public void ResetInitialPosition()
-{
-    _initialWorldPos = transform.position;
-}
-
-
-   public void ResetOnGrowth()
-{
-    if (!IsInOrNearGarden())
-    {
-        Debug.Log("❗ Cannot grow flower outside of a garden.");
-        return;
-    }
-
-    if (_isFullyGrown) return;
-
-    isPlanted = true;
-    _currentStage = Mathf.Min(_currentStage + 1, maxGrowthStages);
-
-    // 🌱 Pivot-based growth: scale only
-    float targetScale = _initialWorldScale.x + growthIncrement * _currentStage;
-    transform.localScale = Vector3.one * targetScale;
-
-    // 🔄 Hint refresh
-    HideSporeHint();
-    HideLightHint();
-    if (isPlayerNearby)
-        TryShowHint();
-
-    // 🌕 Fully grown: spawn light hint once
-    if (_currentStage >= maxGrowthStages && !_isFullyGrown)
-    {
-        _isFullyGrown = true;
-        if (lightHintPrefab != null && _lightHintGO == null)
-        {
-            _lightHintGO = Instantiate(
-                lightHintPrefab,
-                transform.position + lightHintOffset,
-                Quaternion.identity,
-                transform
-            );
-            _lightHintGO.transform.localScale = Vector3.one * lightHintScale;
-            HideLightHint();
-            if (isPlayerNearby)
-                TryShowHint();
-        }
-    }
-}
-
-  void ShowSporeHint()
-{
-    if (_sporeHintGO != null) return;
-
-    // Find existing child
-    Transform existing = transform.Find("SporeIcon");
-    if (existing != null)
-    {
-        _sporeHintGO = existing.gameObject;
-        _sporeHintGO.SetActive(true);
-
-        // Match LightHintIcon behavior
-        _sporeHintOffset = new Vector3(0f, 0.5f, 0f); // tweak height here
-        if (debugLogs)
-            Debug.Log($"🌱 Activated existing SporeIcon for {name}");
-        return;
-    }
-
-    // Fallback in case no child exists
-    if (sporeHintPrefab != null)
-    {
-        _sporeHintOffset = new Vector3(0f, 0.5f, 0f);
-        _sporeHintGO = Instantiate(sporeHintPrefab, transform.position + _sporeHintOffset, Quaternion.identity, transform);
-        if (debugLogs)
-            Debug.Log($"🌱 Spawned fallback SporeIcon prefab for {name}");
-    }
-}
-
-void HideSporeHint()
-{
-    if (_sporeHintGO != null)
-    {
-        _sporeHintGO.SetActive(false);
-    }
-    if (_activeSporeOwner == this)
-        _activeSporeOwner = null;
-}
-
-   void ShowLightHint()
-{
-    // if already exists, just re-enable
-    if (_lightHintGO != null)
-    {
-        _activeLightOwner?.HideLightHint();
-        _activeLightOwner = this;
-        _lightHintGO.SetActive(true);
-        return;
-    }
-
-    if (lightHintPrefab == null) return;
-
-    _activeLightOwner?.HideLightHint();
-    _activeLightOwner = this;
-
-    // 🌕 Spawn in pure world space (no parent)
-    Vector3 worldPos = transform.position + lightHintOffset;
-    _lightHintGO = Instantiate(lightHintPrefab, worldPos, Quaternion.identity, null);
-    _lightHintGO.transform.localScale = Vector3.one * lightHintScale;
-    _lightHintGO.transform.rotation = Quaternion.identity;
-
-    Debug.Log($"🌕 Spawned static light hint for {name} at world {worldPos}");
-}
-
-
-    void HideLightHint()
-    {
-        if (_lightHintGO != null) _lightHintGO.SetActive(false);
-        if (_activeLightOwner == this) _activeLightOwner = null;
-    }
-
-    public void GiveLight()
-    {
-        if (!_isFullyGrown || !isPlayerNearby) return;
-
-        // 1) show the lit‑flower sprite
-        if (litFlowerRenderer != null)
-            litFlowerRenderer.enabled = true;
-
-        // 2) Award a point only if it hasn't already been awarded for this flower
-        if (!hasBeenLit)
-        {
-            ScoreManager.Instance.AddPoint();
-            hasBeenLit = true;
-        }
-
-        // 3) **destroy the hint GameObject** so it never re‑appears
         if (_lightHintGO != null)
+            _lightHintGO.SetActive(false);
+    }
+
+    public void GiveLight()
+    {
+        if (!_isFullyGrown || !isPlayerNearby || !IsInOrNearGarden())
+            return;
+
+        ApplyLitState("GiveLight");
+    }
+
+    public void ForceGiveLightFromFairyfly()
+    {
+        if (!_isFullyGrown || !IsInOrNearGarden())
+            return;
+
+        ApplyLitState("ForceGiveLightFromFairyfly");
+    }
+
+    private void ApplyLitState(string source)
+    {
+        if (litFlowerRenderer != null)
         {
-            Destroy(_lightHintGO);
-            _lightHintGO = null;
-            if (_activeLightOwner == this)
-                _activeLightOwner = null;
+            litFlowerRenderer.gameObject.SetActive(true);
+            litFlowerRenderer.enabled = true;
+        }
+
+        hasBeenLit = true;
+        HideLightHint();
+        HideSporeHint();
+
+        if (ScoreManager.Instance != null && !hasBeenLitAlreadyCounted)
+        {
+            ScoreManager.Instance.AddPoint();
+            hasBeenLitAlreadyCounted = true;
+        }
+
+        if (debugLogs)
+            Debug.Log($"[SproutAndLightManager] {name} lit via {source}");
+    }
+
+    private void LateUpdate()
+    {
+        Vector3 anchorPos = hintAnchor != null ? hintAnchor.position : transform.position;
+        Vector3 growthHintRise = new Vector3(0f, hintRisePerStage * _currentStage, 0f);
+
+        if (_sporeHintGO != null && _sporeHintGO.activeSelf)
+        {
+            _sporeHintGO.transform.position = anchorPos + growthHintRise + sporeHintOffset;
+            _sporeHintGO.transform.rotation = Quaternion.identity;
+            _sporeHintGO.transform.localScale = GetSafeCounterScale(_sporeHintBaseLocalScale, sporeHintScale);
+        }
+
+        if (_lightHintGO != null && _lightHintGO.activeSelf)
+        {
+            _lightHintGO.transform.position = anchorPos + growthHintRise + lightHintOffset;
+            _lightHintGO.transform.rotation = Quaternion.identity;
+            _lightHintGO.transform.localScale = GetSafeCounterScale(_lightHintBaseLocalScale, lightHintScale);
         }
     }
 
-    void LateUpdate()
-{
-    // 🌱 Spore hint — anchored just like light hint
-    if (_sporeHintGO != null)
+    private Vector3 GetSafeCounterScale(Vector3 baseLocalScale, float multiplier)
     {
-        Vector3 pos = transform.position + _sporeHintOffset;  // <- always relative to flower
-        _sporeHintGO.transform.position = pos;
-        _sporeHintGO.transform.rotation = Quaternion.identity;
+        Vector3 lossy = transform.lossyScale;
+
+        float x = SafeScaledInverse(lossy.x, baseLocalScale.x * multiplier);
+        float y = SafeScaledInverse(lossy.y, baseLocalScale.y * multiplier);
+
+        float desiredZ = baseLocalScale.z;
+        if (Mathf.Abs(desiredZ) < MIN_SCALE_EPSILON)
+            desiredZ = 1f;
+
+        float z;
+        if (Mathf.Abs(lossy.z) < MIN_SCALE_EPSILON || float.IsNaN(lossy.z) || float.IsInfinity(lossy.z))
+            z = desiredZ;
+        else
+            z = desiredZ / lossy.z;
+
+        if (float.IsNaN(x) || float.IsInfinity(x))
+            x = baseLocalScale.x * multiplier;
+
+        if (float.IsNaN(y) || float.IsInfinity(y))
+            y = baseLocalScale.y * multiplier;
+
+        if (float.IsNaN(z) || float.IsInfinity(z))
+            z = desiredZ;
+
+        return new Vector3(x, y, z);
     }
 
-    // 🌕 Light hint — same behavior
-    if (_lightHintGO != null)
+    private float SafeScaledInverse(float value, float desiredScale)
     {
-        Vector3 pos = transform.position + lightHintOffset;
-        _lightHintGO.transform.position = pos;
-        _lightHintGO.transform.rotation = Quaternion.identity;
+        if (Mathf.Abs(value) < MIN_SCALE_EPSILON || float.IsNaN(value) || float.IsInfinity(value))
+            return desiredScale;
+
+        return desiredScale / value;
     }
-}
 
-
-
-    void OnTransformParentChanged()
+    public void ResetInitialPosition()
     {
-        // if picked up, hide all hints; if dropped and player present, re‑try
-        if (isHeld)
-        {
-            HideSporeHint();
-            HideLightHint();
-        }
-        else if (isPlayerNearby)
-        {
-            TryShowHint();
-        }
-
         _initialWorldPos = transform.position;
     }
 
-    /// <summary>
-    /// External helper to clear any active hints immediately.
-    /// </summary>
     public void ClearAllHints()
     {
         HideSporeHint();
         HideLightHint();
     }
 
-   public void BrewFlower()
+    public void BrewFlower()
     {
-        Debug.Log($"[BrewFlower] Called on {gameObject.name}, hasBeenLit={hasBeenLit}");
+        if (debugLogs)
+            Debug.Log($"[BrewFlower] {name} — hasBeenLit={hasBeenLit}");
 
         if (hasBeenLit)
         {
-            Debug.Log("[BrewFlower] Point will be removed.");
-            ScoreManager.Instance.points = Mathf.Max(0, ScoreManager.Instance.points - 1);
-            ScoreManager.Instance.UpdatePointsText();
+            if (ScoreManager.Instance != null && hasBeenLitAlreadyCounted)
+            {
+                ScoreManager.Instance.points = Mathf.Max(0, ScoreManager.Instance.points - 1);
+                ScoreManager.Instance.UpdatePointsText();
+                hasBeenLitAlreadyCounted = false;
+            }
+
             hasBeenLit = false;
 
             if (litFlowerRenderer != null)
                 litFlowerRenderer.enabled = false;
         }
-        else
-        {
-            Debug.Log("[BrewFlower] No point removed (hasBeenLit is false).");
-        }
     }
 
-}
-
-*/
-
-/* using UnityEngine;
-using System.Collections;
-
-public class SproutAndLightManager : MonoBehaviour
-{
-    [HideInInspector] public bool isHeld, isPlanted, isPlayerNearby;
-
-    [Header("Growth Settings")]
-    public int   maxGrowthStages    = 3;
-    public float growthIncrement    = 0.1f;
-    public float yPositionIncrement = 0.04f;
-    public float maxHeight          = 1.8f;
-
-    [Header("Spore Hint Icon")]
-    public GameObject sporeHintPrefab;
-    public Vector3[]   hintOffsets;   // length ≥ maxGrowthStages
-    public float[]     hintScales;    // length ≥ maxGrowthStages
-
-    [Header("Light Hint Icon")]
-    public GameObject lightHintPrefab;
-    public Vector3    lightHintOffset;
-    public float      lightHintScale  = 1f;
-
-    [Header("Lit Flower Sprite")]
-    public SpriteRenderer litFlowerRenderer;
-
-    // Internals
-    Vector3   _initialWorldScale;
-    Vector3   _initialWorldPos;
-    int       _currentStage;
-    bool      _isFullyGrown;
-    public bool IsFullyGrown => _isFullyGrown;
-
-    GameObject _sporeHintGO;
-    Vector3    _sporeHintOffset;
-    GameObject _lightHintGO;
-
-    // Only‑one‑hint globals
-    static SproutAndLightManager _activeSporeOwner;
-    static SproutAndLightManager _activeLightOwner;
-
-    void Awake()
-    {
-        _initialWorldScale = transform.lossyScale;
-        _initialWorldPos   = transform.position;
-        _currentStage      = 0;
-        _isFullyGrown      = false;
-
-        if (litFlowerRenderer != null)
-            litFlowerRenderer.enabled = false;
-
-        HideSporeHint();
-        HideLightHint();
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (!other.CompareTag("Player")) return;
-        isPlayerNearby = true;
-        if (!_isFullyGrown) ShowSporeHint();
-        else                ShowLightHint();
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (!other.CompareTag("Player")) return;
-        isPlayerNearby = false;
-        HideSporeHint();
-        HideLightHint();
-    }
-
-    public void ResetOnGrowth()
-    {
-        if (_isFullyGrown) return;
-        isPlanted = true;
-        _currentStage = Mathf.Min(_currentStage + 1, maxGrowthStages);
-
-        // scale & position snap (world‑space)...
-        float targetS = _initialWorldScale.x + growthIncrement * _currentStage;
-        Vector3 worldScaleTarget = Vector3.one * targetS;
-        float targetY = Mathf.Min(_initialWorldPos.y + yPositionIncrement * _currentStage, maxHeight);
-        Vector3 worldPosTarget = new Vector3(_initialWorldPos.x, targetY, _initialWorldPos.z);
-
-        var parent = transform.parent;
-        var wRot   = transform.rotation;
-        transform.SetParent(null);
-        transform.localScale = worldScaleTarget;
-        transform.position   = worldPosTarget;
-        transform.rotation   = wRot;
-        transform.SetParent(parent, true);
-
-        // hints
-        HideSporeHint();
-        if (isPlayerNearby && _currentStage < maxGrowthStages)
-            ShowSporeHint();
-
-        if (_currentStage >= maxGrowthStages)
-        {
-            _isFullyGrown = true;
-            if (lightHintPrefab != null && _lightHintGO == null)
-            {
-                // **Parent the hint under this flower**
-                _lightHintGO = Instantiate(
-                    lightHintPrefab,
-                    transform.position + lightHintOffset,
-                    Quaternion.identity,
-                    transform            // <— parent here
-                );
-                _lightHintGO.transform.localScale = Vector3.one * lightHintScale;
-                HideLightHint();
-                ShowLightHint();
-            }
-        }
-    }
-
-    void ShowSporeHint()
-    {
-        if (_sporeHintGO != null || sporeHintPrefab == null) return;
-        if (_currentStage >= maxGrowthStages) return;
-
-        _activeSporeOwner?.HideSporeHint();
-        _activeSporeOwner = this;
-
-        _sporeHintOffset = (hintOffsets != null && hintOffsets.Length > _currentStage)
-            ? hintOffsets[_currentStage]
-            : Vector3.up;
-        float sc = (hintScales != null && hintScales.Length > _currentStage)
-            ? hintScales[_currentStage]
-            : 1f;
-
-        _sporeHintGO = Instantiate(sporeHintPrefab);
-        _sporeHintGO.transform.localScale = Vector3.one * sc;
-    }
-
-    void HideSporeHint()
-    {
-        if (_sporeHintGO != null) Destroy(_sporeHintGO);
-        if (_activeSporeOwner == this) _activeSporeOwner = null;
-        _sporeHintGO = null;
-    }
-
-    void ShowLightHint()
-    {
-        if (_lightHintGO == null) return;
-        _activeLightOwner?.HideLightHint();
-        _activeLightOwner = this;
-        _lightHintGO.SetActive(true);
-    }
-
-    void HideLightHint()
-    {
-        if (_lightHintGO != null) _lightHintGO.SetActive(false);
-        if (_activeLightOwner == this) _activeLightOwner = null;
-    }
-
-    public void GiveLight()
-    {
-        if (!_isFullyGrown || !isPlayerNearby) return;
-
-        // 1) show the lit‑flower sprite
-        if (litFlowerRenderer != null)
-            litFlowerRenderer.enabled = true;
-
-        // 2) **destroy the hint GameObject** so it never re‑appears
-        if (_lightHintGO != null)
-        {
-            Destroy(_lightHintGO);
-            _lightHintGO = null;
-            if (_activeLightOwner == this)
-                _activeLightOwner = null;
-        }
-    }
-
-    void LateUpdate()
+    private void CacheSporeHintReference()
     {
         if (_sporeHintGO != null)
+            return;
+
+        Transform child = FindChildRecursive(transform, sporeChildName);
+        if (child != null)
         {
-            _sporeHintGO.transform.position = transform.position + _sporeHintOffset;
-            _sporeHintGO.transform.rotation = Quaternion.identity;
+            _sporeHintGO = child.gameObject;
+            _sporeHintBaseLocalScale = child.localScale;
+            _sporeHintGO.SetActive(false);
+
+            if (debugLogs)
+                Debug.Log($"[SproutAndLightManager] Found spore hint child '{sporeChildName}' on {name}");
         }
+    }
+
+    private void CacheLightHintReference()
+    {
         if (_lightHintGO != null)
+            return;
+
+        Transform child = FindChildRecursive(transform, "LightPrompt");
+        if (child != null)
         {
-            _lightHintGO.transform.position = transform.position + lightHintOffset;
-            _lightHintGO.transform.rotation = Quaternion.identity;
+            _lightHintGO = child.gameObject;
+            _lightHintBaseLocalScale = child.localScale;
+            _lightHintGO.SetActive(false);
+
+            if (debugLogs)
+                Debug.Log($"[SproutAndLightManager] Found light hint child 'LightPrompt' on {name}");
         }
     }
 
-    void OnTransformParentChanged()
+    private void CachePlayerPromptReferences()
     {
-        _initialWorldPos = transform.position;
+        if (playerHeadOverride != null)
+        {
+            _cachedPlayerHead = playerHeadOverride;
+            _cachedPlayerHeadCollider = _cachedPlayerHead.GetComponent<Collider2D>();
+            _cachedPlayerRoot = _cachedPlayerHead.root;
+            return;
+        }
+
+        if (_cachedPlayerRoot == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+                _cachedPlayerRoot = player.transform;
+        }
+
+        if (_cachedPlayerRoot != null && _cachedPlayerHead == null)
+        {
+            _cachedPlayerHead = FindChildRecursive(_cachedPlayerRoot, playerHeadName);
+            if (_cachedPlayerHead != null)
+                _cachedPlayerHeadCollider = _cachedPlayerHead.GetComponent<Collider2D>();
+        }
     }
 
-    // inside SproutAndLightManager
-    public void ClearAllHints()
+    private Transform FindChildRecursive(Transform parent, string childName)
     {
-        HideSporeHint();   // existing private
-        HideLightHint();   // existing private
-    }
+        if (parent == null || string.IsNullOrEmpty(childName))
+            return null;
 
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+
+            if (child.name == childName)
+                return child;
+
+            Transform found = FindChildRecursive(child, childName);
+            if (found != null)
+                return found;
+        }
+
+        return null;
+    }
 }
-*/
