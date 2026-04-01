@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class WildSporePickup : MonoBehaviour
 {
-    public KeyCode pickupKey = KeyCode.G;  // Key to pick up/drop spores
-    public KeyCode aidKey = KeyCode.A;     // Key to aid sprouts
+    public KeyCode pickupKey = KeyCode.S;  // Key to pick up/drop spores
+    public KeyCode aidKey = KeyCode.S;     // Key to aid sprouts
     public float detectionRadius = 1.0f;   // Radius to detect spores/sprouts
     public Transform sporeHoldPoint;       // Hold point for the spore
 

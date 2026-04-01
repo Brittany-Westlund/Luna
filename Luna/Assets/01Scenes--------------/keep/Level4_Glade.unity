@@ -299,6 +299,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &9810456
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -483,6 +487,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &19227540
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -865,6 +873,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &33841400
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1474,6 +1486,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &60177865
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1658,6 +1674,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &62685270
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1758,6 +1778,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &64048788
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1942,6 +1966,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &69366239
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2429,6 +2457,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &83169293
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2951,6 +2983,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &108080543
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3247,6 +3283,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &125076868
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3685,6 +3725,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &132887556
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4497,6 +4541,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &170497030
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4755,6 +4803,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &184474291
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4939,6 +4991,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &195653334
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5966,6 +6022,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &223541835
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6943,6 +7003,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &245830279
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9150,6 +9214,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &287946238
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9574,6 +9642,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &303475486
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10008,6 +10080,90 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &328980815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 328980817}
+  - component: {fileID: 328980816}
+  m_Layer: 0
+  m_Name: Glade - trees_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &328980816
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328980815}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 2133483362, guid: 30d7544975050ca4eab6ed4e29cb64c1, type: 3}
+  m_Color: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 25.150002, y: 41.0435}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &328980817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328980815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.76, y: 39.95, z: 0}
+  m_LocalScale: {x: 0.14477655, y: 0.14477655, z: 0.14477655}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &332444776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10135,6 +10291,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &337895894
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10235,6 +10395,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &340899548
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10587,6 +10751,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &359638946
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10687,6 +10855,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &368042745
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11009,6 +11181,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &388442654
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11141,6 +11317,90 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.37, y: 33.97, z: 0}
   m_LocalScale: {x: 0.25652102, y: 0.33418545, z: 0.28903773}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &390941812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 390941814}
+  - component: {fileID: 390941813}
+  m_Layer: 0
+  m_Name: Glade - trees_0 (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &390941813
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390941812}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -928125947, guid: 30d7544975050ca4eab6ed4e29cb64c1, type: 3}
+  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 7.9000006, y: 7.360628}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &390941814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390941812}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.34, y: 40.94, z: 0}
+  m_LocalScale: {x: 0.17948917, y: 0.17948917, z: 0.17948917}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -11659,6 +11919,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &401852163
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11759,6 +12023,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &406031583
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12094,6 +12362,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &423571487
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -13146,6 +13418,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &464993771
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -14852,6 +15128,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &490996942
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -14952,6 +15232,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &506585336
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -15410,6 +15694,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &518172861
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16136,6 +16424,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &548151094
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16743,6 +17035,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &575285172
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16843,6 +17139,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &584939357
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17220,6 +17520,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &596698353
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17429,6 +17733,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &610445542
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17529,6 +17837,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &614553123
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17881,6 +18193,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &636177474
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -18049,6 +18365,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &639354836
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -18517,6 +18837,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &649555564
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19077,6 +19401,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &660834563
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19177,6 +19505,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &661420577
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19586,6 +19918,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &672619736
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19686,6 +20022,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &673949291
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20228,6 +20568,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &707274618
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20402,6 +20746,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &721960474
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20502,6 +20850,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &722813790
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20608,6 +20960,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &730484623
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20922,6 +21278,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &763125578
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22084,6 +22444,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &803861198
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22436,6 +22800,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &852144499
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22572,6 +22940,90 @@ Transform:
   m_Children: []
   m_Father: {fileID: 535467766}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &864081405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 864081407}
+  - component: {fileID: 864081406}
+  m_Layer: 0
+  m_Name: Glade - trees_0 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &864081406
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864081405}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -928125947, guid: 30d7544975050ca4eab6ed4e29cb64c1, type: 3}
+  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 7.9000006, y: 7.360628}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &864081407
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864081405}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.17, y: 40.53, z: 0}
+  m_LocalScale: {x: 0.16972971, y: 0.16972971, z: 0.16972971}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &864353326
 GameObject:
   m_ObjectHideFlags: 0
@@ -22620,6 +23072,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &864353329
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22720,6 +23176,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &865965908
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22820,6 +23280,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &881495405
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -23354,6 +23818,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &894555904
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -24005,6 +24473,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &907779740
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -24346,6 +24818,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &918701532
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -24546,6 +25022,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &922700041
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -24782,6 +25262,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.01
   fadeAmount: 0.3
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &924080222
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -26314,6 +26798,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &967286509
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -26554,6 +27042,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &978973134
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -27680,6 +28172,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1032966218
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -28158,6 +28654,10 @@ MonoBehaviour:
   pulseSpeed: 4
   scaleAmount: 0.025
   fadeAmount: 0
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!4 &1054498627
 Transform:
   m_ObjectHideFlags: 0
@@ -28354,6 +28854,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1057095502
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -29030,6 +29534,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1086805564
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -29251,6 +29759,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1113913729
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -29998,7 +30510,7 @@ Transform:
   m_GameObject: {fileID: 1135340983}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.77, y: 7.96, z: 0}
+  m_LocalPosition: {x: 0.64, y: 9.45, z: 0}
   m_LocalScale: {x: 0.9080978, y: 0.9277832, z: 1.0924485}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30104,6 +30616,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1136952416
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31208,6 +31724,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1173115836
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31308,6 +31828,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1174112682
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31440,6 +31964,90 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -32.64, y: 34.39, z: 0}
   m_LocalScale: {x: 0.25652102, y: 0.33418545, z: 0.28903773}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1180012467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1180012469}
+  - component: {fileID: 1180012468}
+  m_Layer: 0
+  m_Name: Glade - trees_0 (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &1180012468
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180012467}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -928125947, guid: 30d7544975050ca4eab6ed4e29cb64c1, type: 3}
+  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 7.9000006, y: 7.360628}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1180012469
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180012467}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.53, y: 40.32, z: 0}
+  m_LocalScale: {x: 0.18548062, y: 0.18548062, z: 0.18548062}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -31934,6 +32542,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1204568332
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -32231,6 +32843,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1217110859
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -32876,6 +33492,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1265009274
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -33190,6 +33810,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1271322217
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -33532,6 +34156,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1279993083
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -33896,6 +34524,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1311905005
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -33996,6 +34628,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1317828226
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -34096,6 +34732,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1323480119
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -34280,6 +34920,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1343976995
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -34548,6 +35192,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1362790566
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -35138,6 +35786,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1374524120
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -35238,6 +35890,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1377549876
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -35338,6 +35994,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1387170470
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -35438,6 +36098,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1394670880
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -35538,6 +36202,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1410253177
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -36154,6 +36822,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1441757517
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -36285,6 +36957,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1456538835
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -36469,6 +37145,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1461524125
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -36569,6 +37249,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1463537408
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -37008,6 +37692,10 @@ MonoBehaviour:
   pulseSpeed: 5.3
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1489984563
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -37143,6 +37831,90 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 535467766}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1505946665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1505946667}
+  - component: {fileID: 1505946666}
+  m_Layer: 0
+  m_Name: Glade - trees_0 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &1505946666
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505946665}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -928125947, guid: 30d7544975050ca4eab6ed4e29cb64c1, type: 3}
+  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 7.9000006, y: 7.360628}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1505946667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505946665}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.36, y: 42.34, z: 0}
+  m_LocalScale: {x: 0.15396908, y: 0.15396908, z: 0.15396908}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1505988468 stripped
 Transform:
@@ -37438,6 +38210,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1513963513
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -37982,6 +38758,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1533007977
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -38088,6 +38868,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1533346493
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -38836,6 +39620,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1551176111
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -39086,6 +39874,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1559459771
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -39513,6 +40305,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1578673237
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -39613,6 +40409,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1581209349
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -39916,6 +40716,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1628665484
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -40100,6 +40904,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1634199763
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -40316,7 +41124,7 @@ Transform:
   m_GameObject: {fileID: 1636439457}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.34, y: 44.04, z: 0}
+  m_LocalPosition: {x: -4.64, y: 46.04, z: 0}
   m_LocalScale: {x: 0.8409, y: 0.8409, z: 0.8409}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40481,6 +41289,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1642275457
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -40939,6 +41751,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1654440962
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -41123,6 +41939,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1669057531
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -41599,6 +42419,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1690110488
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -41783,6 +42607,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1693502868
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -42390,6 +43218,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1730756645
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -42490,6 +43322,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1732877598
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -42639,6 +43475,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1736223949
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -42869,6 +43709,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1739900734
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -43519,6 +44363,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1754885010
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -43619,6 +44467,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1769167388
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44021,6 +44873,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1781049844
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44349,6 +45205,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1786614368
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44455,6 +45315,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1798058069
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44659,6 +45523,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1802552422
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44973,6 +45841,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1821859205
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -45088,6 +45960,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1829860824
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -45265,7 +46141,7 @@ PrefabInstance:
     - target: {fileID: 1489805503088285417, guid: 62165d2b2b197f2409d54084a838f9b4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 38.22
+      value: 45.57
       objectReference: {fileID: 0}
     - target: {fileID: 1489805503088285417, guid: 62165d2b2b197f2409d54084a838f9b4,
         type: 3}
@@ -45476,6 +46352,90 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1838896339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1838896341}
+  - component: {fileID: 1838896340}
+  m_Layer: 0
+  m_Name: Glade - trees_0 (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &1838896340
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838896339}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -928125947, guid: 30d7544975050ca4eab6ed4e29cb64c1, type: 3}
+  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 7.9000006, y: 7.360628}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1838896341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838896339}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.65, y: 41.56, z: 0}
+  m_LocalScale: {x: 0.15396908, y: 0.15396908, z: 0.15396908}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1839299546
 GameObject:
   m_ObjectHideFlags: 0
@@ -45608,6 +46568,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1840406318
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -45887,6 +46851,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1848874012
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -46297,6 +47265,90 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   textMesh: {fileID: 1857410983}
   meshRenderer: {fileID: 1857410984}
+--- !u!1 &1858606606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1858606608}
+  - component: {fileID: 1858606607}
+  m_Layer: 0
+  m_Name: Glade - trees_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &1858606607
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858606606}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -928125947, guid: 30d7544975050ca4eab6ed4e29cb64c1, type: 3}
+  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 7.9000006, y: 7.360628}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1858606608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858606606}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.79, y: 42.93, z: 0}
+  m_LocalScale: {x: 0.14263, y: 0.14263, z: 0.14263}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1858803697
 GameObject:
   m_ObjectHideFlags: 0
@@ -46345,6 +47397,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1858803700
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -46562,6 +47618,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1860680243
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -46662,6 +47722,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1861891913
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -46976,6 +48040,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1868514426
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -47799,6 +48867,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1899389634
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -48194,7 +49266,7 @@ Transform:
   m_GameObject: {fileID: 1918963182}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.77, y: 7.96, z: 0}
+  m_LocalPosition: {x: 0.76, y: 11.27, z: 0}
   m_LocalScale: {x: 0.9080978, y: 0.9277832, z: 1.0924485}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48300,6 +49372,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1921403509
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -48530,6 +49606,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1936984614
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -48630,6 +49710,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1942405114
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -48730,6 +49814,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1946701660
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -49379,6 +50467,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1969886289
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -49479,6 +50571,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1972174952
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -49579,6 +50675,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1975622486
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -49679,6 +50779,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &1975861047
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -50377,6 +51481,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2008824074
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -50668,6 +51776,10 @@ MonoBehaviour:
   pulseSpeed: 6.25
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2023380197
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -50768,6 +51880,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2023981093
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -50868,6 +51984,10 @@ MonoBehaviour:
   pulseSpeed: 7
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2025342972
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -51736,6 +52856,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2053015371
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -51920,6 +53044,10 @@ MonoBehaviour:
   pulseSpeed: 6.3
   scaleAmount: 0.12
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2056483023
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -52020,6 +53148,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2068849994
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -52120,6 +53252,10 @@ MonoBehaviour:
   pulseSpeed: 7.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2068937770
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -52304,6 +53440,10 @@ MonoBehaviour:
   pulseSpeed: 5.75
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2073727372
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -52404,6 +53544,10 @@ MonoBehaviour:
   pulseSpeed: 6
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2080262805
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -52672,6 +53816,10 @@ MonoBehaviour:
   pulseSpeed: 5.5
   scaleAmount: 0.1
   fadeAmount: 0.55
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!212 &2099412680
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -54935,3 +56083,10 @@ SceneRoots:
   - {fileID: 658280034}
   - {fileID: 2003349378}
   - {fileID: 1072550395}
+  - {fileID: 328980817}
+  - {fileID: 1858606608}
+  - {fileID: 1505946667}
+  - {fileID: 864081407}
+  - {fileID: 390941814}
+  - {fileID: 1838896341}
+  - {fileID: 1180012469}

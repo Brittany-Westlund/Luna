@@ -9,104 +9,90 @@ public class StandInSwap_TargetScaledLuna : MonoBehaviour
     [Header("Runtime Object Names")]
     [SerializeField] private string scaledLunaObjectName = "ScaledLuna";
     [SerializeField] private string lunaChildName = "Luna";
+    [SerializeField] private string requiredColliderName = "PlayerFeet";
+
+    [Header("Startup")]
+    [SerializeField] private bool forceStartInside = true;
 
     [Header("Timing")]
-    [SerializeField] private float exitGraceTime = 0.03f;
+    [SerializeField] private float exitGraceTime = 0.1f;
 
-    [Header("Sensitivity")]
-    [Tooltip("If true, swaps immediately once the player is clearly outside the trigger bounds by this margin.")]
-    [SerializeField] private bool useImmediateOutsideMargin = true;
-
-    [Tooltip("How far outside the trigger bounds the player must be before swapping immediately.")]
-    [SerializeField] private float immediateOutsideMargin = 0.02f;
+    [Header("Visual Control")]
+    [SerializeField] private bool hideLunaWhileInside = true;
+    [SerializeField] private bool disableLunaAnimatorWhileInside = true;
+    [SerializeField] private bool restoreLunaRendererOnSwap = true;
+    [SerializeField] private bool restoreLunaAnimatorOnSwap = true;
 
     [Header("Cleanup")]
     [SerializeField] private bool destroyAfterSwap = true;
     [SerializeField] private float destroyDelay = 0f;
 
     private Collider2D triggerCollider;
-    private Collider2D playerCollider;
+    private Collider2D playerFeetCollider;
+
     private SpriteRenderer lunaRenderer;
+    private Animator lunaAnimator;
+    private SpriteRenderer[] standInRenderers;
 
     private bool hasEverBeenInside = false;
     private bool hasSwapped = false;
+    private bool playerInside = false;
     private float outsideTimer = 0f;
 
     private void Awake()
     {
         triggerCollider = GetComponent<Collider2D>();
         if (triggerCollider != null)
-        {
             triggerCollider.isTrigger = true;
-        }
     }
 
     private void Start()
     {
-        GameObject scaledLuna = GameObject.Find(scaledLunaObjectName);
+        CacheReferences();
 
-        if (scaledLuna == null)
+        if (standInObject != null)
         {
-            Debug.LogWarning($"{name}: Could not find GameObject named '{scaledLunaObjectName}'.");
-            return;
+            standInRenderers = standInObject.GetComponentsInChildren<SpriteRenderer>(true);
         }
 
-        playerCollider = scaledLuna.GetComponent<Collider2D>();
-        if (playerCollider == null)
+        if (forceStartInside)
         {
-            playerCollider = scaledLuna.GetComponentInChildren<Collider2D>(true);
-        }
-
-        Transform lunaTransform = FindDeepChild(scaledLuna.transform, lunaChildName);
-        if (lunaTransform == null)
-        {
-            Debug.LogWarning($"{name}: Could not find child '{lunaChildName}' under '{scaledLunaObjectName}'.");
-            return;
-        }
-
-        lunaRenderer = lunaTransform.GetComponent<SpriteRenderer>();
-        if (lunaRenderer == null)
-        {
-            Debug.LogWarning($"{name}: '{lunaChildName}' does not have a SpriteRenderer.");
-            return;
-        }
-
-        if (playerCollider == null)
-        {
-            Debug.LogWarning($"{name}: No Collider2D found on '{scaledLunaObjectName}' or its children.");
+            hasEverBeenInside = true;
+            playerInside = true;
+            outsideTimer = 0f;
+            ApplyInsideVisualState();
             return;
         }
 
         if (IsPlayerInside())
         {
             hasEverBeenInside = true;
-            lunaRenderer.enabled = false;
+            playerInside = true;
+            outsideTimer = 0f;
+            ApplyInsideVisualState();
+        }
+        else
+        {
+            playerInside = false;
+            ApplyOutsideVisualState();
         }
     }
 
     private void Update()
     {
-        if (hasSwapped) return;
-        if (triggerCollider == null || playerCollider == null || lunaRenderer == null) return;
+        if (hasSwapped)
+            return;
 
-        bool isInside = IsPlayerInside();
+        RefreshInsideState();
 
-        if (isInside)
+        if (playerInside)
         {
-            hasEverBeenInside = true;
             outsideTimer = 0f;
-            lunaRenderer.enabled = false;
             return;
         }
 
-        if (!hasEverBeenInside) return;
-
-        // If Luna is clearly outside, swap immediately
-        if (useImmediateOutsideMargin && IsClearlyOutside())
-        {
-            PerformSwap();
+        if (!hasEverBeenInside)
             return;
-        }
 
         outsideTimer += Time.deltaTime;
 
@@ -116,44 +102,135 @@ public class StandInSwap_TargetScaledLuna : MonoBehaviour
         }
     }
 
-    private bool IsPlayerInside()
+    private void LateUpdate()
     {
-        return triggerCollider.bounds.Intersects(playerCollider.bounds);
+        if (hasSwapped)
+            return;
+
+        if (!playerInside)
+            return;
+
+        ApplyInsideVisualState();
     }
 
-    private bool IsClearlyOutside()
+    private void RefreshInsideState()
     {
-        Bounds triggerBounds = triggerCollider.bounds;
-        Bounds playerBounds = playerCollider.bounds;
+        if (hasSwapped)
+            return;
 
-        bool outsideLeft = playerBounds.max.x < triggerBounds.min.x - immediateOutsideMargin;
-        bool outsideRight = playerBounds.min.x > triggerBounds.max.x + immediateOutsideMargin;
-        bool outsideBelow = playerBounds.max.y < triggerBounds.min.y - immediateOutsideMargin;
-        bool outsideAbove = playerBounds.min.y > triggerBounds.max.y + immediateOutsideMargin;
+        if (playerFeetCollider == null)
+            CacheReferences();
 
-        return outsideLeft || outsideRight || outsideBelow || outsideAbove;
+        if (triggerCollider == null || playerFeetCollider == null)
+            return;
+
+        bool insideNow = triggerCollider.bounds.Intersects(playerFeetCollider.bounds);
+
+        if (insideNow)
+        {
+            playerInside = true;
+            hasEverBeenInside = true;
+            outsideTimer = 0f;
+        }
+        else
+        {
+            playerInside = false;
+        }
+    }
+
+    private void ApplyInsideVisualState()
+    {
+        SetStandInVisible(true);
+
+        if (hideLunaWhileInside && lunaRenderer != null)
+            lunaRenderer.enabled = false;
+
+        if (disableLunaAnimatorWhileInside && lunaAnimator != null)
+            lunaAnimator.enabled = false;
+    }
+
+    private void ApplyOutsideVisualState()
+    {
+        SetStandInVisible(false);
+
+        if (restoreLunaRendererOnSwap && lunaRenderer != null)
+            lunaRenderer.enabled = true;
+
+        if (restoreLunaAnimatorOnSwap && lunaAnimator != null)
+            lunaAnimator.enabled = true;
+    }
+
+    private void SetStandInVisible(bool visible)
+    {
+        if (standInObject == null)
+            return;
+
+        if (standInObject.activeSelf != visible)
+            standInObject.SetActive(visible);
+
+        if (standInRenderers == null)
+            standInRenderers = standInObject.GetComponentsInChildren<SpriteRenderer>(true);
+
+        if (standInRenderers != null)
+        {
+            for (int i = 0; i < standInRenderers.Length; i++)
+            {
+                if (standInRenderers[i] != null)
+                    standInRenderers[i].enabled = visible;
+            }
+        }
     }
 
     private void PerformSwap()
     {
-        if (hasSwapped) return;
-
         hasSwapped = true;
-        lunaRenderer.enabled = true;
+        playerInside = false;
+        outsideTimer = 0f;
 
-        if (standInObject != null)
-        {
-            standInObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning($"{name}: Stand In Object is not assigned.");
-        }
+        ApplyOutsideVisualState();
 
         if (destroyAfterSwap)
-        {
             Destroy(gameObject, destroyDelay);
+    }
+
+    private void CacheReferences()
+    {
+        GameObject scaledLuna = GameObject.Find(scaledLunaObjectName);
+        if (scaledLuna == null)
+        {
+            Debug.LogWarning($"{name}: Could not find '{scaledLunaObjectName}'.");
+            return;
         }
+
+        Transform playerFeetTransform = FindDeepChild(scaledLuna.transform, requiredColliderName);
+        if (playerFeetTransform == null)
+        {
+            Debug.LogWarning($"{name}: Could not find '{requiredColliderName}'.");
+            return;
+        }
+
+        playerFeetCollider = playerFeetTransform.GetComponent<Collider2D>();
+        if (playerFeetCollider == null)
+        {
+            Debug.LogWarning($"{name}: '{requiredColliderName}' has no Collider2D.");
+            return;
+        }
+
+        Transform lunaTransform = FindDeepChild(scaledLuna.transform, lunaChildName);
+        if (lunaTransform == null)
+        {
+            Debug.LogWarning($"{name}: Could not find '{lunaChildName}'.");
+            return;
+        }
+
+        lunaRenderer = lunaTransform.GetComponent<SpriteRenderer>();
+        lunaAnimator = lunaTransform.GetComponent<Animator>();
+
+        if (lunaRenderer == null)
+            Debug.LogWarning($"{name}: '{lunaChildName}' has no SpriteRenderer.");
+
+        if (lunaAnimator == null)
+            Debug.LogWarning($"{name}: '{lunaChildName}' has no Animator.");
     }
 
     private Transform FindDeepChild(Transform parent, string targetName)
@@ -161,17 +238,21 @@ public class StandInSwap_TargetScaledLuna : MonoBehaviour
         foreach (Transform child in parent)
         {
             if (child.name == targetName)
-            {
                 return child;
-            }
 
             Transform result = FindDeepChild(child, targetName);
             if (result != null)
-            {
                 return result;
-            }
         }
 
         return null;
+    }
+
+    private bool IsPlayerInside()
+    {
+        if (triggerCollider == null || playerFeetCollider == null)
+            return false;
+
+        return triggerCollider.bounds.Intersects(playerFeetCollider.bounds);
     }
 }

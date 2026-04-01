@@ -111,6 +111,8 @@ public class LunaSporeSystem : MonoBehaviour
     /// </summary>
     public GameObject CreateSpore()
     {
+       
+       
         // not enough health?
         if (_healthComponent == null || _healthComponent.CurrentHealth < sporeHealthCost)
         {

@@ -1,42 +1,34 @@
-// AnemonePollenPickup.cs
 using UnityEngine;
-using System.Collections;
 
 public class AnemonePollenPickup : MonoBehaviour
 {
-    public float suppressionDuration = 10f;
+    [Header("Effect Duration")]
+    public float duration = 10f;
+
+    [Header("Healing")]
+    [Range(0f, 1f)]
+    [Tooltip("Percent of max health restored over the full duration.")]
+    public float healPercentOverDuration = 0.25f;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player")) return;
-
-        LunaHealthManager healthDecay = other.GetComponent<LunaHealthManager>();
-        if (healthDecay != null)
+        if (!other.CompareTag("Player"))
         {
-            healthDecay.SuppressDecay(suppressionDuration);
-            Debug.Log("🌼 Anemone pollen activated.");
+            return;
         }
 
-        Transform iconTransform = other.transform.Find("AnemonePollenHoldPoint/AnemonePollenLuna");
-        if (iconTransform != null)
+        GameObject player = other.gameObject;
+
+        LunaStatusEffects status = player.GetComponent<LunaStatusEffects>();
+        if (status == null)
         {
-            iconTransform.gameObject.SetActive(true);
-            other.GetComponent<MonoBehaviour>().StartCoroutine(HideIconAfterDelay(iconTransform.gameObject, suppressionDuration));
+            status = player.AddComponent<LunaStatusEffects>();
         }
-        else
-        {
-            Debug.LogWarning("AnemonePollenLuna not found under Player.");
-        }
+
+        status.ApplyAnemoneEffect(duration, healPercentOverDuration);
+
+        Debug.Log("🌼 Anemone pollen activated: Slumberdust immunity + heal over time.");
 
         Destroy(gameObject);
-    }
-
-    private IEnumerator HideIconAfterDelay(GameObject icon, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (icon != null)
-        {
-            icon.SetActive(false);
-        }
     }
 }

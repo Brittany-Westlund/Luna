@@ -1,117 +1,204 @@
 using UnityEngine;
 using System.Collections;
-using TMPro;
 
 [RequireComponent(typeof(Collider2D))]
 public class PromptFadeOnProximity : MonoBehaviour
 {
-    [Header("Fade Settings")]
-    public float fadeDuration = 0.5f;
-    public float fadeOutDelay = 0.2f;
-    public string playerTag = "Player";
+    [Header("Target Feedback")]
+    [SerializeField] private CustomInteractionFeedback targetFeedback;
 
-    [Header("References")]
-    public SpriteRenderer spriteRenderer;
-    public TextMeshPro textMesh;
-    public MeshRenderer meshRenderer;
+    [Header("Detection")]
+    [SerializeField] private string playerTag = "";
+    [SerializeField] private bool requireSpecificColliderName = true;
+    [SerializeField] private string requiredColliderName = "PlayerFeet";
+
+    [Header("Fade Settings")]
+    [SerializeField] private float fadeInDuration = 0.2f;
+    [SerializeField] private float fadeOutDuration = 0.2f;
+    [SerializeField] private float fadeOutDelay = 0.05f;
+    [SerializeField] private float hiddenAlpha = 0f;
+    [SerializeField] private float visibleAlpha = 1f;
+
+    [Header("Feedback Control")]
+    [SerializeField] private bool restartCycleOnEnter = true;
+    [SerializeField] private bool stopCycleOnExit = false;
+
+    [Header("Debug")]
+    [SerializeField] private bool debugLogging = false;
 
     private Coroutine fadeRoutine;
-    private bool isInRange = false;
+    private bool playerInRange = false;
+    private float currentAlpha = 0f;
+    private Collider2D triggerCollider;
 
-    void Start()
+    private void Awake()
     {
-        // Ensure everything starts invisible
-        SetAlpha(0f);
+        triggerCollider = GetComponent<Collider2D>();
+        if (triggerCollider != null)
+        {
+            triggerCollider.isTrigger = true;
+        }
 
-        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
-        if (textMesh == null) textMesh = GetComponent<TextMeshPro>();
-        if (meshRenderer == null) meshRenderer = GetComponent<MeshRenderer>();
+        if (targetFeedback == null)
+        {
+            targetFeedback = GetComponent<CustomInteractionFeedback>();
+        }
+
+        if (targetFeedback == null)
+        {
+            Debug.LogWarning($"[PromptFadeOnProximity] No CustomInteractionFeedback found on '{name}'.");
+        }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void Start()
     {
-        if (!other.CompareTag(playerTag)) return;
+        currentAlpha = hiddenAlpha;
+        ApplyAlphaImmediate(currentAlpha);
 
-        isInRange = true;
-        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-        StartSafeCoroutine(FadeTo(1f));
+        if (debugLogging)
+        {
+            Debug.Log($"[PromptFadeOnProximity] Start on '{name}'. Hidden alpha applied: {hiddenAlpha}");
+        }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnEnable()
     {
-        if (!other.CompareTag(playerTag)) return;
+        currentAlpha = hiddenAlpha;
+        ApplyAlphaImmediate(currentAlpha);
+    }
 
-        isInRange = false;
-        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-        StartSafeCoroutine(FadeOutAfterDelay());
+    private void OnDisable()
+    {
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!IsValidPlayer(other))
+            return;
+
+        playerInRange = true;
+
+        if (debugLogging)
+        {
+            Debug.Log($"[PromptFadeOnProximity] Enter by '{other.name}' on '{name}'.");
+        }
+
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+
+        if (targetFeedback != null && restartCycleOnEnter)
+        {
+            targetFeedback.RestartCycle();
+        }
+
+        fadeRoutine = StartCoroutine(FadeTo(visibleAlpha, fadeInDuration));
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!IsValidPlayer(other))
+            return;
+
+        playerInRange = false;
+
+        if (debugLogging)
+        {
+            Debug.Log($"[PromptFadeOnProximity] Exit by '{other.name}' on '{name}'.");
+        }
+
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+
+        fadeRoutine = StartCoroutine(FadeOutAfterDelay());
+    }
+
+    private bool IsValidPlayer(Collider2D other)
+    {
+        if (other == null)
+            return false;
+
+        if (!string.IsNullOrEmpty(playerTag))
+        {
+            if (!other.CompareTag(playerTag))
+                return false;
+        }
+
+        if (requireSpecificColliderName && !string.IsNullOrEmpty(requiredColliderName))
+        {
+            if (other.name != requiredColliderName)
+                return false;
+        }
+
+        return true;
     }
 
     private IEnumerator FadeOutAfterDelay()
     {
-        if (!isActiveAndEnabled) yield break;
-        yield return new WaitForSeconds(fadeOutDelay);
-        if (isInRange || !isActiveAndEnabled) yield break;
-        StartSafeCoroutine(FadeTo(0f));
+        if (fadeOutDelay > 0f)
+        {
+            yield return new WaitForSeconds(fadeOutDelay);
+        }
+
+        if (playerInRange)
+            yield break;
+
+        fadeRoutine = StartCoroutine(FadeTo(hiddenAlpha, fadeOutDuration));
+
+        if (targetFeedback != null && stopCycleOnExit)
+        {
+            targetFeedback.StopCycling();
+        }
     }
 
-    private IEnumerator FadeTo(float targetAlpha)
+    private IEnumerator FadeTo(float targetAlpha, float duration)
     {
-        if (!isActiveAndEnabled) yield break;
+        float startAlpha = currentAlpha;
 
-        float startAlpha = GetCurrentAlpha();
-        float time = 0f;
-
-        while (time < fadeDuration)
+        if (duration <= 0f)
         {
-            if (!isActiveAndEnabled) yield break;
-            time += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, targetAlpha, time / fadeDuration);
-            SetAlpha(alpha);
+            currentAlpha = targetAlpha;
+            ApplyAlphaImmediate(currentAlpha);
+            yield break;
+        }
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            currentAlpha = Mathf.Lerp(startAlpha, targetAlpha, t);
+            ApplyAlphaImmediate(currentAlpha);
             yield return null;
         }
 
-        SetAlpha(targetAlpha);
+        currentAlpha = targetAlpha;
+        ApplyAlphaImmediate(currentAlpha);
     }
 
-    // ✅ Safe Coroutine Wrapper (prevents errors if object is inactive)
-    private Coroutine StartSafeCoroutine(IEnumerator routine)
+    private void ApplyAlphaImmediate(float alpha)
     {
-        if (this != null && gameObject.activeInHierarchy && isActiveAndEnabled)
-            return StartCoroutine(routine);
-        return null;
-    }
+        currentAlpha = Mathf.Clamp01(alpha);
 
-    private void SetAlpha(float alpha)
-    {
-        if (spriteRenderer != null)
+        if (targetFeedback != null)
         {
-            Color c = spriteRenderer.color;
-            c.a = alpha;
-            spriteRenderer.color = c;
+            targetFeedback.SetExternalAlphaMultiplier(currentAlpha);
+
+            if (debugLogging)
+            {
+                Debug.Log($"[PromptFadeOnProximity] Applied external alpha {currentAlpha} on '{name}'.");
+            }
         }
-
-        if (textMesh != null)
-        {
-            Color c = textMesh.color;
-            c.a = alpha;
-            textMesh.color = c;
-        }
-
-        if (meshRenderer != null && meshRenderer.material.HasProperty("_Color"))
-        {
-            Color c = meshRenderer.material.color;
-            c.a = alpha;
-            meshRenderer.material.color = c;
-        }
-    }
-
-    private float GetCurrentAlpha()
-    {
-        if (spriteRenderer != null) return spriteRenderer.color.a;
-        if (textMesh != null) return textMesh.color.a;
-        if (meshRenderer != null && meshRenderer.material.HasProperty("_Color"))
-            return meshRenderer.material.color.a;
-
-        return 1f;
     }
 }

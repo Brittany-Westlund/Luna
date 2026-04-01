@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a18fa6b6786d95e45906e1aac79f40eb
+guid: 7df55ded34e532e4ea0719d12dded124
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,13 +43,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 492, y: 0, z: 0, w: 2054}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -149,64 +149,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Village-front_3
+      name: Strawberry flower_0
       rect:
         serializedVersion: 2
-        x: 1210
-        y: 546
-        width: 523
-        height: 1555
+        x: 142
+        y: 1373
+        width: 647
+        height: 1127
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 288554263c7f12a45942e8ec46d411ad
-      internalID: -1491560908
+      spriteID: cfbc67e19e94606418959e56d8201008
+      internalID: -1446042131
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Village-front_4
+      name: Strawberry flower_1
       rect:
         serializedVersion: 2
-        x: 2728
-        y: 465
-        width: 944
-        height: 1793
+        x: 1508
+        y: 404
+        width: 495
+        height: 1271
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a8b49b6ddbbea742bdbea25831cf139
-      internalID: -664923670
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Village-front_0
-      rect:
-        serializedVersion: 2
-        x: 1734
-        y: 257
-        width: 405
-        height: 1373
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9433b3e4374a26049b0187d46d46a1d5
-      internalID: 1093650845
+      spriteID: 4c45dad4849bf38479500bb7f1d2bfc1
+      internalID: 1589191872
       vertices: []
       indices: 
       edges: []
@@ -215,18 +194,15 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Village-front_0: 1093650845
-      Village-front_1: -505519303
-      Village-front_2: -1918753878
-      Village-front_3: -1491560908
-      Village-front_4: -664923670
+      Strawberry flower_0: -1446042131
+      Strawberry flower_1: 1589191872
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

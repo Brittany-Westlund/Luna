@@ -4,7 +4,7 @@ using System.Linq;
 public class PickupPutDown : MonoBehaviour
 {
     [Header("Settings")]
-    public KeyCode interactKey = KeyCode.R; // Changed from G to R
+    public KeyCode interactKey = KeyCode.S; 
     public Vector3 holdPointOffset = Vector3.zero;
     public float dropOffsetX = 0.5f;
     public float dropOffsetY = 0.0f;

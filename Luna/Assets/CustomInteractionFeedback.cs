@@ -115,6 +115,37 @@ public class CustomInteractionFeedback : MonoBehaviour
     [Tooltip("Called right before the feedback object turns itself off.")]
     public UnityEvent OnFeedbackDismissed;
 
+    [Header("Proximity Fade Gate")]
+    [Tooltip("If true, feedback starts hidden and fades in only when the required collider enters.")]
+    public bool useProximityFadeGate = false;
+
+    [Tooltip("If true, feedback starts hidden and waits for proximity before beginning its display.")]
+    public bool startHiddenUntilPlayerFeet = true;
+
+    [Tooltip("If true, a specific collider name can open the proximity gate even if the tag does not match.")]
+    public bool requireSpecificColliderName = true;
+
+    [Tooltip("Name of the collider that opens the proximity gate, such as PlayerFeet.")]
+    public string requiredColliderName = "PlayerFeet";
+
+    [Tooltip("If true, fades back out when the valid collider exits.")]
+    public bool fadeOutOnPlayerExit = true;
+
+    [Tooltip("How long it takes the external alpha multiplier to fade in/out for the proximity gate.")]
+    public float proximityGateFadeDuration = 0.2f;
+
+    [Range(0f, 1f)]
+    public float proximityGateHiddenAlpha = 0f;
+
+    [Range(0f, 1f)]
+    public float proximityGateVisibleAlpha = 1f;
+
+    [Tooltip("If true, StartCycling() is called when the valid collider enters and the system is not already running.")]
+    public bool startCyclingOnPlayerEnter = true;
+
+    [Tooltip("If true, StopCycling() is called after fading out when the valid collider exits.")]
+    public bool stopCyclingOnPlayerExit = false;
+
     [Header("Debug")]
     public bool debugLogging = false;
 
@@ -122,11 +153,16 @@ public class CustomInteractionFeedback : MonoBehaviour
 
     private Coroutine cycleRoutine;
     private Coroutine singleRoutine;
+    private Coroutine proximityGateRoutine;
     private int currentIndex = 0;
     private bool playerInRange = false;
+    private bool proximityGatePlayerInside = false;
+    private bool isBeingDismissed = false;
 
     private void OnEnable()
     {
+        isBeingDismissed = false;
+
         RebuildFeedbackList();
         HideAllImmediately();
 
@@ -138,7 +174,16 @@ public class CustomInteractionFeedback : MonoBehaviour
         PlayConfiguredSFX(activateSFX, transform.position);
         OnFeedbackActivated?.Invoke();
 
-        if (autoPlayOnEnable)
+        if (useProximityFadeGate && startHiddenUntilPlayerFeet)
+        {
+            SetExternalAlphaMultiplier(proximityGateHiddenAlpha);
+
+            if (debugLogging)
+            {
+                Debug.Log($"[CustomInteractionFeedback] Proximity gate active on '{name}'. Starting hidden until valid collider enters.");
+            }
+        }
+        else if (autoPlayOnEnable)
         {
             StartCycling();
         }
@@ -147,8 +192,16 @@ public class CustomInteractionFeedback : MonoBehaviour
     private void OnDisable()
     {
         StopCycling();
+
+        if (proximityGateRoutine != null)
+        {
+            StopCoroutine(proximityGateRoutine);
+            proximityGateRoutine = null;
+        }
+
         HideAllImmediately();
         playerInRange = false;
+        proximityGatePlayerInside = false;
     }
 
     private void OnValidate()
@@ -157,6 +210,10 @@ public class CustomInteractionFeedback : MonoBehaviour
         holdDuration = Mathf.Max(0f, holdDuration);
         gracePeriodDuration = Mathf.Max(0f, gracePeriodDuration);
         externalAlphaMultiplier = Mathf.Clamp01(externalAlphaMultiplier);
+
+        proximityGateFadeDuration = Mathf.Max(0f, proximityGateFadeDuration);
+        proximityGateHiddenAlpha = Mathf.Clamp01(proximityGateHiddenAlpha);
+        proximityGateVisibleAlpha = Mathf.Clamp01(proximityGateVisibleAlpha);
     }
 
     private void Update()
@@ -241,6 +298,9 @@ public class CustomInteractionFeedback : MonoBehaviour
             return;
         }
 
+        if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+            return;
+
         if (cycleFeedbackObjects && runtimeFeedbackObjects.Count > 1)
         {
             cycleRoutine = StartCoroutine(CycleRoutine());
@@ -273,6 +333,8 @@ public class CustomInteractionFeedback : MonoBehaviour
             Debug.Log($"[CustomInteractionFeedback] DismissFeedback called on '{name}'.");
         }
 
+        isBeingDismissed = true;
+
         if (triggerBeforeTurnOff)
         {
             ApplyBeforeTurnOffActions();
@@ -291,6 +353,7 @@ public class CustomInteractionFeedback : MonoBehaviour
             Debug.Log($"[CustomInteractionFeedback] TurnSelfOff called on '{name}'.");
         }
 
+        isBeingDismissed = true;
         gameObject.SetActive(false);
     }
 
@@ -301,6 +364,7 @@ public class CustomInteractionFeedback : MonoBehaviour
             Debug.Log($"[CustomInteractionFeedback] TurnSelfOn called on '{name}'.");
         }
 
+        isBeingDismissed = false;
         gameObject.SetActive(true);
     }
 
@@ -483,6 +547,29 @@ public class CustomInteractionFeedback : MonoBehaviour
         SetAlpha(sr, endAlpha);
     }
 
+    private IEnumerator FadeExternalAlphaMultiplier(float startAlpha, float endAlpha, float duration)
+    {
+        if (duration <= 0f)
+        {
+            SetExternalAlphaMultiplier(endAlpha);
+            yield break;
+        }
+
+        float time = 0f;
+        SetExternalAlphaMultiplier(startAlpha);
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = Mathf.Clamp01(time / duration);
+            float alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            SetExternalAlphaMultiplier(alpha);
+            yield return null;
+        }
+
+        SetExternalAlphaMultiplier(endAlpha);
+    }
+
     private void HideAllImmediately()
     {
         foreach (GameObject obj in runtimeFeedbackObjects)
@@ -496,13 +583,25 @@ public class CustomInteractionFeedback : MonoBehaviour
                 SetAlpha(sr, 0f);
             }
 
-            if (visibilityControlMode == VisibilityControlMode.GameObjectActive)
+            if (useProximityFadeGate)
             {
-                obj.SetActive(false);
+                obj.SetActive(true);
+
+                if (sr != null)
+                {
+                    sr.enabled = true;
+                }
             }
             else
             {
-                obj.SetActive(true);
+                if (visibilityControlMode == VisibilityControlMode.GameObjectActive)
+                {
+                    obj.SetActive(false);
+                }
+                else
+                {
+                    obj.SetActive(true);
+                }
             }
         }
     }
@@ -511,6 +610,19 @@ public class CustomInteractionFeedback : MonoBehaviour
     {
         if (obj == null)
             return;
+
+        if (useProximityFadeGate)
+        {
+            obj.SetActive(true);
+
+            SpriteRenderer sr = GetFeedbackSpriteRenderer(obj);
+            if (sr != null)
+            {
+                sr.enabled = true;
+            }
+
+            return;
+        }
 
         if (visibilityControlMode == VisibilityControlMode.GameObjectActive)
         {
@@ -532,6 +644,19 @@ public class CustomInteractionFeedback : MonoBehaviour
     {
         if (obj == null)
             return;
+
+        if (useProximityFadeGate)
+        {
+            SpriteRenderer sr = GetFeedbackSpriteRenderer(obj);
+            if (sr != null)
+            {
+                SetAlpha(sr, 0f);
+                sr.enabled = true;
+            }
+
+            obj.SetActive(true);
+            return;
+        }
 
         if (visibilityControlMode == VisibilityControlMode.GameObjectActive)
         {
@@ -587,8 +712,65 @@ public class CustomInteractionFeedback : MonoBehaviour
         }
     }
 
+    private bool MatchesProximityGateCollider(Collider2D other)
+    {
+        if (other == null)
+            return false;
+
+        if (requireSpecificColliderName && !string.IsNullOrEmpty(requiredColliderName))
+        {
+            if (other.name == requiredColliderName)
+            {
+                return true;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(playerTag) && other.CompareTag(playerTag))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (isBeingDismissed || !isActiveAndEnabled || !gameObject.activeInHierarchy)
+            return;
+
+        if (useProximityFadeGate && MatchesProximityGateCollider(other))
+        {
+            proximityGatePlayerInside = true;
+            playerInRange = true;
+
+            if (debugLogging)
+            {
+                Debug.Log($"[CustomInteractionFeedback] Proximity gate entered by '{other.name}' for '{name}'.");
+            }
+
+            OnPlayerEntered?.Invoke();
+
+            if (proximityGateRoutine != null)
+            {
+                StopCoroutine(proximityGateRoutine);
+                proximityGateRoutine = null;
+            }
+
+            if (startCyclingOnPlayerEnter && cycleRoutine == null && singleRoutine == null)
+            {
+                StartCycling();
+            }
+
+            if (isActiveAndEnabled && gameObject.activeInHierarchy)
+            {
+                proximityGateRoutine = StartCoroutine(
+                    FadeExternalAlphaMultiplier(externalAlphaMultiplier, proximityGateVisibleAlpha, proximityGateFadeDuration)
+                );
+            }
+
+            return;
+        }
+
         if (!mustPlayerBeInTrigger)
             return;
 
@@ -607,6 +789,45 @@ public class CustomInteractionFeedback : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        if (isBeingDismissed || !isActiveAndEnabled || !gameObject.activeInHierarchy)
+            return;
+
+        if (useProximityFadeGate && MatchesProximityGateCollider(other))
+        {
+            proximityGatePlayerInside = false;
+            playerInRange = false;
+
+            if (debugLogging)
+            {
+                Debug.Log($"[CustomInteractionFeedback] Proximity gate exited by '{other.name}' for '{name}'.");
+            }
+
+            OnPlayerExited?.Invoke();
+
+            if (fadeOutOnPlayerExit)
+            {
+                if (proximityGateRoutine != null)
+                {
+                    StopCoroutine(proximityGateRoutine);
+                    proximityGateRoutine = null;
+                }
+
+                if (isActiveAndEnabled && gameObject.activeInHierarchy)
+                {
+                    proximityGateRoutine = StartCoroutine(
+                        FadeExternalAlphaMultiplier(externalAlphaMultiplier, proximityGateHiddenAlpha, proximityGateFadeDuration)
+                    );
+                }
+            }
+
+            if (stopCyclingOnPlayerExit)
+            {
+                StopCycling();
+            }
+
+            return;
+        }
+
         if (!mustPlayerBeInTrigger)
             return;
 

@@ -50,10 +50,10 @@ public class WildSporeInteraction : MonoBehaviour
 
     private void Update()
 {
-    // Check if the player presses A and a spore is nearby
-    if (isSporeNearby && Input.GetKeyDown(KeyCode.A))
+    // Check if the player presses S and a spore is nearby
+    if (isSporeNearby && Input.GetKeyDown(KeyCode.S))
     {
-        Debug.Log("Player pressed 'A' to assist!");
+        Debug.Log("Player pressed 'S' to assist!");
 
         // Check cooldown
         if (Time.time - lastSporeTime >= sporeCooldown)

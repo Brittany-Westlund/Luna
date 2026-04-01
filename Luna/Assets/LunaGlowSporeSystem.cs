@@ -62,7 +62,7 @@ public class LunaGlowSporeSystem : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && !isSliding)
+        if (Input.GetKeyDown(KeyCode.S) && !isSliding)
         {
             if (activeSpore != null && IsNearSprout())
             {

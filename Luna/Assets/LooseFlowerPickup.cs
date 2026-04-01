@@ -47,7 +47,7 @@ public class LooseFlowerPickup : MonoBehaviour
             _gardenMgr.enabled = isGround;
 
         // 2) Only fire on X if not already holding
-        if (!Input.GetKeyDown(KeyCode.X) || _holder.HasFlower)
+        if (!Input.GetKeyDown(KeyCode.F) || _holder.HasFlower)
             return;
 
         // 3) Choose search center

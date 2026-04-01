@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 using PixelCrushers.DialogueSystem;
 
@@ -13,17 +14,20 @@ public class BookControllerSimple : MonoBehaviour
     public GameObject bookUIRoot;
     public Image bookPageImage;
 
+    [Header("Reveal Transition")]
+    public float revealDelay = 2f;
+    public float revealFadeDuration = 0.5f;
+
+    [Header("UI Fade")]
+    public float uiFadeInDuration = 0.18f;
+    public float uiFadeOutDuration = 0.18f;
+
     [Header("World Book Sync")]
-    [Tooltip("If true, MoonbowBookUI mirrors the state of any world OpenBook sprite renderer.")]
     public bool syncToWorldOpenBook = true;
-
-    [Tooltip("Exact GameObject name to search for in the scene.")]
     public string openBookObjectName = "OpenBook";
-
-    [Tooltip("How often to refresh the list of OpenBook renderers.")]
     public float openBookRefreshInterval = 0.5f;
-
-    [Tooltip("If true, logs which OpenBook objects were found and when sync changes.")]
+    public float uiOpenDebounce = 0.08f;
+    public float uiCloseDebounce = 0.2f;
     public bool logOpenBookSearch = false;
 
     [Header("Input While Book Is Open")]
@@ -31,21 +35,17 @@ public class BookControllerSimple : MonoBehaviour
     public KeyCode nextPageKey = KeyCode.D;
     public bool allowArrowKeysToo = true;
 
+    [Header("Tap / Hold E Page Turning")]
+    public KeyCode pageInteractKey = KeyCode.E;
+    public float holdThreshold = 0.35f;
+    public float pageTurnCooldown = 0.2f;
+
     [Header("Jump To Close")]
-    [Tooltip("If true, pressing Jump while the book is open will turn off the visible world OpenBook.")]
     public bool allowJumpToCloseBook = true;
-
-    [Tooltip("Uses Unity's default Jump button name.")]
     public string jumpButtonName = "Jump";
-
-    [Tooltip("Optional fallback key if Input.GetButtonDown(\"Jump\") is not set up the way you want.")]
     public KeyCode jumpFallbackKey = KeyCode.Space;
 
-    [Tooltip("If true, disables the whole OpenBook GameObject instead of only its SpriteRenderer.")]
-    public bool jumpCloseDisablesWholeObject = false;
-
     [Header("Optional Manual Close")]
-    [Tooltip("Optional fallback close key. Usually leave off if world book should be the sole authority.")]
     public bool allowManualCloseKey = false;
     public KeyCode manualCloseKey = KeyCode.Space;
 
@@ -74,9 +74,22 @@ public class BookControllerSimple : MonoBehaviour
     private int unlockedCount = 0;
     private readonly HashSet<string> usedLocationIds = new HashSet<string>();
 
-    private readonly List<SpriteRenderer> openBookRenderers = new List<SpriteRenderer>();
+    private readonly List<OpenBookTrigger> openBookTriggers = new List<OpenBookTrigger>();
     private float nextOpenBookRefreshTime = 0f;
-    private bool lastDetectedWorldBookVisible = false;
+
+    private bool lastRawWorldOpen = false;
+    private bool debouncedWorldOpen = false;
+    private Coroutine syncRoutine;
+    private Coroutine uiFadeRoutine;
+    private Coroutine revealRoutine;
+
+    private CanvasGroup bookCanvasGroup;
+    private Image revealOverlayImage;
+
+    private float ePressStartTime = 0f;
+    private bool ePressedForBook = false;
+    private bool holdActionTriggered = false;
+    private float nextPageTurnTime = 0f;
 
     private string KeyUnlocked => saveKeyPrefix + "UnlockedCount";
     private string KeyIndex => saveKeyPrefix + "CurrentIndex";
@@ -91,24 +104,23 @@ public class BookControllerSimple : MonoBehaviour
     void Start()
     {
         ResolvePlayer();
+        SetupCanvasGroup();
+        SetupRevealOverlay();
 
         if (bookUIRoot != null)
             bookUIRoot.SetActive(false);
 
+        if (bookCanvasGroup != null)
+        {
+            bookCanvasGroup.alpha = 0f;
+            bookCanvasGroup.interactable = false;
+            bookCanvasGroup.blocksRaycasts = false;
+        }
+
         ClampCurrentPage();
 
         if (syncToWorldOpenBook)
-            RefreshOpenBookRenderers();
-
-        if (debugLogs)
-        {
-            Debug.Log($"📖 BookControllerSimple Start");
-            Debug.Log($"📖 player = {(player != null ? player.name : "NULL")}");
-            Debug.Log($"📖 bookUIRoot = {(bookUIRoot != null ? bookUIRoot.name : "NULL")}");
-            Debug.Log($"📖 bookPageImage = {(bookPageImage != null ? bookPageImage.name : "NULL")}");
-            Debug.Log($"📖 unlockedCount = {unlockedCount}");
-            Debug.Log($"📖 currentPage = {currentPage}");
-        }
+            RefreshOpenBookTriggers();
     }
 
     void Update()
@@ -116,133 +128,312 @@ public class BookControllerSimple : MonoBehaviour
         if (player == null)
             ResolvePlayer();
 
-       if (syncToWorldOpenBook)
-{
-    if (Time.time >= nextOpenBookRefreshTime)
-    {
-        RefreshOpenBookRenderers();
-        nextOpenBookRefreshTime = Time.time + Mathf.Max(0.05f, openBookRefreshInterval);
-    }
-
-    bool shouldBeOpen = AnyOpenBookVisible();
-
-    if (shouldBeOpen != lastDetectedWorldBookVisible)
-    {
-        lastDetectedWorldBookVisible = shouldBeOpen;
-
-        if (debugLogs || logOpenBookSearch)
-            Debug.Log($"📖 World OpenBook visible changed -> {shouldBeOpen}");
-    }
-
-    // Only block OPEN/CLOSE syncing during dialogue.
-    // Do NOT return from Update(), so page turning still works.
-    if (!DialogueManager.isConversationActive)
-    {
-        if (shouldBeOpen && !bookOpen)
+        if (syncToWorldOpenBook)
         {
-            OpenBookFromWorldSync();
-        }
-        else if (!shouldBeOpen && bookOpen)
-        {
-            CloseBookFromWorldSync();
-        }
-    }
-
-            if (shouldBeOpen != lastDetectedWorldBookVisible)
+            if (Time.time >= nextOpenBookRefreshTime)
             {
-                lastDetectedWorldBookVisible = shouldBeOpen;
-
-                if (debugLogs || logOpenBookSearch)
-                    Debug.Log($"📖 World OpenBook visible changed -> {shouldBeOpen}");
+                RefreshOpenBookTriggers();
+                nextOpenBookRefreshTime = Time.time + Mathf.Max(0.05f, openBookRefreshInterval);
             }
 
-            if (shouldBeOpen && !bookOpen)
+            bool rawWorldOpen = AnyOpenBookActuallyOpen();
+
+            if (rawWorldOpen != lastRawWorldOpen)
             {
-                OpenBookFromWorldSync();
-            }
-            else if (!shouldBeOpen && bookOpen)
-            {
-                CloseBookFromWorldSync();
+                lastRawWorldOpen = rawWorldOpen;
+                RestartDebouncedSync(rawWorldOpen);
             }
         }
 
         if (!bookOpen)
+        {
+            ResetBookInputState();
             return;
+        }
 
         if (bookOpen && allowJumpToCloseBook && JumpPressedThisFrame())
         {
-            bool turnedOff = TurnOffVisibleOpenBook();
-
-            if (debugLogs)
-                Debug.Log($"📖 Jump close attempted -> turnedOff={turnedOff}");
-
+            bool closed = ForceCloseFirstOpenBook();
+            ResetBookInputState();
             return;
         }
 
         if (allowManualCloseKey && Input.GetKeyDown(manualCloseKey))
         {
             CloseBookFromWorldSync();
+            ResetBookInputState();
             return;
         }
 
-        bool prevPressed = Input.GetKeyDown(previousPageKey) || (allowArrowKeysToo && Input.GetKeyDown(KeyCode.LeftArrow));
-        bool nextPressed = Input.GetKeyDown(nextPageKey) || (allowArrowKeysToo && Input.GetKeyDown(KeyCode.RightArrow));
+        if (DialogueManager.isConversationActive)
+        {
+            ResetBookInputState();
+            return;
+        }
 
-        if (prevPressed)
-            PreviousPage();
+        HandleTapHoldBookPaging();
+    }
 
-        if (nextPressed)
-            NextPage();
+    void SetupCanvasGroup()
+    {
+        if (bookUIRoot == null)
+            return;
+
+        bookCanvasGroup = bookUIRoot.GetComponent<CanvasGroup>();
+
+        if (bookCanvasGroup == null)
+            bookCanvasGroup = bookUIRoot.AddComponent<CanvasGroup>();
+    }
+
+    void SetupRevealOverlay()
+    {
+        if (bookPageImage == null)
+            return;
+
+        RectTransform baseRect = bookPageImage.rectTransform;
+        Transform parent = baseRect.parent;
+        if (parent == null)
+            return;
+
+        Transform existing = parent.Find(bookPageImage.name + "_RevealOverlay");
+        if (existing != null)
+            revealOverlayImage = existing.GetComponent<Image>();
+
+        if (revealOverlayImage == null)
+        {
+            GameObject overlay = new GameObject(bookPageImage.name + "_RevealOverlay", typeof(RectTransform), typeof(Image));
+            overlay.transform.SetParent(parent, false);
+            revealOverlayImage = overlay.GetComponent<Image>();
+        }
+
+        RectTransform overlayRect = revealOverlayImage.rectTransform;
+
+        overlayRect.anchorMin = baseRect.anchorMin;
+        overlayRect.anchorMax = baseRect.anchorMax;
+        overlayRect.pivot = baseRect.pivot;
+        overlayRect.anchoredPosition = baseRect.anchoredPosition;
+        overlayRect.sizeDelta = baseRect.sizeDelta;
+        overlayRect.localRotation = baseRect.localRotation;
+        overlayRect.localScale = baseRect.localScale;
+        overlayRect.offsetMin = baseRect.offsetMin;
+        overlayRect.offsetMax = baseRect.offsetMax;
+
+        revealOverlayImage.transform.SetAsLastSibling();
+        revealOverlayImage.raycastTarget = false;
+        revealOverlayImage.preserveAspect = bookPageImage.preserveAspect;
+        revealOverlayImage.type = bookPageImage.type;
+        revealOverlayImage.material = bookPageImage.material;
+        revealOverlayImage.color = new Color(bookPageImage.color.r, bookPageImage.color.g, bookPageImage.color.b, 0f);
+        revealOverlayImage.enabled = false;
+    }
+
+    void RestartDebouncedSync(bool targetOpen)
+    {
+        if (syncRoutine != null)
+        {
+            StopCoroutine(syncRoutine);
+            syncRoutine = null;
+        }
+
+        syncRoutine = StartCoroutine(DebouncedSyncRoutine(targetOpen));
+    }
+
+    IEnumerator DebouncedSyncRoutine(bool targetOpen)
+    {
+        float waitTime = targetOpen ? uiOpenDebounce : uiCloseDebounce;
+
+        if (waitTime > 0f)
+            yield return new WaitForSeconds(waitTime);
+
+        bool currentRawWorldOpen = AnyOpenBookActuallyOpen();
+
+        if (currentRawWorldOpen != targetOpen)
+        {
+            syncRoutine = null;
+            yield break;
+        }
+
+        debouncedWorldOpen = targetOpen;
+
+        if (!DialogueManager.isConversationActive)
+        {
+            if (debouncedWorldOpen && !bookOpen)
+                OpenBookFromWorldSync();
+            else if (!debouncedWorldOpen && bookOpen)
+                CloseBookFromWorldSync();
+        }
+
+        syncRoutine = null;
+    }
+
+    void HandleTapHoldBookPaging()
+    {
+        if (Input.GetKeyDown(pageInteractKey))
+        {
+            ePressStartTime = Time.time;
+            ePressedForBook = true;
+            holdActionTriggered = false;
+            SetHorizontalMovementLocked(true);
+        }
+
+        if (ePressedForBook && Input.GetKey(pageInteractKey))
+        {
+            SetHorizontalMovementLocked(true);
+
+            float heldTime = Time.time - ePressStartTime;
+
+            if (!holdActionTriggered && heldTime >= holdThreshold && Time.time >= nextPageTurnTime)
+            {
+                PreviousPage();
+                nextPageTurnTime = Time.time + pageTurnCooldown;
+                holdActionTriggered = true;
+            }
+        }
+
+        if (ePressedForBook && Input.GetKeyUp(pageInteractKey))
+        {
+            float heldTime = Time.time - ePressStartTime;
+
+            if (!holdActionTriggered && heldTime < holdThreshold && Time.time >= nextPageTurnTime)
+            {
+                NextPage();
+                nextPageTurnTime = Time.time + pageTurnCooldown;
+            }
+
+            ResetBookInputState();
+        }
+    }
+
+    void ResetBookInputState()
+    {
+        ePressedForBook = false;
+        holdActionTriggered = false;
+        SetHorizontalMovementLocked(false);
     }
 
     void OpenBookFromWorldSync()
     {
         if (bookUIRoot == null || bookPageImage == null)
-        {
-            Debug.LogWarning("BookControllerSimple: bookUIRoot or bookPageImage is missing.");
             return;
-        }
+
+        SetupCanvasGroup();
+        SetupRevealOverlay();
 
         ClampCurrentPage();
         ApplyNeverOpenToBlankRule();
 
         bookOpen = true;
         bookUIRoot.SetActive(true);
+        ShowPageImmediate();
+        SetHorizontalMovementLocked(false);
 
-        ShowPage();
-        SetHorizontalMovementLocked(true);
+        if (uiFadeRoutine != null)
+        {
+            StopCoroutine(uiFadeRoutine);
+            uiFadeRoutine = null;
+        }
+
+        uiFadeRoutine = StartCoroutine(FadeUIRoutine(1f, uiFadeInDuration, true));
 
         if (saveProgress)
             Save();
-
-        if (debugLogs)
-            Debug.Log($"📖 OpenBookFromWorldSync -> currentPage={currentPage}");
     }
 
     void CloseBookFromWorldSync()
     {
         bookOpen = false;
-
-        if (bookUIRoot != null)
-            bookUIRoot.SetActive(false);
-
+        ResetBookInputState();
         SetHorizontalMovementLocked(false);
+
+        if (revealRoutine != null)
+        {
+            StopCoroutine(revealRoutine);
+            revealRoutine = null;
+        }
+
+        if (revealOverlayImage != null)
+        {
+            revealOverlayImage.enabled = false;
+            Color c = revealOverlayImage.color;
+            c.a = 0f;
+            revealOverlayImage.color = c;
+        }
+
+        if (uiFadeRoutine != null)
+        {
+            StopCoroutine(uiFadeRoutine);
+            uiFadeRoutine = null;
+        }
+
+        uiFadeRoutine = StartCoroutine(FadeUIRoutine(0f, uiFadeOutDuration, false));
 
         if (saveProgress)
             Save();
+    }
 
-        if (debugLogs)
-            Debug.Log("📖 CloseBookFromWorldSync");
+    IEnumerator FadeUIRoutine(float targetAlpha, float duration, bool keepActiveAtEnd)
+    {
+        if (bookUIRoot == null)
+            yield break;
+
+        SetupCanvasGroup();
+
+        if (bookCanvasGroup == null)
+            yield break;
+
+        if (!bookUIRoot.activeSelf)
+            bookUIRoot.SetActive(true);
+
+        if (targetAlpha > 0f)
+        {
+            bookCanvasGroup.interactable = false;
+            bookCanvasGroup.blocksRaycasts = false;
+        }
+
+        float startAlpha = bookCanvasGroup.alpha;
+
+        if (duration <= 0f)
+        {
+            bookCanvasGroup.alpha = targetAlpha;
+        }
+        else
+        {
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                bookCanvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, t);
+                yield return null;
+            }
+
+            bookCanvasGroup.alpha = targetAlpha;
+        }
+
+        if (keepActiveAtEnd)
+        {
+            bookCanvasGroup.interactable = true;
+            bookCanvasGroup.blocksRaycasts = true;
+        }
+        else
+        {
+            bookCanvasGroup.interactable = false;
+            bookCanvasGroup.blocksRaycasts = false;
+            bookUIRoot.SetActive(false);
+        }
+
+        uiFadeRoutine = null;
     }
 
     public void ForceRefreshOpenBooks()
     {
-        RefreshOpenBookRenderers();
+        RefreshOpenBookTriggers();
     }
 
-    void RefreshOpenBookRenderers()
+    void RefreshOpenBookTriggers()
     {
-        openBookRenderers.Clear();
+        openBookTriggers.Clear();
 
         Transform[] allTransforms = Resources.FindObjectsOfTypeAll<Transform>();
 
@@ -261,68 +452,38 @@ public class BookControllerSimple : MonoBehaviour
             if ((t.hideFlags & HideFlags.NotEditable) != 0 || (t.hideFlags & HideFlags.HideAndDontSave) != 0)
                 continue;
 
-            SpriteRenderer sr = t.GetComponent<SpriteRenderer>();
-            if (sr == null)
-                sr = t.GetComponentInChildren<SpriteRenderer>(true);
+            OpenBookTrigger trigger = t.GetComponent<OpenBookTrigger>();
+            if (trigger == null)
+                trigger = t.GetComponentInChildren<OpenBookTrigger>(true);
 
-            if (sr != null)
-            {
-                openBookRenderers.Add(sr);
-
-                if (logOpenBookSearch)
-                    Debug.Log($"📖 Found OpenBook renderer on: {t.gameObject.name} (path: {GetHierarchyPath(t)})");
-            }
-            else if (logOpenBookSearch)
-            {
-                Debug.LogWarning($"📖 Found object named '{openBookObjectName}' but no SpriteRenderer on it or its children: {GetHierarchyPath(t)}");
-            }
+            if (trigger != null)
+                openBookTriggers.Add(trigger);
         }
-
-        if (logOpenBookSearch)
-            Debug.Log($"📖 RefreshOpenBookRenderers complete. Found {openBookRenderers.Count} matching renderer(s).");
     }
 
-    bool AnyOpenBookVisible()
+    bool AnyOpenBookActuallyOpen()
     {
-        for (int i = openBookRenderers.Count - 1; i >= 0; i--)
+        for (int i = openBookTriggers.Count - 1; i >= 0; i--)
         {
-            SpriteRenderer sr = openBookRenderers[i];
+            OpenBookTrigger trigger = openBookTriggers[i];
 
-            if (sr == null)
+            if (trigger == null)
             {
-                openBookRenderers.RemoveAt(i);
+                openBookTriggers.RemoveAt(i);
                 continue;
             }
 
-            if (!sr.gameObject.scene.IsValid())
+            if (!trigger.gameObject.scene.IsValid())
             {
-                openBookRenderers.RemoveAt(i);
+                openBookTriggers.RemoveAt(i);
                 continue;
             }
 
-            if (IsSpriteRendererActuallyVisible(sr))
+            if (trigger.IsOpen())
                 return true;
         }
 
         return false;
-    }
-
-    bool IsSpriteRendererActuallyVisible(SpriteRenderer sr)
-    {
-        if (sr == null)
-            return false;
-
-        if (!sr.enabled)
-            return false;
-
-        if (!sr.gameObject.activeInHierarchy)
-            return false;
-
-        Color c = sr.color;
-        if (c.a <= 0.001f)
-            return false;
-
-        return true;
     }
 
     bool JumpPressedThisFrame()
@@ -337,7 +498,6 @@ public class BookControllerSimple : MonoBehaviour
             }
             catch
             {
-                // Ignore if Jump button is not configured in Input Manager
             }
         }
 
@@ -347,61 +507,32 @@ public class BookControllerSimple : MonoBehaviour
         return jumpPressed;
     }
 
-    bool TurnOffVisibleOpenBook()
+    bool ForceCloseFirstOpenBook()
     {
-        for (int i = openBookRenderers.Count - 1; i >= 0; i--)
+        for (int i = openBookTriggers.Count - 1; i >= 0; i--)
         {
-            SpriteRenderer sr = openBookRenderers[i];
+            OpenBookTrigger trigger = openBookTriggers[i];
 
-            if (sr == null)
+            if (trigger == null)
             {
-                openBookRenderers.RemoveAt(i);
+                openBookTriggers.RemoveAt(i);
                 continue;
             }
 
-            if (!sr.gameObject.scene.IsValid())
+            if (!trigger.gameObject.scene.IsValid())
             {
-                openBookRenderers.RemoveAt(i);
+                openBookTriggers.RemoveAt(i);
                 continue;
             }
 
-            if (!IsSpriteRendererActuallyVisible(sr))
+            if (!trigger.IsOpen())
                 continue;
 
-            if (jumpCloseDisablesWholeObject)
-            {
-                sr.gameObject.SetActive(false);
-
-                if (debugLogs)
-                    Debug.Log($"📖 Jump closed OpenBook by disabling GameObject: {sr.gameObject.name}");
-            }
-            else
-            {
-                sr.enabled = false;
-
-                if (debugLogs)
-                    Debug.Log($"📖 Jump closed OpenBook by disabling SpriteRenderer: {sr.gameObject.name}");
-            }
-
+            trigger.ForceClose();
             return true;
         }
 
         return false;
-    }
-
-    string GetHierarchyPath(Transform t)
-    {
-        if (t == null)
-            return "NULL";
-
-        string path = t.name;
-        while (t.parent != null)
-        {
-            t = t.parent;
-            path = t.name + "/" + path;
-        }
-
-        return path;
     }
 
     public void NextPage()
@@ -413,13 +544,10 @@ public class BookControllerSimple : MonoBehaviour
         if (currentPage > max)
             currentPage = max;
 
-        ShowPage();
+        ShowPageImmediate();
 
         if (saveProgress)
             Save();
-
-        if (debugLogs)
-            Debug.Log($"📖 NextPage -> currentPage={currentPage}");
     }
 
     public void PreviousPage()
@@ -430,16 +558,13 @@ public class BookControllerSimple : MonoBehaviour
         if (currentPage < 0)
             currentPage = 0;
 
-        ShowPage();
+        ShowPageImmediate();
 
         if (saveProgress)
             Save();
-
-        if (debugLogs)
-            Debug.Log($"📖 PreviousPage -> currentPage={currentPage}");
     }
 
-    void ShowPage()
+    void ShowPageImmediate()
     {
         if (bookPageImage == null) return;
 
@@ -447,8 +572,94 @@ public class BookControllerSimple : MonoBehaviour
         bookPageImage.sprite = page;
         bookPageImage.enabled = page != null;
 
-        if (debugLogs)
-            Debug.Log($"📖 ShowPage -> {(page != null ? page.name : "NULL")}");
+        if (revealOverlayImage != null)
+        {
+            revealOverlayImage.enabled = false;
+            Color c = revealOverlayImage.color;
+            c.a = 0f;
+            revealOverlayImage.color = c;
+        }
+    }
+
+    IEnumerator RevealPageRoutine(Sprite oldPage, Sprite newPage)
+    {
+        SetupRevealOverlay();
+
+        if (bookPageImage == null)
+            yield break;
+
+        if (revealOverlayImage == null)
+        {
+            ShowPageImmediate();
+            revealRoutine = null;
+            yield break;
+        }
+
+        bookPageImage.sprite = oldPage;
+        bookPageImage.enabled = oldPage != null;
+
+        revealOverlayImage.sprite = newPage;
+        revealOverlayImage.enabled = newPage != null;
+
+        RectTransform baseRect = bookPageImage.rectTransform;
+        RectTransform overlayRect = revealOverlayImage.rectTransform;
+        overlayRect.anchorMin = baseRect.anchorMin;
+        overlayRect.anchorMax = baseRect.anchorMax;
+        overlayRect.pivot = baseRect.pivot;
+        overlayRect.anchoredPosition = baseRect.anchoredPosition;
+        overlayRect.sizeDelta = baseRect.sizeDelta;
+        overlayRect.localRotation = baseRect.localRotation;
+        overlayRect.localScale = baseRect.localScale;
+        overlayRect.offsetMin = baseRect.offsetMin;
+        overlayRect.offsetMax = baseRect.offsetMax;
+
+        Color overlayColor = revealOverlayImage.color;
+        overlayColor.r = bookPageImage.color.r;
+        overlayColor.g = bookPageImage.color.g;
+        overlayColor.b = bookPageImage.color.b;
+        overlayColor.a = 0f;
+        revealOverlayImage.color = overlayColor;
+
+        if (revealDelay > 0f)
+            yield return new WaitForSeconds(revealDelay);
+
+        float duration = Mathf.Max(0f, revealFadeDuration);
+
+        if (duration <= 0f)
+        {
+            overlayColor.a = 1f;
+            revealOverlayImage.color = overlayColor;
+        }
+        else
+        {
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+
+                overlayColor = revealOverlayImage.color;
+                overlayColor.a = t;
+                revealOverlayImage.color = overlayColor;
+
+                yield return null;
+            }
+
+            overlayColor = revealOverlayImage.color;
+            overlayColor.a = 1f;
+            revealOverlayImage.color = overlayColor;
+        }
+
+        bookPageImage.sprite = newPage;
+        bookPageImage.enabled = newPage != null;
+
+        revealOverlayImage.enabled = false;
+        overlayColor = revealOverlayImage.color;
+        overlayColor.a = 0f;
+        revealOverlayImage.color = overlayColor;
+
+        revealRoutine = null;
     }
 
     Sprite GetCurrentPageSprite()
@@ -530,20 +741,10 @@ public class BookControllerSimple : MonoBehaviour
     {
         if (string.IsNullOrEmpty(locationId)) return false;
         if (unlockableSpreads == null || unlockableSpreads.Length == 0) return false;
+        if (usedLocationIds.Contains(locationId)) return false;
+        if (unlockedCount >= unlockableSpreads.Length) return false;
 
-        if (usedLocationIds.Contains(locationId))
-        {
-            if (debugLogs)
-                Debug.Log($"📖 Reveal blocked; already used {locationId}");
-            return false;
-        }
-
-        if (unlockedCount >= unlockableSpreads.Length)
-        {
-            if (debugLogs)
-                Debug.Log("📖 Reveal blocked; all spreads unlocked");
-            return false;
-        }
+        Sprite oldPage = GetCurrentPageSprite();
 
         usedLocationIds.Add(locationId);
 
@@ -557,14 +758,25 @@ public class BookControllerSimple : MonoBehaviour
 
         ClampCurrentPage();
 
+        Sprite newPage = GetCurrentPageSprite();
+
         if (bookOpen)
-            ShowPage();
+        {
+            if (revealRoutine != null)
+            {
+                StopCoroutine(revealRoutine);
+                revealRoutine = null;
+            }
+
+            revealRoutine = StartCoroutine(RevealPageRoutine(oldPage, newPage));
+        }
+        else
+        {
+            ShowPageImmediate();
+        }
 
         if (saveProgress)
             Save();
-
-        if (debugLogs)
-            Debug.Log($"📖 Reveal success -> unlockedCount={unlockedCount}");
 
         return true;
     }
@@ -628,7 +840,7 @@ public class BookControllerSimple : MonoBehaviour
         usedLocationIds.Clear();
 
         if (bookOpen)
-            ShowPage();
+            ShowPageImmediate();
     }
 
     void SetHorizontalMovementLocked(bool locked)
@@ -641,10 +853,6 @@ public class BookControllerSimple : MonoBehaviour
         if (field != null && field.FieldType == typeof(bool))
         {
             field.SetValue(lunaMovementScript, locked);
-
-            if (debugLogs)
-                Debug.Log($"📖 Set field {horizontalLockBoolName} = {locked}");
-
             return;
         }
 
@@ -652,14 +860,8 @@ public class BookControllerSimple : MonoBehaviour
         if (prop != null && prop.PropertyType == typeof(bool) && prop.CanWrite)
         {
             prop.SetValue(lunaMovementScript, locked, null);
-
-            if (debugLogs)
-                Debug.Log($"📖 Set property {horizontalLockBoolName} = {locked}");
-
             return;
         }
-
-        Debug.LogWarning($"BookControllerSimple: Could not find bool field/property '{horizontalLockBoolName}' on {lunaMovementScript.GetType().Name}");
     }
 
     public bool HasUsedRevealId(string locationId)
@@ -669,12 +871,8 @@ public class BookControllerSimple : MonoBehaviour
 
     public bool IsShowingRevealableBlankPage()
     {
-        if (!bookOpen)
-            return false;
-
-        if (blankEndPageSprite == null)
-            return false;
-
+        if (!bookOpen) return false;
+        if (blankEndPageSprite == null) return false;
         return IsOnBlankEndPage();
     }
 

@@ -19,6 +19,10 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
     [Header("Prompt Behavior")]
     [SerializeField] private bool showPromptOnlyOnce = false;
 
+    [Header("Player Detection")]
+    [SerializeField] private string requiredColliderName = "PlayerFeet";
+    [SerializeField] private string lunaObjectName = "Luna";
+
     private Image interactPromptImage;
     private RectTransform interactPromptRect;
     private Canvas promptCanvas;
@@ -26,6 +30,7 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
     private SpriteRenderer sittingSpriteRenderer;
     private SpriteRenderer lunaMainSpriteRenderer;
     private Animator lunaMainAnimator;
+    private GameObject lunaObject;
 
     private bool playerInRange = false;
     private bool showPrompt = false;
@@ -43,9 +48,7 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
 
         sittingSpriteRenderer = GetComponent<SpriteRenderer>();
         if (sittingSpriteRenderer != null)
-        {
             sittingSpriteRenderer.enabled = false;
-        }
 
         CreatePromptUI();
         SetPromptAlpha(0f);
@@ -54,18 +57,11 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
     private void Update()
     {
         if (mainCamera == null)
-        {
             mainCamera = Camera.main;
-        }
 
         UpdatePromptPosition();
         UpdatePromptScale();
         HandlePromptFade();
-
-        if (isSitting)
-        {
-            ForceSittingVisualState();
-        }
 
         if (isSitting && PlayerIsMoving())
         {
@@ -74,8 +70,11 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
             return;
         }
 
-        if (!playerInRange) return;
-        if (Time.time < nextInteractTime) return;
+        if (!playerInRange)
+            return;
+
+        if (Time.time < nextInteractTime)
+            return;
 
         if (Input.GetKeyDown(interactKey))
         {
@@ -93,6 +92,14 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
                 showPrompt = false;
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (!isSitting)
+            return;
+
+        ForceSittingVisualState();
     }
 
     private void CreatePromptUI()
@@ -118,44 +125,37 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
         interactPromptRect.anchorMax = new Vector2(0.5f, 0.5f);
         interactPromptRect.pivot = new Vector2(0.5f, 0.5f);
         interactPromptRect.sizeDelta = new Vector2(64f, 64f);
-        interactPromptRect.localScale = Vector3.one * promptScale;
     }
 
     private void UpdatePromptPosition()
     {
-        if (interactPromptRect == null || mainCamera == null) return;
+        if (interactPromptRect == null || mainCamera == null)
+            return;
 
         Vector3 worldPos = transform.position + promptWorldOffset;
         Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPos);
-
-        bool behindCamera = screenPos.z < 0f;
-        interactPromptRect.gameObject.SetActive(!behindCamera);
-
-        if (!behindCamera)
-        {
-            interactPromptRect.position = screenPos;
-        }
+        interactPromptRect.position = screenPos;
     }
 
     private void UpdatePromptScale()
     {
-        if (interactPromptRect == null) return;
+        if (interactPromptRect == null)
+            return;
 
         interactPromptRect.localScale = Vector3.one * promptScale;
     }
 
     private void HandlePromptFade()
     {
-        if (interactPromptImage == null) return;
-
-        float target = showPrompt ? 1f : 0f;
-        promptAlpha = Mathf.MoveTowards(promptAlpha, target, promptFadeSpeed * Time.deltaTime);
+        float targetAlpha = showPrompt ? 1f : 0f;
+        promptAlpha = Mathf.MoveTowards(promptAlpha, targetAlpha, Time.deltaTime * promptFadeSpeed);
         SetPromptAlpha(promptAlpha);
     }
 
     private void SetPromptAlpha(float alpha)
     {
-        if (interactPromptImage == null) return;
+        if (interactPromptImage == null)
+            return;
 
         Color c = interactPromptImage.color;
         c.a = alpha;
@@ -164,6 +164,10 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
 
     private void EnterSittingState()
     {
+        CacheFromCurrentPlayerFeet();
+        if (lunaMainSpriteRenderer == null && lunaMainAnimator == null)
+            return;
+
         isSitting = true;
         ForceSittingVisualState();
     }
@@ -177,32 +181,22 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
     private void ForceSittingVisualState()
     {
         if (sittingSpriteRenderer != null)
-        {
             sittingSpriteRenderer.enabled = true;
-        }
 
         if (lunaMainSpriteRenderer != null)
-        {
             lunaMainSpriteRenderer.enabled = false;
-        }
 
         if (lunaMainAnimator != null)
-        {
             lunaMainAnimator.enabled = false;
-        }
     }
 
     private void ForceNormalVisualState()
     {
         if (sittingSpriteRenderer != null)
-        {
             sittingSpriteRenderer.enabled = false;
-        }
 
         if (lunaMainSpriteRenderer != null)
-        {
             lunaMainSpriteRenderer.enabled = true;
-        }
 
         if (lunaMainAnimator != null)
         {
@@ -230,94 +224,83 @@ public class ToggleSpriteOnEInteraction : MonoBehaviour
         return false;
     }
 
-    private void CachePlayerVisualReferences(Collider2D other)
+    private void CacheFromCurrentPlayerFeet()
     {
-        if (other == null) return;
+        GameObject playerFeet = GameObject.Find(requiredColliderName);
+        if (playerFeet == null)
+            return;
 
-        if (lunaMainAnimator == null)
+        CachePlayerVisualReferences(playerFeet.transform);
+    }
+
+    private void CachePlayerVisualReferences(Transform startingTransform)
+    {
+        if (startingTransform == null)
+            return;
+
+        Transform current = startingTransform;
+
+        while (current != null)
         {
-            Animator[] animators = other.GetComponentsInChildren<Animator>(true);
-
-            foreach (Animator anim in animators)
+            if (current.name == lunaObjectName)
             {
-                if (anim == null) continue;
-
-                // Prefer enabled or likely-main animators first.
-                if (anim.runtimeAnimatorController != null)
-                {
-                    lunaMainAnimator = anim;
-                    break;
-                }
+                lunaObject = current.gameObject;
+                break;
             }
-
-            if (lunaMainAnimator == null && animators.Length > 0)
-            {
-                lunaMainAnimator = animators[0];
-            }
+            current = current.parent;
         }
 
-        if (lunaMainSpriteRenderer == null)
+        if (lunaObject == null)
         {
-            // Best case: renderer is on same object as the animator.
-            if (lunaMainAnimator != null)
-            {
-                lunaMainSpriteRenderer = lunaMainAnimator.GetComponent<SpriteRenderer>();
-
-                // If not on same object, look under animator object first.
-                if (lunaMainSpriteRenderer == null)
-                {
-                    lunaMainSpriteRenderer = lunaMainAnimator.GetComponentInChildren<SpriteRenderer>(true);
-                }
-
-                // Then check parent of animator.
-                if (lunaMainSpriteRenderer == null && lunaMainAnimator.transform.parent != null)
-                {
-                    lunaMainSpriteRenderer = lunaMainAnimator.transform.parent.GetComponent<SpriteRenderer>();
-                }
-            }
-
-            // Last resort fallback.
-            if (lunaMainSpriteRenderer == null)
-            {
-                SpriteRenderer[] renderers = other.GetComponentsInChildren<SpriteRenderer>(true);
-
-                foreach (SpriteRenderer sr in renderers)
-                {
-                    if (sr == null) continue;
-                    if (sr == sittingSpriteRenderer) continue;
-
-                    lunaMainSpriteRenderer = sr;
-                    break;
-                }
-            }
+            lunaMainSpriteRenderer = null;
+            lunaMainAnimator = null;
+            return;
         }
+
+        lunaMainSpriteRenderer = lunaObject.GetComponent<SpriteRenderer>();
+        lunaMainAnimator = lunaObject.GetComponent<Animator>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player")) return;
+        if (other == null || other.name != requiredColliderName)
+            return;
 
         playerInRange = true;
         showPrompt = !isSitting && !(showPromptOnlyOnce && promptHasBeenUsed);
 
-        CachePlayerVisualReferences(other);
+        CachePlayerVisualReferences(other.transform);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other == null || other.name != requiredColliderName)
+            return;
+
+        playerInRange = true;
+
+        if (lunaObject == null || lunaMainSpriteRenderer == null)
+            CachePlayerVisualReferences(other.transform);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag("Player")) return;
+        if (other == null || other.name != requiredColliderName)
+            return;
 
         playerInRange = false;
         showPrompt = false;
 
         ExitSittingState();
+
+        lunaObject = null;
+        lunaMainSpriteRenderer = null;
+        lunaMainAnimator = null;
     }
 
     private void OnDestroy()
     {
         if (promptCanvas != null)
-        {
             Destroy(promptCanvas.gameObject);
-        }
     }
 }
