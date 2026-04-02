@@ -54,7 +54,9 @@ public class BookControllerSimple : MonoBehaviour
     public Sprite introPageSprite;
     public Sprite blankEndPageSprite;
     public Sprite[] unlockableSpreads;
-    public bool neverOpenToBlank = true;
+    public bool neverOpenToBlank = false;
+    private string currentOpenLocationId = "";
+
 
     [Header("Persistence")]
     public bool saveProgress = true;
@@ -238,6 +240,39 @@ public class BookControllerSimple : MonoBehaviour
         syncRoutine = StartCoroutine(DebouncedSyncRoutine(targetOpen));
     }
 
+    public void SetCurrentOpenLocation(string locationId)
+    {
+        currentOpenLocationId = locationId;
+    }
+
+    int GetMostRecentlyRevealedPageIndex()
+    {
+        if (unlockedCount <= 0)
+            return 0;
+
+        return GetIntroCount() + (unlockedCount - 1);
+    }
+
+    void ApplyOpenPageRuleForCurrentLocation()
+    {
+        bool hasBlankEndPage = blankEndPageSprite != null;
+        bool hasCurrentLocation = !string.IsNullOrEmpty(currentOpenLocationId);
+        bool locationAlreadyUsed = hasCurrentLocation && usedLocationIds.Contains(currentOpenLocationId);
+
+        if (hasCurrentLocation && !locationAlreadyUsed && hasBlankEndPage)
+        {
+            // New lilystool: open to blank so the reveal can fade in beautifully.
+            currentPage = GetPageCount() - 1;
+        }
+        else
+        {
+            // Revisited lilystool (or no location info): show most recently revealed spread.
+            currentPage = GetMostRecentlyRevealedPageIndex();
+        }
+
+        ClampCurrentPage();
+    }
+
     IEnumerator DebouncedSyncRoutine(bool targetOpen)
     {
         float waitTime = targetOpen ? uiOpenDebounce : uiCloseDebounce;
@@ -320,11 +355,10 @@ public class BookControllerSimple : MonoBehaviour
         SetupRevealOverlay();
 
         ClampCurrentPage();
-        ApplyNeverOpenToBlankRule();
+        ApplyOpenPageRuleForCurrentLocation();
 
         bookOpen = true;
         bookUIRoot.SetActive(true);
-        ShowPageImmediate();
         SetHorizontalMovementLocked(false);
 
         if (uiFadeRoutine != null)
@@ -333,7 +367,37 @@ public class BookControllerSimple : MonoBehaviour
             uiFadeRoutine = null;
         }
 
+        if (revealRoutine != null)
+        {
+            StopCoroutine(revealRoutine);
+            revealRoutine = null;
+        }
+
+        Sprite newPage = GetCurrentPageSprite();
+
+        bool hasCurrentLocation = !string.IsNullOrEmpty(currentOpenLocationId);
+        bool locationAlreadyUsed = hasCurrentLocation && usedLocationIds.Contains(currentOpenLocationId);
+        bool shouldOpenOnBlank = hasCurrentLocation && !locationAlreadyUsed && blankEndPageSprite != null;
+
+        Sprite basePage = shouldOpenOnBlank ? blankEndPageSprite : newPage;
+
+        bookPageImage.sprite = basePage;
+        bookPageImage.enabled = basePage != null;
+
+        if (revealOverlayImage != null)
+        {
+            revealOverlayImage.enabled = false;
+            revealOverlayImage.sprite = null;
+
+            Color c = revealOverlayImage.color;
+            c.a = 0f;
+            revealOverlayImage.color = c;
+        }
+
         uiFadeRoutine = StartCoroutine(FadeUIRoutine(1f, uiFadeInDuration, true));
+
+        if (newPage != null && newPage != basePage)
+            revealRoutine = StartCoroutine(RevealPageRoutine(basePage, newPage));
 
         if (saveProgress)
             Save();
@@ -568,6 +632,12 @@ public class BookControllerSimple : MonoBehaviour
     {
         if (bookPageImage == null) return;
 
+        if (revealRoutine != null)
+        {
+            StopCoroutine(revealRoutine);
+            revealRoutine = null;
+        }
+
         Sprite page = GetCurrentPageSprite();
         bookPageImage.sprite = page;
         bookPageImage.enabled = page != null;
@@ -575,6 +645,8 @@ public class BookControllerSimple : MonoBehaviour
         if (revealOverlayImage != null)
         {
             revealOverlayImage.enabled = false;
+            revealOverlayImage.sprite = null;
+
             Color c = revealOverlayImage.color;
             c.a = 0f;
             revealOverlayImage.color = c;

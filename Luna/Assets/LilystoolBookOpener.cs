@@ -7,6 +7,10 @@ using PixelCrushers.DialogueSystem;
 [RequireComponent(typeof(Collider2D))]
 public class OpenBookTrigger : MonoBehaviour
 {
+    [Header("Book Location")]
+    [SerializeField] private string locationId = "";
+    [SerializeField] private BookControllerSimple bookController;
+
     [Header("Availability")]
     [SerializeField] private bool startInteractionEnabled = false;
     [SerializeField] private bool interactionEnabled = false;
@@ -98,6 +102,20 @@ public class OpenBookTrigger : MonoBehaviour
         }
     }
 
+    private void ResolveBookController()
+    {
+        if (bookController == null)
+            bookController = FindObjectOfType<BookControllerSimple>();
+    }
+
+    private void PushCurrentLocationToBookController()
+    {
+        ResolveBookController();
+
+        if (bookController != null)
+            bookController.SetCurrentOpenLocation(locationId);
+    }
+
     private void OnDisable()
     {
         insideColliderIds.Clear();
@@ -131,6 +149,7 @@ public class OpenBookTrigger : MonoBehaviour
 
         CancelPendingClose();
         closeVersion++;
+        PushCurrentLocationToBookController();
         ApplyBookState(true);
     }
 
@@ -148,7 +167,10 @@ public class OpenBookTrigger : MonoBehaviour
         CancelPendingClose();
 
         if (!bookOpen)
+        {
+            PushCurrentLocationToBookController();
             ApplyBookState(true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -370,8 +392,10 @@ public class OpenBookTrigger : MonoBehaviour
 
         CancelPendingClose();
         closeVersion++;
+        PushCurrentLocationToBookController();
         ApplyBookState(true, true);
     }
+
 
     public void ForceClose()
     {

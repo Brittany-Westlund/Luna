@@ -1660,10 +1660,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 151866870}
-    - targetCorrespondingSourceObject: {fileID: 2271403848988151397, guid: aa3ac6144f2d0764b99c559e214f243c,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 151866871}
   m_SourcePrefab: {fileID: 100100000, guid: aa3ac6144f2d0764b99c559e214f243c, type: 3}
 --- !u!1 &151866867 stripped
 GameObject:
@@ -1674,12 +1670,6 @@ GameObject:
 --- !u!4 &151866868 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 845225858722782115, guid: aa3ac6144f2d0764b99c559e214f243c,
-    type: 3}
-  m_PrefabInstance: {fileID: 151866866}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &151866869 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 737573179033489954, guid: aa3ac6144f2d0764b99c559e214f243c,
     type: 3}
   m_PrefabInstance: {fileID: 151866866}
   m_PrefabAsset: {fileID: 0}
@@ -1728,85 +1718,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.80744135, y: 0.6902059}
   m_EdgeRadius: 0
---- !u!114 &151866871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151866867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41622efa7782ece49a264a36aefbc1b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  feedbackSourceMode: 0
-  manualFeedbackObjects: []
-  visibilityControlMode: 0
-  useGracePeriodBetweenObjects: 0
-  gracePeriodDuration: 0.05
-  autoPlayOnEnable: 0
-  cycleFeedbackObjects: 0
-  fadeInAndOut: 0
-  fadeDuration: 0.5
-  holdDuration: 0.1
-  externalAlphaMultiplier: 1
-  allowPressEToTurnOff: 1
-  dismissKeys: 65000000
-  mustPlayerBeInTrigger: 1
-  playerTag: Player
-  triggerBeforeTurnOff: 0
-  beforeTurnOffActions: []
-  activateSFX:
-    playSFX: 0
-    clip: {fileID: 0}
-    volume: 1
-    spatialize: 1
-  dismissSFX:
-    playSFX: 0
-    clip: {fileID: 0}
-    volume: 1
-    spatialize: 1
-  cycleStepSFX:
-    playSFX: 0
-    clip: {fileID: 0}
-    volume: 1
-    spatialize: 1
-  OnFeedbackActivated:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPlayerEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPlayerExited:
-    m_PersistentCalls:
-      m_Calls: []
-  OnFeedbackDismissed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4467841025740664252}
-        m_TargetAssemblyTypeName: OpenBookTrigger, Assembly-CSharp
-        m_MethodName: EnableBookInteraction
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  useProximityFadeGate: 0
-  startHiddenUntilPlayerFeet: 1
-  requireSpecificColliderName: 1
-  requiredColliderName: PlayerFeet
-  fadeOutOnPlayerExit: 1
-  proximityGateFadeDuration: 0.2
-  proximityGateHiddenAlpha: 0
-  proximityGateVisibleAlpha: 1
-  startCyclingOnPlayerEnter: 1
-  stopCyclingOnPlayerExit: 0
-  debugLogging: 0
 --- !u!1 &173654331
 GameObject:
   m_ObjectHideFlags: 0
@@ -3040,7 +2951,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.34012866, y: -0.61734724}
+  m_Offset: {x: 0.37981635, y: -0.7595523}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -3051,7 +2962,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.844155, y: 4.861296}
+  m_Size: {x: 0.59449136, y: 3.6752543}
   m_EdgeRadius: 0
 --- !u!212 &306657594
 SpriteRenderer:
@@ -3137,7 +3048,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &319235933
 Transform:
   m_ObjectHideFlags: 0
@@ -3227,13 +3138,7 @@ MonoBehaviour:
   mustPlayerBeInTrigger: 1
   playerTag: Player
   triggerBeforeTurnOff: 1
-  beforeTurnOffActions:
-  - actionType: 4
-    targetObject: {fileID: 0}
-    targetSpriteRenderer: {fileID: 151866869}
-  - actionType: 1
-    targetObject: {fileID: 1781743276}
-    targetSpriteRenderer: {fileID: 0}
+  beforeTurnOffActions: []
   activateSFX:
     playSFX: 0
     clip: {fileID: 0}
@@ -3273,7 +3178,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1781743276}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -3283,7 +3188,19 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 151866867}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
   useProximityFadeGate: 0
   startHiddenUntilPlayerFeet: 1
@@ -9600,18 +9517,6 @@ MonoBehaviour:
     - targetType: 0
       timing: 1
       actionType: 0
-      allowRepeatTrigger: 0
-      targetObject: {fileID: 1781743276}
-      targetSpriteRenderer: {fileID: 0}
-      useCustomInteractionFeedback: 0
-      customInteractionFeedbackTarget: {fileID: 0}
-      playSFX: 0
-      sfxClip: {fileID: 8300000, guid: 9b86a80d774bd9748a0fb6266fa917c2, type: 3}
-      sfxVolume: 0.5
-      spatializeSFX: 0
-    - targetType: 0
-      timing: 1
-      actionType: 0
       allowRepeatTrigger: 1
       targetObject: {fileID: 1144038847}
       targetSpriteRenderer: {fileID: 0}
@@ -9639,7 +9544,7 @@ MonoBehaviour:
       targetSpriteRenderer: {fileID: 0}
     terminateWhenConditionsMet: 1
     terminationConditions:
-    - conditionType: 4
+    - conditionType: 5
       stringValue: 
       targetObject: {fileID: 1781743276}
       targetSpriteRenderer: {fileID: 0}
@@ -16775,93 +16680,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1781743279}
   - component: {fileID: 1781743278}
-  - component: {fileID: 1781743277}
   m_Layer: 0
-  m_Name: WindowEndingConvoRPrompt
+  m_Name: ConvoEnder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1781743277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781743276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41622efa7782ece49a264a36aefbc1b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  feedbackSourceMode: 0
-  manualFeedbackObjects: []
-  visibilityControlMode: 0
-  useGracePeriodBetweenObjects: 0
-  gracePeriodDuration: 0.05
-  autoPlayOnEnable: 1
-  cycleFeedbackObjects: 1
-  fadeInAndOut: 1
-  fadeDuration: 0.5
-  holdDuration: 0.1
-  externalAlphaMultiplier: 1
-  allowPressEToTurnOff: 1
-  dismissKeys: 72000000
-  mustPlayerBeInTrigger: 1
-  playerTag: Player
-  triggerBeforeTurnOff: 0
-  beforeTurnOffActions: []
-  activateSFX:
-    playSFX: 0
-    clip: {fileID: 0}
-    volume: 1
-    spatialize: 1
-  dismissSFX:
-    playSFX: 0
-    clip: {fileID: 8300000, guid: d5464a571673a454c8bf9c409babae7e, type: 3}
-    volume: 1
-    spatialize: 1
-  cycleStepSFX:
-    playSFX: 0
-    clip: {fileID: 0}
-    volume: 1
-    spatialize: 1
-  OnFeedbackActivated:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPlayerEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPlayerExited:
-    m_PersistentCalls:
-      m_Calls: []
-  OnFeedbackDismissed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1144038847}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  useProximityFadeGate: 0
-  startHiddenUntilPlayerFeet: 1
-  requireSpecificColliderName: 1
-  requiredColliderName: PlayerFeet
-  fadeOutOnPlayerExit: 1
-  proximityGateFadeDuration: 0.2
-  proximityGateHiddenAlpha: 0
-  proximityGateVisibleAlpha: 1
-  startCyclingOnPlayerEnter: 1
-  stopCyclingOnPlayerExit: 0
-  debugLogging: 0
+  m_IsActive: 1
 --- !u!61 &1781743278
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19823,7 +19648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26afd654f7511ce4abdbf132bc4e473f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: MainMenuNoManager
+  sceneToLoad: Level2_Garden
   portalID: 
   requireInteract: 0
   interactKey: 101
@@ -21137,10 +20962,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3897329420918744978, guid: 87df5798909df5b4aab0f1098f45c135,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3897329420918744978, guid: 87df5798909df5b4aab0f1098f45c135,
+        type: 3}
+      propertyPath: interactionEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3897329420918744978, guid: 87df5798909df5b4aab0f1098f45c135,
+        type: 3}
+      propertyPath: startInteractionEnabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4548271549194700073, guid: 87df5798909df5b4aab0f1098f45c135,
         type: 3}
       propertyPath: m_Name
       value: Lilystool
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514653562637033094, guid: 87df5798909df5b4aab0f1098f45c135,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
