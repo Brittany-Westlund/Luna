@@ -20295,8 +20295,8 @@ MonoBehaviour:
         typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: "Thank you... it helps more than you know. \nI\u2019ve been meaning
-          to tend to the strawberries.\nWould you be willing to help me gather and
-          plant a few?"
+          to tend to the garden.\nWould you be willing to help me gather and plant
+          some berries and flowers?"
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical

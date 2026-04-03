@@ -308,6 +308,16 @@ MonoBehaviour:
   OnFeedbackDismissed:
     m_PersistentCalls:
       m_Calls: []
+  useProximityFadeGate: 0
+  startHiddenUntilPlayerFeet: 1
+  requireSpecificColliderName: 1
+  requiredColliderName: PlayerFeet
+  fadeOutOnPlayerExit: 1
+  proximityGateFadeDuration: 0.2
+  proximityGateHiddenAlpha: 0
+  proximityGateVisibleAlpha: 1
+  startCyclingOnPlayerEnter: 1
+  stopCyclingOnPlayerExit: 0
   debugLogging: 0
 --- !u!114 &2063877673712714690
 MonoBehaviour:
@@ -1244,8 +1254,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1053558941
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 1015417174, guid: e9cae1bf184f6d34ab40792c2da49014, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1393,6 +1403,16 @@ MonoBehaviour:
   OnFeedbackDismissed:
     m_PersistentCalls:
       m_Calls: []
+  useProximityFadeGate: 0
+  startHiddenUntilPlayerFeet: 1
+  requireSpecificColliderName: 1
+  requiredColliderName: PlayerFeet
+  fadeOutOnPlayerExit: 1
+  proximityGateFadeDuration: 0.2
+  proximityGateHiddenAlpha: 0
+  proximityGateVisibleAlpha: 1
+  startCyclingOnPlayerEnter: 1
+  stopCyclingOnPlayerExit: 0
   debugLogging: 0
 --- !u!1 &8400475599603575429
 GameObject:
@@ -1530,4 +1550,14 @@ MonoBehaviour:
   OnFeedbackDismissed:
     m_PersistentCalls:
       m_Calls: []
+  useProximityFadeGate: 0
+  startHiddenUntilPlayerFeet: 1
+  requireSpecificColliderName: 1
+  requiredColliderName: PlayerFeet
+  fadeOutOnPlayerExit: 1
+  proximityGateFadeDuration: 0.2
+  proximityGateHiddenAlpha: 0
+  proximityGateVisibleAlpha: 1
+  startCyclingOnPlayerEnter: 1
+  stopCyclingOnPlayerExit: 0
   debugLogging: 0

@@ -17444,7 +17444,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Mm, yes... let\u2019s make some moonbow tea.\nGo ahead, step into
+        value: "Mm, yes... let\u2019s make some moonbow tea. Go ahead, step into
           it. \nBring me a cup too, would you, dear?"
         type: 0
         typeString: CustomFieldType_Text
@@ -18799,7 +18799,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Look around dewy lilystools. Silvermist is often nearby.
+        value: "Look around dewy lilystools... the tea tables. \nSilvermist settles
+          there... enough to reveal the pages. "
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical

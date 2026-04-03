@@ -1060,7 +1060,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -543.98, y: -140}
+  m_AnchoredPosition: {x: -543.98, y: -191}
   m_SizeDelta: {x: 1369.9773, y: 49.42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &94769675
@@ -1125,9 +1125,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'E: Next Page
-
-    Hold E: Previous Page'
+  m_text: 'Hold E: Return                        E: Turn Page     '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ad5edec1d2467f428156ac9f1fe786f, type: 2}
   m_sharedMaterial: {fileID: -1723674134689400254, guid: 0ad5edec1d2467f428156ac9f1fe786f,
@@ -7317,7 +7315,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -45.97998, y: 304}
+  m_AnchoredPosition: {x: -45.97998, y: 253}
   m_SizeDelta: {x: 1400, y: 800}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &652585010
@@ -14345,7 +14343,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -434, y: 168}
+  m_AnchoredPosition: {x: -434, y: 117}
   m_SizeDelta: {x: 1400, y: 800}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1353817442
@@ -14843,7 +14841,7 @@ PrefabInstance:
     - target: {fileID: 8798876173237791692, guid: 863c1e37e621d5f42940dac6ab522fac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 383.22003
+      value: 332.22003
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -17152,8 +17150,7 @@ MonoBehaviour:
   blankEndPageSprite: {fileID: 21300000, guid: fb65711244276fe499463285e825f8b1, type: 3}
   unlockableSpreads:
   - {fileID: 21300000, guid: 2e870c3a90d6d1142b5e4bdb4c979957, type: 3}
-  - {fileID: 21300000, guid: 81c37936740083040ade3d44853a5671, type: 3}
-  - {fileID: 21300000, guid: fbe706ebdf24825418f7758b3b09dde9, type: 3}
+  - {fileID: 21300000, guid: e10fe7593b699a2448054ea6af3c99c7, type: 3}
   neverOpenToBlank: 0
   saveProgress: 1
   saveKeyPrefix: BOOK_SIMPLE_

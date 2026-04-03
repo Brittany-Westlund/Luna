@@ -61,7 +61,7 @@ public class ButterflyFlyHandler : MonoBehaviour
     [Header("Buttercup Pollen")]
     public GameObject buttercupPollenIcon;
     public Transform buttercupPollenHoldPoint;
-    public float buttercupIconDuration = 2f;
+    public float buttercupIconDuration = 7f;
 
     [HideInInspector] public bool justDismounted = false;
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class ConsumeBerry : MonoBehaviour
 {
@@ -8,6 +9,25 @@ public class ConsumeBerry : MonoBehaviour
 
     [Tooltip("Name of the player's hold point (where held flowers are parented).")]
     public string holdPointName = "HoldPoint";
+
+    [Header("Deer Visual Feedback")]
+    [Tooltip("Child object on the deer to show when it steals the flower.")]
+    public GameObject stolenFlowerVisual;
+
+    [Tooltip("How long the stolen flower visual stays active on the deer.")]
+    public float stolenFlowerVisualDuration = 2f;
+
+    [Header("SFX")]
+    public AudioSource audioSource;
+    public AudioClip stealSFX;
+
+    private Coroutine stolenFlowerRoutine;
+
+    private void Awake()
+    {
+        if (stolenFlowerVisual != null)
+            stolenFlowerVisual.SetActive(false);
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -41,7 +61,41 @@ public class ConsumeBerry : MonoBehaviour
 
         Debug.Log($"🍓 Consumed berry: {heldFlower.flowerType}");
 
+        ShowStolenFlowerVisual();
+        PlayStealSFX();
+
         Destroy(heldFlower.gameObject);
+    }
+
+    private void ShowStolenFlowerVisual()
+    {
+        if (stolenFlowerVisual == null)
+            return;
+
+        if (stolenFlowerRoutine != null)
+            StopCoroutine(stolenFlowerRoutine);
+
+        stolenFlowerRoutine = StartCoroutine(StolenFlowerVisualRoutine());
+    }
+
+    private IEnumerator StolenFlowerVisualRoutine()
+    {
+        stolenFlowerVisual.SetActive(true);
+
+        yield return new WaitForSeconds(stolenFlowerVisualDuration);
+
+        if (stolenFlowerVisual != null)
+            stolenFlowerVisual.SetActive(false);
+
+        stolenFlowerRoutine = null;
+    }
+
+    private void PlayStealSFX()
+    {
+        if (audioSource != null && stealSFX != null)
+        {
+            audioSource.PlayOneShot(stealSFX);
+        }
     }
 
     private Transform FindChildRecursive(Transform parent, string targetName)
