@@ -15,8 +15,10 @@ public class PlayOnStart : MonoBehaviour
 
     [Header("Optional Fade Out")]
     public bool useFadeOut = false;
-    public float fadeOutDelay = 3f;     // Wait this long before fading out
-    public float fadeOutDuration = 1f;  // How long the fade takes
+    public float fadeOutDelay = 3f;
+    public float fadeOutDuration = 1f;
+
+    private Coroutine currentFade;
 
     void Start()
     {
@@ -25,60 +27,101 @@ public class PlayOnStart : MonoBehaviour
             audioSource = GetComponent<AudioSource>();
         }
 
-        if (audioSource == null) return;
+        if (audioSource == null)
+        {
+            Debug.LogWarning("PlayOnStart: No AudioSource assigned.");
+            return;
+        }
 
         if (useFadeIn)
         {
             audioSource.volume = 0f;
-            audioSource.Play();
-            StartCoroutine(FadeIn());
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+            currentFade = StartCoroutine(FadeRoutine(0f, startVolume, fadeInDuration, false));
         }
         else
         {
             audioSource.volume = startVolume;
-            audioSource.Play();
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
         }
 
-        // Start fade out sequence if enabled
         if (useFadeOut)
         {
             StartCoroutine(FadeOutAfterDelay());
         }
     }
 
-    private IEnumerator FadeIn()
+    public void FadeIn(float duration)
     {
-        float time = 0f;
-
-        while (time < fadeInDuration)
+        if (audioSource == null)
         {
-            time += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(0f, startVolume, time / fadeInDuration);
-            yield return null;
+            Debug.LogWarning("PlayOnStart.FadeIn: No AudioSource assigned.");
+            return;
         }
 
-        audioSource.volume = startVolume;
+        if (currentFade != null)
+        {
+            StopCoroutine(currentFade);
+        }
+
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+
+        currentFade = StartCoroutine(FadeRoutine(audioSource.volume, startVolume, duration, false));
+    }
+
+    public void FadeOut(float duration)
+    {
+        if (audioSource == null)
+        {
+            Debug.LogWarning("PlayOnStart.FadeOut: No AudioSource assigned.");
+            return;
+        }
+
+        if (currentFade != null)
+        {
+            StopCoroutine(currentFade);
+        }
+
+        currentFade = StartCoroutine(FadeRoutine(audioSource.volume, 0f, duration, true));
     }
 
     private IEnumerator FadeOutAfterDelay()
     {
         yield return new WaitForSeconds(fadeOutDelay);
-        yield return StartCoroutine(FadeOut());
+        FadeOut(fadeOutDuration);
     }
 
-    private IEnumerator FadeOut()
+    private IEnumerator FadeRoutine(float start, float end, float duration, bool stopAtEnd)
     {
-        float time = 0f;
-        float startVol = audioSource.volume;
+        duration = Mathf.Max(0.0001f, duration);
 
-        while (time < fadeOutDuration)
+        float time = 0f;
+        audioSource.volume = start;
+
+        while (time < duration)
         {
             time += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(startVol, 0f, time / fadeOutDuration);
+            float t = Mathf.Clamp01(time / duration);
+            audioSource.volume = Mathf.Lerp(start, end, t);
             yield return null;
         }
 
-        audioSource.volume = 0f;
-        audioSource.Stop();
+        audioSource.volume = end;
+
+        if (stopAtEnd && Mathf.Approximately(end, 0f))
+        {
+            audioSource.Stop();
+        }
+
+        currentFade = null;
     }
 }

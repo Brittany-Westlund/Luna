@@ -83,8 +83,21 @@ public class SlumberdustHazard : MonoBehaviour
 
         Health playerHealth = player.GetComponent<Health>();
         CharacterHorizontalMovement movement = player.GetComponent<CharacterHorizontalMovement>();
-
         MMProgressBar healthBar = FindHealthBarDeep();
+
+        float finalHealthReduction = Mathf.Clamp01(healthReductionPercent);
+        float finalSpeedReduction = Mathf.Clamp01(speedReductionPercent);
+
+        MoonflowerCrownController crown = player.GetComponentInChildren<MoonflowerCrownController>(true);
+        if (crown != null)
+        {
+            float crownReduction = Mathf.Clamp01(crown.CurrentSlumberdustReductionPercent);
+
+            finalHealthReduction *= (1f - crownReduction);
+            finalSpeedReduction *= (1f - crownReduction);
+
+            Debug.Log("🌙 Moonflower crown reduced slumberdust by " + (crownReduction * 100f) + "%");
+        }
 
         SlumberdustStatusReceiver receiver = player.GetComponent<SlumberdustStatusReceiver>();
         if (receiver == null)
@@ -96,8 +109,8 @@ public class SlumberdustHazard : MonoBehaviour
             playerHealth,
             movement,
             healthBar,
-            healthReductionPercent,
-            speedReductionPercent,
+            finalHealthReduction,
+            finalSpeedReduction,
             duration
         );
 

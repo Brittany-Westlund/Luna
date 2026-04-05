@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using PixelCrushers.DialogueSystem;
 
 public class TeaStateManager : MonoBehaviour
 {
@@ -84,6 +85,9 @@ public class TeaStateManager : MonoBehaviour
             {
                 _teacupInventory.DrinkTeacup();
                 RemoveDrinkTargetHighlight();
+
+                DialogueLua.SetVariable("LunaConsumeTeaDone", true);
+                Debug.Log("[TeaStateManager] LunaConsumeTeaDone set to TRUE");
             }
 
             justDrankTea = true;

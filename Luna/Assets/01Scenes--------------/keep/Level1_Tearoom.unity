@@ -17216,6 +17216,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1896594461}
+  startVolume: 1
+  useFadeIn: 0
+  fadeInDuration: 1
+  useFadeOut: 0
+  fadeOutDelay: 3
+  fadeOutDuration: 1
 --- !u!81 &1896594463
 AudioListener:
   m_ObjectHideFlags: 0
@@ -19913,6 +19919,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1922730282585976864, guid: 9abae8f2a1605ac4086b41447561e6e7,
         type: 3}
+      propertyPath: locationId
+      value: TeaRoom1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1922730282585976864, guid: 9abae8f2a1605ac4086b41447561e6e7,
+        type: 3}
       propertyPath: mystRenderer
       value: 
       objectReference: {fileID: 3463415455517736460}
@@ -19975,6 +19986,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -4.765
+      objectReference: {fileID: 0}
+    - target: {fileID: 3415274585448146254, guid: 9abae8f2a1605ac4086b41447561e6e7,
+        type: 3}
+      propertyPath: revealId
+      value: TeaRoom1
       objectReference: {fileID: 0}
     - target: {fileID: 3415274585448146254, guid: 9abae8f2a1605ac4086b41447561e6e7,
         type: 3}
@@ -20041,6 +20057,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 218065717955452184, guid: 87df5798909df5b4aab0f1098f45c135,
+        type: 3}
+      propertyPath: lotusID
+      value: TeaRoom1
+      objectReference: {fileID: 0}
     - target: {fileID: 1819944477170935523, guid: 87df5798909df5b4aab0f1098f45c135,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20098,6 +20119,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3897329420918744978, guid: 87df5798909df5b4aab0f1098f45c135,
         type: 3}
+      propertyPath: locationId
+      value: TeaRoom1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3897329420918744978, guid: 87df5798909df5b4aab0f1098f45c135,
+        type: 3}
       propertyPath: interactionEnabled
       value: 0
       objectReference: {fileID: 0}
@@ -20110,6 +20136,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Lilystool
+      objectReference: {fileID: 0}
+    - target: {fileID: 7077485693041556611, guid: 87df5798909df5b4aab0f1098f45c135,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 5.338859
+      objectReference: {fileID: 0}
+    - target: {fileID: 7077485693041556611, guid: 87df5798909df5b4aab0f1098f45c135,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 2.2189128
       objectReference: {fileID: 0}
     - target: {fileID: 8514653562637033094, guid: 87df5798909df5b4aab0f1098f45c135,
         type: 3}

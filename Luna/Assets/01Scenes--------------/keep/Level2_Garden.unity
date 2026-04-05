@@ -43185,37 +43185,7 @@ PrefabInstance:
     - target: {fileID: 218065717955452184, guid: 87df5798909df5b4aab0f1098f45c135,
         type: 3}
       propertyPath: lotusID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 221203053120884325, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 221203053120884325, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 690085984462987136, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.69411767
-      objectReference: {fileID: 0}
-    - target: {fileID: 1486730787369532799, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 2.2676492
-      objectReference: {fileID: 0}
-    - target: {fileID: 1486730787369532799, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_Offset.x
-      value: 0.033568382
-      objectReference: {fileID: 0}
-    - target: {fileID: 1486730787369532799, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_Offset.y
-      value: 0.5236423
+      value: Garden1
       objectReference: {fileID: 0}
     - target: {fileID: 1819944477170935523, guid: 87df5798909df5b4aab0f1098f45c135,
         type: 3}
@@ -43267,45 +43237,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3330261598113335837, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 8.419964
-      objectReference: {fileID: 0}
-    - target: {fileID: 3330261598113335837, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -4.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 3682910184343070250, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.627451
-      objectReference: {fileID: 0}
     - target: {fileID: 3897329420918744978, guid: 87df5798909df5b4aab0f1098f45c135,
         type: 3}
       propertyPath: locationId
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897329420918744978, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: interactionEnabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897329420918744978, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: startInteractionEnabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4101320974727223910, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 5.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4101320974727223910, guid: 87df5798909df5b4aab0f1098f45c135,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -5.4
+      value: Garden1
       objectReference: {fileID: 0}
     - target: {fileID: 4548271549194700073, guid: 87df5798909df5b4aab0f1098f45c135,
         type: 3}
@@ -45142,7 +45077,7 @@ PrefabInstance:
     - target: {fileID: 1922730282585976864, guid: 9abae8f2a1605ac4086b41447561e6e7,
         type: 3}
       propertyPath: locationId
-      value: 2
+      value: Garden1
       objectReference: {fileID: 0}
     - target: {fileID: 1922730282585976864, guid: 9abae8f2a1605ac4086b41447561e6e7,
         type: 3}
@@ -45257,7 +45192,7 @@ PrefabInstance:
     - target: {fileID: 3415274585448146254, guid: 9abae8f2a1605ac4086b41447561e6e7,
         type: 3}
       propertyPath: revealId
-      value: 2
+      value: Garden1
       objectReference: {fileID: 0}
     - target: {fileID: 3415274585448146254, guid: 9abae8f2a1605ac4086b41447561e6e7,
         type: 3}
