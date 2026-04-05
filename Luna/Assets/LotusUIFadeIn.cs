@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +15,9 @@ public class LotusUIFadeIn : MonoBehaviour
     [Header("Hidden Scenes")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
     [SerializeField] private string mainMenuNoManagerSceneName = "MainMenuNoManager";
+
+    [Tooltip("Additional scenes where Lotus UI should be hidden")]
+    [SerializeField] private List<string> additionalHiddenScenes = new List<string>();
 
     [Header("Options")]
     [SerializeField] private bool fadeOnSceneLoad = true;
@@ -75,7 +79,8 @@ public class LotusUIFadeIn : MonoBehaviour
 
         bool shouldHide =
             sceneName == mainMenuSceneName ||
-            sceneName == mainMenuNoManagerSceneName;
+            sceneName == mainMenuNoManagerSceneName ||
+            additionalHiddenScenes.Contains(sceneName);
 
         if (shouldHide)
         {

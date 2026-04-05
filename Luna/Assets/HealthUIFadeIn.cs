@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,9 @@ public class HealthUIFadeController : MonoBehaviour
     [Header("Hidden Scenes")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
     [SerializeField] private string mainMenuNoManagerSceneName = "MainMenuNoManager";
+
+    [Tooltip("Additional scenes where HUD should be hidden")]
+    [SerializeField] private List<string> additionalHiddenScenes = new List<string>();
 
     [Header("Options")]
     [SerializeField] private bool fadeOnSceneLoad = true;
@@ -30,7 +34,6 @@ public class HealthUIFadeController : MonoBehaviour
             return;
         }
 
-        // Start hidden so it never flashes on scene load.
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
@@ -72,7 +75,8 @@ public class HealthUIFadeController : MonoBehaviour
 
         bool shouldHide =
             sceneName == mainMenuSceneName ||
-            sceneName == mainMenuNoManagerSceneName;
+            sceneName == mainMenuNoManagerSceneName ||
+            additionalHiddenScenes.Contains(sceneName);
 
         if (shouldHide)
         {

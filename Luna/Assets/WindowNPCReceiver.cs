@@ -80,7 +80,7 @@ public class WindowNPCReceiver : MonoBehaviour
 
         if (!canListenForInput) return;
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             DeliverSpore();
         }
@@ -105,7 +105,7 @@ public class WindowNPCReceiver : MonoBehaviour
 
     IEnumerator HappyThenDisable()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(3f);
 
         if (happySporeObject)
             happySporeObject.SetActive(false);

@@ -1,296 +1,282 @@
 using UnityEngine;
+using UnityEngine.Events;
+using PixelCrushers.DialogueSystem;
 
-public class ButterflyMoonbowPusher : MonoBehaviour
+public class MoonbowMoveOnAnimatorSpeed : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("Butterfly sprite renderer used to determine facing direction.")]
-    public SpriteRenderer butterflyRenderer;
+    [SerializeField] private Animator sourceAnimator;
+    [SerializeField] private Transform moonbowToMove;
+    [SerializeField] private Transform targetPoint;
 
-    [Tooltip("Butterfly animator.")]
-    public Animator butterflyAnimator;
+    [Header("Animator Speed Logic")]
+    [Tooltip("Normal/default animator speed. Unity animators are usually at 1.")]
+    [SerializeField] private float baselineAnimatorSpeed = 1f;
 
-    [Tooltip("Assign the whole Silvermyst root here if you want the entire setup to shift.")]
-    public Transform moonbowAnchor;
+    [Tooltip("How close to baseline counts as 'normal' for arming the script.")]
+    [SerializeField] private float baselineTolerance = 0.05f;
 
-    [Header("Animator Speed Source")]
-    [Tooltip("If true, use an Animator float parameter instead of animator.speed.")]
-    public bool useAnimatorFloatParameter = false;
-
-    [Tooltip("Animator float parameter name, if using one.")]
-    public string speedParameterName = "Speed";
-
-    [Header("Relative Speed Detection")]
-    [Tooltip("If true, captures the butterfly's starting animator speed as its normal baseline.")]
-    public bool captureBaselineOnStart = true;
-
-    [Tooltip("If not capturing automatically, this value will be used as the baseline speed.")]
-    public float manualBaselineSpeed = 1f;
-
-    [Tooltip("How much faster than baseline the butterfly must get before the moonbow starts moving.")]
-    public float speedIncreaseThreshold = 0.25f;
-
-    [Tooltip("How much faster than baseline corresponds to full push distance.")]
-    public float fullPushSpeedIncrease = 4f;
-
-    [Header("Push Distance")]
-    [Tooltip("Moonbow push distance when there is no qualifying speed increase.")]
-    public float minPushDistance = 0f;
-
-    [Tooltip("Moonbow push distance when the butterfly reaches full boosted speed relative to baseline.")]
-    public float maxPushDistance = 2f;
+    [Tooltip("Moonbow movement starts only when animator speed goes above this value.")]
+    [SerializeField] private float triggerAnimatorSpeed = 1.15f;
 
     [Header("Movement")]
-    [Tooltip("How quickly the moonbow anchor moves toward its target position.")]
-    public float moveSpeed = 8f;
+    [SerializeField] private float moveSpeed = 2f;
 
-    [Header("One-Time Push (Puzzle Mode)")]
-    [Tooltip("If true, the moonbow only drifts to its pushed position once, then stays there.")]
-    public bool onlyAllowOnce = false;
+    [Tooltip("If true, once the moonbow reaches the target, it stays there permanently.")]
+    [SerializeField] private bool onlyMoveOnce = true;
 
-    [Tooltip("How close the anchor must get to its target before it counts as completed.")]
-    public float completionDistance = 0.05f;
+    [SerializeField] private float stopDistance = 0.02f;
 
-    [Header("Persistence")]
-    [Tooltip("If true, completed one-time pushes are saved with PlayerPrefs.")]
-    public bool saveCompletionState = false;
+    [Header("Optional Startup Delay")]
+    [Tooltip("Small delay before checking animator speed, just to avoid weird startup timing.")]
+    [SerializeField] private float startupDelay = 0.1f;
 
-    [Tooltip("Unique save key for this butterfly/moonbow pair.")]
-    public string saveKey = "ButterflyMoonbowPush_01";
+    [Header("Target Point Visual Handling")]
+    [Tooltip("If true, disables the entire target point GameObject when the moonbow arrives.")]
+    [SerializeField] private bool disableTargetObjectOnArrival = false;
+
+    [Tooltip("If true, disables only the target point SpriteRenderer when the moonbow arrives.")]
+    [SerializeField] private bool disableTargetSpriteOnly = true;
+
+    [Tooltip("Optional explicit SpriteRenderer on the target point. If left empty, the script will try to auto-find one.")]
+    [SerializeField] private SpriteRenderer targetPointSpriteRenderer;
+
+    [Header("Conversation / Dialogue")]
+    [Tooltip("If true, sets a Dialogue System Lua bool when the moonbow reaches the target.")]
+    [SerializeField] private bool setLuaBoolOnArrival = false;
+
+    [Tooltip("Example: ButterflyConversationTerminated")]
+    [SerializeField] private string luaBoolName = "";
+
+    [Tooltip("Usually true if you want the convo marked terminated/completed.")]
+    [SerializeField] private bool luaBoolValue = true;
+
+    [Tooltip("Optional extra event(s) to fire when the moonbow reaches the target.")]
+    [SerializeField] private UnityEvent onReachedTarget;
 
     [Header("Debug")]
-    public bool debugLogs = false;
-    public bool drawGizmos = true;
+    [SerializeField] private bool debugLogs = false;
 
-    private Vector3 moonbowAnchorStartPosition;
-    private bool hasCompletedPush = false;
-    private float baselineAnimatorSpeed = 1f;
+    private bool hasFinishedMove = false;
+    private bool isArmed = false;
+    private bool startupDelayComplete = false;
+    private bool arrivalHandled = false;
+    private float startupTimer = 0f;
 
-    private string CompletionKey => "BUTTERFLY_MOONBOW_PUSH_" + saveKey;
+    private void Reset()
+    {
+        if (moonbowToMove == null)
+            moonbowToMove = transform;
+    }
 
     private void Awake()
     {
-        if (moonbowAnchor != null)
-            moonbowAnchorStartPosition = moonbowAnchor.position;
-
-        if (saveCompletionState && onlyAllowOnce)
-            LoadCompletionState();
-    }
-
-    private void Start()
-    {
-        if (butterflyRenderer == null)
-            butterflyRenderer = GetComponentInChildren<SpriteRenderer>();
-
-        if (butterflyAnimator == null)
-            butterflyAnimator = GetComponentInChildren<Animator>();
-
-        baselineAnimatorSpeed = captureBaselineOnStart
-            ? GetCurrentAnimatorSpeedValue()
-            : manualBaselineSpeed;
-
-        if (debugLogs)
-            Debug.Log($"[ButterflyMoonbowPusher] Baseline animator speed set to {baselineAnimatorSpeed}");
-
-        if (moonbowAnchor != null && hasCompletedPush)
-        {
-            moonbowAnchor.position = GetTargetWorldPosition(maxPushDistance);
-        }
+        if (moonbowToMove == null)
+            moonbowToMove = transform;
     }
 
     private void Update()
     {
-        if (moonbowAnchor == null)
+        if (sourceAnimator == null || moonbowToMove == null || targetPoint == null)
             return;
 
-        if (butterflyRenderer == null)
-            return;
-
-        if (butterflyAnimator == null)
-            return;
-
-        if (onlyAllowOnce && hasCompletedPush)
-            return;
-
-        float currentAnimatorSpeedValue = GetCurrentAnimatorSpeedValue();
-        float speedIncrease = currentAnimatorSpeedValue - baselineAnimatorSpeed;
-
-        float normalizedIncrease = NormalizeRelativeIncrease(speedIncrease);
-        float currentPushDistance = Mathf.Lerp(minPushDistance, maxPushDistance, normalizedIncrease);
-
-        Vector3 targetWorldPosition = GetTargetWorldPosition(currentPushDistance);
-
-        moonbowAnchor.position = Vector3.Lerp(
-            moonbowAnchor.position,
-            targetWorldPosition,
-            Time.deltaTime * moveSpeed
-        );
-
-        if (onlyAllowOnce && normalizedIncrease > 0f)
+        if (!startupDelayComplete)
         {
-            float dist = Vector3.Distance(moonbowAnchor.position, targetWorldPosition);
+            startupTimer += Time.deltaTime;
 
-            if (dist <= completionDistance)
+            if (startupTimer >= startupDelay)
             {
-                hasCompletedPush = true;
-                moonbowAnchor.position = targetWorldPosition;
-
-                if (saveCompletionState)
-                    SaveCompletionState();
+                startupDelayComplete = true;
 
                 if (debugLogs)
-                    Debug.Log($"[ButterflyMoonbowPusher] Push completed and locked. SaveKey = {CompletionKey}");
+                    Debug.Log($"{name}: Startup delay complete.");
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        if (hasFinishedMove && onlyMoveOnce)
+            return;
+
+        float currentSpeed = sourceAnimator.speed;
+
+        // Step 1: Arm only after animator has settled at normal speed.
+        // This prevents 0 -> 1 from counting as the trigger.
+        if (!isArmed)
+        {
+            bool isAtBaseline =
+                currentSpeed >= (baselineAnimatorSpeed - baselineTolerance) &&
+                currentSpeed <= (baselineAnimatorSpeed + baselineTolerance);
+
+            if (isAtBaseline)
+            {
+                isArmed = true;
+
+                if (debugLogs)
+                    Debug.Log($"{name}: Armed at normal animator speed {currentSpeed}.");
+            }
+
+            return;
+        }
+
+        // Step 2: Move only when animator speed is meaningfully above normal.
+        if (currentSpeed >= triggerAnimatorSpeed)
+        {
+            MoveMoonbowTowardTarget();
+
+            if (debugLogs)
+                Debug.Log($"{name}: Animator speed {currentSpeed} >= trigger {triggerAnimatorSpeed}. Moving moonbow.");
+        }
+    }
+
+    private void MoveMoonbowTowardTarget()
+    {
+        Vector3 currentPosition = moonbowToMove.position;
+        Vector3 targetPosition = targetPoint.position;
+
+        Vector3 newPosition = Vector3.MoveTowards(
+            currentPosition,
+            targetPosition,
+            moveSpeed * Time.deltaTime
+        );
+
+        moonbowToMove.position = newPosition;
+
+        float distance = Vector3.Distance(moonbowToMove.position, targetPosition);
+
+        if (distance <= stopDistance)
+        {
+            moonbowToMove.position = targetPosition;
+
+            if (!arrivalHandled)
+            {
+                HandleArrival();
+            }
+
+            if (onlyMoveOnce)
+            {
+                hasFinishedMove = true;
+
+                if (debugLogs)
+                    Debug.Log($"{name}: Moonbow reached target and locked.");
+            }
+        }
+    }
+
+    private void HandleArrival()
+    {
+        arrivalHandled = true;
+
+        if (debugLogs)
+            Debug.Log($"{name}: HandleArrival() called.");
+
+        // 1. Terminate / mark conversation state FIRST
+        HandleDialogueTermination();
+
+        // 2. Fire any optional UnityEvent hooks
+        if (onReachedTarget != null)
+        {
+            onReachedTarget.Invoke();
+
+            if (debugLogs)
+                Debug.Log($"{name}: onReachedTarget UnityEvent invoked.");
+        }
+
+        // 3. Then hide target visuals if desired
+        HandleTargetPointArrivalVisuals();
+    }
+
+    private void HandleDialogueTermination()
+    {
+        if (!setLuaBoolOnArrival)
+            return;
+
+        if (string.IsNullOrEmpty(luaBoolName))
+        {
+            Debug.LogWarning($"{name}: setLuaBoolOnArrival is enabled, but luaBoolName is blank.");
+            return;
+        }
+
+        DialogueLua.SetVariable(luaBoolName, luaBoolValue);
+
+        if (debugLogs)
+            Debug.Log($"{name}: DialogueLua bool set: {luaBoolName} = {luaBoolValue}");
+    }
+
+    private void HandleTargetPointArrivalVisuals()
+    {
+        if (targetPoint == null)
+            return;
+
+        if (disableTargetSpriteOnly)
+        {
+            if (targetPointSpriteRenderer == null)
+                targetPointSpriteRenderer = targetPoint.GetComponent<SpriteRenderer>();
+
+            if (targetPointSpriteRenderer != null && targetPointSpriteRenderer.enabled)
+            {
+                targetPointSpriteRenderer.enabled = false;
+
+                if (debugLogs)
+                    Debug.Log($"{name}: Target sprite renderer disabled.");
+            }
+        }
+        else if (disableTargetObjectOnArrival)
+        {
+            if (targetPoint.gameObject.activeSelf)
+            {
+                targetPoint.gameObject.SetActive(false);
+
+                if (debugLogs)
+                    Debug.Log($"{name}: Target GameObject disabled.");
+            }
+        }
+    }
+
+    public void ResetMoveState()
+    {
+        hasFinishedMove = false;
+        isArmed = false;
+        startupDelayComplete = false;
+        arrivalHandled = false;
+        startupTimer = 0f;
+
+        if (targetPoint != null)
+        {
+            if (disableTargetObjectOnArrival && !targetPoint.gameObject.activeSelf)
+                targetPoint.gameObject.SetActive(true);
+
+            if (disableTargetSpriteOnly)
+            {
+                if (targetPointSpriteRenderer == null)
+                    targetPointSpriteRenderer = targetPoint.GetComponent<SpriteRenderer>();
+
+                if (targetPointSpriteRenderer != null)
+                    targetPointSpriteRenderer.enabled = true;
             }
         }
 
         if (debugLogs)
-        {
-            Debug.Log(
-                $"[ButterflyMoonbowPusher] baseline={baselineAnimatorSpeed}, current={currentAnimatorSpeedValue}, increase={speedIncrease}, normalized={normalizedIncrease}, pushDistance={currentPushDistance}, flipX={butterflyRenderer.flipX}, completed={hasCompletedPush}"
-            );
-        }
+            Debug.Log($"{name}: Move state reset.");
     }
 
-    private float GetCurrentAnimatorSpeedValue()
+    public float GetCurrentAnimatorSpeed()
     {
-        if (butterflyAnimator == null)
-            return baselineAnimatorSpeed;
-
-        if (useAnimatorFloatParameter && !string.IsNullOrEmpty(speedParameterName))
-            return butterflyAnimator.GetFloat(speedParameterName);
-
-        return butterflyAnimator.speed;
-    }
-
-    private float NormalizeRelativeIncrease(float speedIncrease)
-    {
-        if (speedIncrease <= speedIncreaseThreshold)
+        if (sourceAnimator == null)
             return 0f;
 
-        float usableIncrease = speedIncrease - speedIncreaseThreshold;
-        float usableRange = Mathf.Max(0.0001f, fullPushSpeedIncrease - speedIncreaseThreshold);
-
-        return Mathf.Clamp01(usableIncrease / usableRange);
-    }
-
-    private Vector3 GetTargetWorldPosition(float pushDistance)
-    {
-        float direction = butterflyRenderer.flipX ? -1f : 1f;
-        return moonbowAnchorStartPosition + new Vector3(direction * pushDistance, 0f, 0f);
-    }
-
-    private void SaveCompletionState()
-    {
-        PlayerPrefs.SetInt(CompletionKey, 1);
-        PlayerPrefs.Save();
-    }
-
-    private void LoadCompletionState()
-    {
-        hasCompletedPush = PlayerPrefs.GetInt(CompletionKey, 0) == 1;
-    }
-
-    public void ResetPushState()
-    {
-        hasCompletedPush = false;
-
-        if (moonbowAnchor != null)
-            moonbowAnchor.position = moonbowAnchorStartPosition;
-
-        if (saveCompletionState)
-        {
-            PlayerPrefs.DeleteKey(CompletionKey);
-            PlayerPrefs.Save();
-        }
-
-        if (debugLogs)
-            Debug.Log($"[ButterflyMoonbowPusher] Push state reset. SaveKey = {CompletionKey}");
-    }
-
-    public void RecalculateBaselineFromCurrentSpeed()
-    {
-        baselineAnimatorSpeed = GetCurrentAnimatorSpeedValue();
-
-        if (debugLogs)
-            Debug.Log($"[ButterflyMoonbowPusher] Baseline recalculated to {baselineAnimatorSpeed}");
-    }
-
-    [ContextMenu("DEBUG: Reset Push State")]
-    private void DebugResetPushState()
-    {
-        ResetPushState();
-    }
-
-    [ContextMenu("DEBUG: Clear Saved Push State Only")]
-    private void DebugClearSavedPushStateOnly()
-    {
-        if (saveCompletionState)
-        {
-            PlayerPrefs.DeleteKey(CompletionKey);
-            PlayerPrefs.Save();
-        }
-
-        hasCompletedPush = false;
-
-        if (debugLogs)
-            Debug.Log($"[ButterflyMoonbowPusher] Saved push state cleared only. SaveKey = {CompletionKey}");
-    }
-
-    [ContextMenu("DEBUG: Recalculate Baseline From Current Speed")]
-    private void DebugRecalculateBaselineFromCurrentSpeed()
-    {
-        RecalculateBaselineFromCurrentSpeed();
+        return sourceAnimator.speed;
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (!drawGizmos || moonbowAnchor == null)
-            return;
-
-        SpriteRenderer sr = butterflyRenderer != null ? butterflyRenderer : GetComponentInChildren<SpriteRenderer>();
-        Animator anim = butterflyAnimator != null ? butterflyAnimator : GetComponentInChildren<Animator>();
-
-        float baseline = Application.isPlaying
-            ? baselineAnimatorSpeed
-            : manualBaselineSpeed;
-
-        float currentSpeed = baseline;
-
-        if (anim != null)
+        if (moonbowToMove != null && targetPoint != null)
         {
-            if (useAnimatorFloatParameter && !string.IsNullOrEmpty(speedParameterName))
-                currentSpeed = anim.GetFloat(speedParameterName);
-            else
-                currentSpeed = anim.speed;
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(moonbowToMove.position, targetPoint.position);
+            Gizmos.DrawSphere(targetPoint.position, 0.08f);
         }
-
-        float speedIncrease = currentSpeed - baseline;
-
-        float normalizedIncrease = 0f;
-        if (speedIncrease > speedIncreaseThreshold)
-        {
-            float usableIncrease = speedIncrease - speedIncreaseThreshold;
-            float usableRange = Mathf.Max(0.0001f, fullPushSpeedIncrease - speedIncreaseThreshold);
-            normalizedIncrease = Mathf.Clamp01(usableIncrease / usableRange);
-        }
-
-        float currentPushDistance = Mathf.Lerp(minPushDistance, maxPushDistance, normalizedIncrease);
-
-        float direction = 1f;
-        if (sr != null)
-            direction = sr.flipX ? -1f : 1f;
-
-        Vector3 basePos = Application.isPlaying && moonbowAnchor != null
-            ? moonbowAnchorStartPosition
-            : (moonbowAnchor != null ? moonbowAnchor.position : transform.position);
-
-        Vector3 targetWorldPosition = basePos + new Vector3(direction * currentPushDistance, 0f, 0f);
-        Vector3 maxTargetWorldPosition = basePos + new Vector3(direction * maxPushDistance, 0f, 0f);
-
-        Gizmos.color = new Color(0.4f, 1f, 1f, 0.6f);
-        Gizmos.DrawLine(transform.position, targetWorldPosition);
-        Gizmos.DrawWireSphere(targetWorldPosition, 0.18f);
-
-        Gizmos.color = new Color(1f, 0.85f, 0.2f, 0.45f);
-        Gizmos.DrawWireSphere(maxTargetWorldPosition, 0.24f);
     }
 }

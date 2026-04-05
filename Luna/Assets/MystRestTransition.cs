@@ -25,14 +25,43 @@ public class MystRestTransitionAuto : MonoBehaviour
     public float lightCheckRadius = 2f;
     public LayerMask lightLayerMask;
 
-    [Header("Fade Settings")]
-    public float fadeSpeed = 1.5f;
+    [Header("General Alpha Settings")]
     [Range(0f, 1f)] public float visibleAlpha = 1f;
     [Range(0f, 1f)] public float hiddenAlpha = 0f;
 
+    [Header("Separate Fade Speeds")]
+    public float mistFadeOutSpeed = 4f;
+    public float mistFadeInSpeed = 5f;
+    public float moonbowFadeInSpeed = 2.25f;
+    public float moonbowFadeOutSpeed = 2.5f;
+
+    [Header("Transition Overlap")]
+    [Tooltip("How long after mist starts fading out before moonbow starts fading in.")]
+    public float moonbowFadeInLeadDelay = 0.03f;
+
+    [Tooltip("How long after moonbow starts fading out before mist starts fading back in.")]
+    public float mistFadeInLeadDelay = 0.03f;
+
+    [Header("Stability / Visibility Options")]
+    [Tooltip("If true, the mist never fades all the way out.")]
+    public bool neverFullyHideMist = false;
+
+    [Tooltip("Minimum alpha the mist can fade to when neverFullyHideMist is true.")]
+    [Range(0f, 1f)] public float mistMinimumAlpha = 0.2f;
+
+    [Tooltip("If true, sparkles stay visible instead of disappearing during transitions.")]
+    public bool keepSparklesVisibleAlways = true;
+
+    [Tooltip("If true, moonbow sparkles stay visible whenever the moonbow is in use.")]
+    public bool keepMoonbowSparklesVisibleAlways = true;
+
+    [Tooltip("If true, the moonbow object is never deactivated, only faded. Usually more stable.")]
+    public bool neverDeactivateMoonbowObject = true;
+
+    [Tooltip("If true, the mist object is never deactivated, only faded. Usually more stable.")]
+    public bool neverDeactivateMystObject = true;
+
     [Header("Timing")]
-    public float moonbowDelay = 0.8f;
-    public float mistReturnDelay = 1.5f;
     public float moonbowHoldDuration = 3f;
 
     [Header("Detection Settings")]
@@ -52,13 +81,22 @@ public class MystRestTransitionAuto : MonoBehaviour
     [Tooltip("If true, the moonbow stays active as long as Luna remains in range after activation.")]
     public bool stayActiveWhileLunaInRange = true;
 
+    [Header("Failsafe Refresh")]
+    [Tooltip("How often to re-assert visual/collider state even if nothing changed.")]
+    public float failsafeRefreshInterval = 0.2f;
+
     private LunaRest _lunaRest;
+    private Transform _lunaTransform;
 
     private bool _transitionComplete = false;
     private bool _holdingMoonbow = false;
     private bool _moonbowShouldBeSolid = false;
+    private bool _isTransitioningIn = false;
+    private bool _isTransitioningOut = false;
+    private bool _pageRevealDoneThisCycle = false;
 
     private float _timeInRange = 0f;
+    private float _failsafeTimer = 0f;
 
     private Coroutine _transitionRoutine;
     private Coroutine _returnRoutine;
@@ -66,48 +104,45 @@ public class MystRestTransitionAuto : MonoBehaviour
     private void Start()
     {
         ResolveBookController();
+        ResolveLuna();
         ResolveMoonbowColliders();
 
-        if (moonbowRenderer != null)
-        {
-            SetAlpha(moonbowRenderer, hiddenAlpha);
-            moonbowRenderer.gameObject.SetActive(false);
-        }
-
-        if (moonbowSparkles != null)
-            moonbowSparkles.SetActive(false);
-
-        if (mystRenderer != null)
-            SetAlpha(mystRenderer, visibleAlpha);
+        InitializeVisualState();
+        ApplyMoonbowColliderStateImmediate(false);
 
         _moonbowShouldBeSolid = false;
-        ApplyMoonbowColliderStateImmediate(false);
         _timeInRange = 0f;
+        _failsafeTimer = 0f;
     }
 
     private void Update()
     {
-        if (_lunaRest == null)
-        {
-            GameObject luna = GameObject.FindGameObjectWithTag(lunaTag);
-            if (luna != null)
-                _lunaRest = luna.GetComponent<LunaRest>();
-        }
+        ResolveLuna();
 
         if (bookController == null)
             ResolveBookController();
+
+        if (moonbowColliders == null || moonbowColliders.Length == 0)
+            ResolveMoonbowColliders();
 
         UpdateTimeInRange();
 
         bool shouldTransition = ShouldBeInMoonbowState();
 
-        if (shouldTransition && !_transitionComplete)
+        if (shouldTransition && !_transitionComplete && !_isTransitioningIn)
         {
             StartTransitionIn();
         }
-        else if (!shouldTransition && _transitionComplete && !_holdingMoonbow)
+        else if (!shouldTransition && _transitionComplete && !_holdingMoonbow && !_isTransitioningOut)
         {
             StartTransitionOutWithHold();
+        }
+
+        _failsafeTimer += Time.deltaTime;
+        if (_failsafeTimer >= failsafeRefreshInterval)
+        {
+            _failsafeTimer = 0f;
+            EnforceCurrentState();
         }
     }
 
@@ -116,52 +151,19 @@ public class MystRestTransitionAuto : MonoBehaviour
         ApplyMoonbowColliderStateImmediate(_moonbowShouldBeSolid);
     }
 
-    private void UpdateTimeInRange()
+    private void ResolveLuna()
     {
-        if (_lunaRest == null)
-        {
-            _timeInRange = 0f;
+        if (_lunaRest != null && _lunaTransform != null)
             return;
+
+        GameObject luna = GameObject.FindGameObjectWithTag(lunaTag);
+        if (luna != null)
+        {
+            _lunaTransform = luna.transform;
+
+            if (_lunaRest == null)
+                _lunaRest = luna.GetComponent<LunaRest>();
         }
-
-        float dist = Vector2.Distance(transform.position, _lunaRest.transform.position);
-        bool lunaInRange = dist <= activationRadius;
-
-        if (lunaInRange)
-            _timeInRange += Time.deltaTime;
-        else
-            _timeInRange = 0f;
-    }
-
-    private bool LunaInRange()
-    {
-        if (_lunaRest == null)
-            return false;
-
-        float dist = Vector2.Distance(transform.position, _lunaRest.transform.position);
-        return dist <= activationRadius;
-    }
-
-    private bool ShouldBeInMoonbowState()
-    {
-        if (_lunaRest == null)
-            return false;
-
-        bool lunaInRange = LunaInRange();
-        bool stoodLongEnough = _timeInRange >= standInMistDuration;
-
-        if (!lunaInRange)
-            return false;
-
-        // Activate once Luna has stood in the mist long enough.
-        if (!_transitionComplete)
-            return stoodLongEnough;
-
-        // After activation, optionally keep the moonbow alive while Luna remains in range.
-        if (stayActiveWhileLunaInRange)
-            return true;
-
-        return stoodLongEnough;
     }
 
     private void ResolveBookController()
@@ -179,10 +181,7 @@ public class MystRestTransitionAuto : MonoBehaviour
             return;
         }
 
-        if (!autoFindMoonbowColliders)
-            return;
-
-        if (moonbowRenderer == null)
+        if (!autoFindMoonbowColliders || moonbowRenderer == null)
             return;
 
         moonbowColliders = moonbowRenderer.GetComponentsInChildren<Collider2D>(true);
@@ -192,6 +191,81 @@ public class MystRestTransitionAuto : MonoBehaviour
             int count = moonbowColliders != null ? moonbowColliders.Length : 0;
             Debug.Log($"{name}: Auto-resolved {count} moonbow collider(s).");
         }
+    }
+
+    private void InitializeVisualState()
+    {
+        if (mystRenderer != null)
+        {
+            if (!neverDeactivateMystObject)
+                mystRenderer.gameObject.SetActive(true);
+
+            SetAlpha(mystRenderer, visibleAlpha);
+        }
+
+        if (sparkles != null)
+        {
+            sparkles.SetActive(true);
+        }
+
+        if (moonbowRenderer != null)
+        {
+            moonbowRenderer.gameObject.SetActive(true);
+            SetAlpha(moonbowRenderer, hiddenAlpha);
+
+            if (!neverDeactivateMoonbowObject && Mathf.Approximately(hiddenAlpha, 0f))
+                moonbowRenderer.gameObject.SetActive(false);
+        }
+
+        if (moonbowSparkles != null)
+        {
+            moonbowSparkles.SetActive(false);
+        }
+    }
+
+    private void UpdateTimeInRange()
+    {
+        if (_lunaTransform == null)
+        {
+            _timeInRange = 0f;
+            return;
+        }
+
+        bool lunaInRange = LunaInRange();
+
+        if (lunaInRange)
+            _timeInRange += Time.deltaTime;
+        else
+            _timeInRange = 0f;
+    }
+
+    private bool LunaInRange()
+    {
+        if (_lunaTransform == null)
+            return false;
+
+        float dist = Vector2.Distance(transform.position, _lunaTransform.position);
+        return dist <= activationRadius;
+    }
+
+    private bool ShouldBeInMoonbowState()
+    {
+        if (_lunaTransform == null)
+            return false;
+
+        bool lunaInRange = LunaInRange();
+        bool stoodLongEnough = _timeInRange >= standInMistDuration;
+
+        if (!lunaInRange)
+            return false;
+
+        if (!_transitionComplete)
+            return stoodLongEnough;
+
+        if (stayActiveWhileLunaInRange)
+            return true;
+
+        return stoodLongEnough;
     }
 
     private void ApplyMoonbowColliderStateImmediate(bool active)
@@ -250,49 +324,201 @@ public class MystRestTransitionAuto : MonoBehaviour
         }
 
         _holdingMoonbow = false;
+        _isTransitioningIn = false;
+        _isTransitioningOut = false;
     }
 
     private IEnumerator TransitionToMoonbow()
     {
+        _isTransitioningIn = true;
         _transitionComplete = true;
+        _pageRevealDoneThisCycle = false;
 
         if (debugLogs)
             Debug.Log($"🌙 {name}: TransitionToMoonbow()");
 
         SetMoonbowSolid(false);
 
-        if (sparkles != null)
-            sparkles.SetActive(false);
-
-        yield return StartCoroutine(FadeSprite(mystRenderer, hiddenAlpha));
-        yield return new WaitForSeconds(moonbowDelay);
+        if (mystRenderer != null && !mystRenderer.gameObject.activeSelf)
+            mystRenderer.gameObject.SetActive(true);
 
         if (moonbowRenderer != null)
             moonbowRenderer.gameObject.SetActive(true);
 
+        if (sparkles != null)
+            sparkles.SetActive(true);
+
         if (moonbowSparkles != null)
             moonbowSparkles.SetActive(true);
 
-        yield return StartCoroutine(FadeSprite(moonbowRenderer, visibleAlpha));
+        float mistTargetAlpha = neverFullyHideMist ? Mathf.Max(hiddenAlpha, mistMinimumAlpha) : hiddenAlpha;
+
+        float currentDelay = 0f;
+
+        while (true)
+        {
+            bool mistDone = true;
+            bool moonbowDone = true;
+
+            if (mystRenderer != null)
+            {
+                float newMistAlpha = Mathf.MoveTowards(mystRenderer.color.a, mistTargetAlpha, mistFadeOutSpeed * Time.deltaTime);
+                SetAlpha(mystRenderer, newMistAlpha);
+                mistDone = Mathf.Approximately(newMistAlpha, mistTargetAlpha);
+            }
+
+            currentDelay += Time.deltaTime;
+
+            if (currentDelay >= moonbowFadeInLeadDelay)
+            {
+                if (moonbowRenderer != null)
+                {
+                    float newMoonbowAlpha = Mathf.MoveTowards(moonbowRenderer.color.a, visibleAlpha, moonbowFadeInSpeed * Time.deltaTime);
+                    SetAlpha(moonbowRenderer, newMoonbowAlpha);
+                    moonbowDone = Mathf.Approximately(newMoonbowAlpha, visibleAlpha);
+                }
+            }
+            else
+            {
+                moonbowDone = false;
+            }
+
+            if (mistDone && moonbowDone)
+                break;
+
+            yield return null;
+        }
 
         SetMoonbowSolid(true);
 
-        if (!applySitOffsetOnRestOnly)
+        if (!applySitOffsetOnRestOnly && _lunaTransform != null)
         {
-            if (_lunaRest != null)
-            {
-                Vector3 pos = _lunaRest.transform.position;
-                pos.y -= moonbowSitOffset;
-                _lunaRest.transform.position = pos;
-            }
+            Vector3 pos = _lunaTransform.position;
+            pos.y -= moonbowSitOffset;
+            _lunaTransform.position = pos;
         }
 
-        TryRevealPage();
+        if (!_pageRevealDoneThisCycle)
+        {
+            TryRevealPage();
+            _pageRevealDoneThisCycle = true;
+        }
 
+        _isTransitioningIn = false;
         _transitionRoutine = null;
+
+        EnforceCurrentState();
 
         if (debugLogs)
             Debug.Log($"🌙 {name}: Moonbow active");
+    }
+
+    private IEnumerator HoldMoonbowThenFadeBack()
+    {
+        _isTransitioningOut = true;
+        _holdingMoonbow = true;
+
+        if (debugLogs)
+            Debug.Log($"💤 {name}: holding Moonbow for {moonbowHoldDuration}s");
+
+        float elapsed = 0f;
+
+        while (elapsed < moonbowHoldDuration)
+        {
+            if (stayActiveWhileLunaInRange && LunaInRange())
+            {
+                elapsed = 0f;
+            }
+
+            if (requireLightSource && IsNearLightSource())
+            {
+                if (debugLogs)
+                    Debug.Log($"✨ {name}: light source nearby, Moonbow stays.");
+                elapsed = 0f;
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        _holdingMoonbow = false;
+        yield return StartCoroutine(TransitionBackToMyst());
+
+        _isTransitioningOut = false;
+        _returnRoutine = null;
+    }
+
+    private IEnumerator TransitionBackToMyst()
+    {
+        if (debugLogs)
+            Debug.Log($"💤 {name}: TransitionBackToMyst()");
+
+        SetMoonbowSolid(false);
+
+        if (mystRenderer != null && !mystRenderer.gameObject.activeSelf)
+            mystRenderer.gameObject.SetActive(true);
+
+        if (moonbowRenderer != null && !moonbowRenderer.gameObject.activeSelf)
+            moonbowRenderer.gameObject.SetActive(true);
+
+        if (sparkles != null)
+            sparkles.SetActive(true);
+
+        float mistTargetAlpha = visibleAlpha;
+        float moonbowTargetAlpha = hiddenAlpha;
+
+        float currentDelay = 0f;
+
+        while (true)
+        {
+            bool mistDone = true;
+            bool moonbowDone = true;
+
+            if (moonbowRenderer != null)
+            {
+                float newMoonbowAlpha = Mathf.MoveTowards(moonbowRenderer.color.a, moonbowTargetAlpha, moonbowFadeOutSpeed * Time.deltaTime);
+                SetAlpha(moonbowRenderer, newMoonbowAlpha);
+                moonbowDone = Mathf.Approximately(newMoonbowAlpha, moonbowTargetAlpha);
+            }
+
+            currentDelay += Time.deltaTime;
+
+            if (currentDelay >= mistFadeInLeadDelay)
+            {
+                if (mystRenderer != null)
+                {
+                    float newMistAlpha = Mathf.MoveTowards(mystRenderer.color.a, mistTargetAlpha, mistFadeInSpeed * Time.deltaTime);
+                    SetAlpha(mystRenderer, newMistAlpha);
+                    mistDone = Mathf.Approximately(newMistAlpha, mistTargetAlpha);
+                }
+            }
+            else
+            {
+                mistDone = false;
+            }
+
+            if (moonbowDone && mistDone)
+                break;
+
+            yield return null;
+        }
+
+        if (moonbowSparkles != null)
+        {
+            if (keepMoonbowSparklesVisibleAlways && moonbowRenderer != null && moonbowRenderer.color.a > 0.01f)
+                moonbowSparkles.SetActive(true);
+            else
+                moonbowSparkles.SetActive(false);
+        }
+
+        if (moonbowRenderer != null && !neverDeactivateMoonbowObject && moonbowRenderer.color.a <= 0.01f)
+            moonbowRenderer.gameObject.SetActive(false);
+
+        _transitionComplete = false;
+        _timeInRange = 0f;
+        _pageRevealDoneThisCycle = false;
+
+        EnforceCurrentState();
     }
 
     private void TryRevealPage()
@@ -321,87 +547,50 @@ public class MystRestTransitionAuto : MonoBehaviour
             Debug.Log($"🌙 {name}: RevealNextFromLocation({locationId}) -> {revealed}");
     }
 
-    private IEnumerator HoldMoonbowThenFadeBack()
+    private void EnforceCurrentState()
     {
-        _holdingMoonbow = true;
-
-        if (debugLogs)
-            Debug.Log($"💤 {name}: holding Moonbow for {moonbowHoldDuration}s");
-
-        float elapsed = 0f;
-
-        while (elapsed < moonbowHoldDuration)
+        if (_transitionComplete || _isTransitioningIn || _holdingMoonbow || _isTransitioningOut)
         {
-            if (stayActiveWhileLunaInRange && LunaInRange())
+            if (moonbowRenderer != null && !moonbowRenderer.gameObject.activeSelf)
+                moonbowRenderer.gameObject.SetActive(true);
+
+            if (sparkles != null && keepSparklesVisibleAlways)
+                sparkles.SetActive(true);
+
+            if (moonbowSparkles != null && keepMoonbowSparklesVisibleAlways)
             {
-                elapsed = 0f;
+                if (moonbowRenderer != null && moonbowRenderer.color.a > 0.01f)
+                    moonbowSparkles.SetActive(true);
             }
 
-            if (requireLightSource && IsNearLightSource())
+            if (neverFullyHideMist && mystRenderer != null)
             {
-                if (debugLogs)
-                    Debug.Log($"✨ {name}: light source nearby, Moonbow stays.");
-
-                elapsed = 0f;
+                Color c = mystRenderer.color;
+                if (c.a < mistMinimumAlpha)
+                {
+                    c.a = mistMinimumAlpha;
+                    mystRenderer.color = c;
+                }
             }
+        }
+        else
+        {
+            if (sparkles != null)
+                sparkles.SetActive(true);
 
-            elapsed += Time.deltaTime;
-            yield return null;
+            if (moonbowSparkles != null && moonbowRenderer != null && moonbowRenderer.color.a <= 0.01f)
+                moonbowSparkles.SetActive(false);
+
+            if (moonbowRenderer != null && !neverDeactivateMoonbowObject && moonbowRenderer.color.a <= 0.01f)
+                moonbowRenderer.gameObject.SetActive(false);
         }
 
-        _holdingMoonbow = false;
-        yield return StartCoroutine(TransitionBackToMyst());
-
-        _returnRoutine = null;
-    }
-
-    private IEnumerator TransitionBackToMyst()
-    {
-        if (debugLogs)
-            Debug.Log($"💤 {name}: TransitionBackToMyst()");
-
-        SetMoonbowSolid(false);
-
-        yield return StartCoroutine(FadeSprite(moonbowRenderer, hiddenAlpha));
-
-        if (moonbowSparkles != null)
-            moonbowSparkles.SetActive(false);
-
-        if (moonbowRenderer != null)
-            moonbowRenderer.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(mistReturnDelay);
-
-        if (sparkles != null)
-            sparkles.SetActive(true);
-
-        yield return StartCoroutine(FadeSprite(mystRenderer, visibleAlpha));
-
-        _transitionComplete = false;
-        _timeInRange = 0f;
+        ApplyMoonbowColliderStateImmediate(_moonbowShouldBeSolid);
     }
 
     private bool IsNearLightSource()
     {
         return Physics2D.OverlapCircle(transform.position, lightCheckRadius, lightLayerMask);
-    }
-
-    private IEnumerator FadeSprite(SpriteRenderer sr, float targetAlpha)
-    {
-        if (sr == null)
-            yield break;
-
-        Color c = sr.color;
-
-        while (Mathf.Abs(c.a - targetAlpha) > 0.01f)
-        {
-            c.a = Mathf.Lerp(c.a, targetAlpha, Time.deltaTime * fadeSpeed);
-            sr.color = c;
-            yield return null;
-        }
-
-        c.a = targetAlpha;
-        sr.color = c;
     }
 
     private void SetAlpha(SpriteRenderer sr, float alpha)
@@ -422,7 +611,10 @@ public class MystRestTransitionAuto : MonoBehaviour
 
         _holdingMoonbow = false;
         _transitionComplete = false;
+        _isTransitioningIn = false;
+        _isTransitioningOut = false;
         _timeInRange = 0f;
+        _pageRevealDoneThisCycle = false;
     }
 
     private void OnDrawGizmosSelected()

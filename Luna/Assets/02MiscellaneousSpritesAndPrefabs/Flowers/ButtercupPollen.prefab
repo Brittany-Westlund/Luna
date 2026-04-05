@@ -320,11 +320,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fatigueReductionAmount: 1
   boostAnimatorSpeed: 1
-  boostedAnimatorSpeed: 6
-  animatorBoostDuration: 6
+  boostedAnimatorSpeed: 4
+  animatorBoostDuration: 3
   overrideAnimator: {fileID: 0}
-  pollenIconRoot: {fileID: 0}
-  pollenIconDuration: 2
+  pollenIconObjectName: ButtercupPollen
+  pollenIconDuration: 3.5
+  debugLogs: 0
 --- !u!1 &3032782802937583264
 GameObject:
   m_ObjectHideFlags: 0

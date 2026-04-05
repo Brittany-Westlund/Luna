@@ -155,7 +155,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 11.499999, y: 11.499999, z: 11.499999}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 2135348643}
   m_Father: {fileID: 106479779}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -176,8 +177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDistance: 320
-  moveDuration: 2.6
-  holdDuration: 4
+  moveDuration: 2.8
+  holdDuration: 2
   moveCurve:
     serializedVersion: 2
     m_Curve:
@@ -205,7 +206,7 @@ MonoBehaviour:
   fadeOverlay: {fileID: 1273297131}
   fadeDuration: 1.5
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  nextSceneName: Credits
+  nextSceneName: Level3_Village
 --- !u!210 &49264572
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -375,7 +376,6 @@ RectTransform:
   m_Children:
   - {fileID: 49264570}
   - {fileID: 1273297129}
-  - {fileID: 2135348643}
   - {fileID: 437502995}
   - {fileID: 2007485610}
   - {fileID: 79037463}
@@ -470,6 +470,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dialogue Manager Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434987774737143002, guid: da6060b42c28f7443a4f6ac3d99e261e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2217,6 +2222,10 @@ MonoBehaviour:
   pulseSpeed: 4
   scaleAmount: 0.03
   fadeAmount: 0
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
 --- !u!1001 &1067615896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2447,6 +2456,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1176926725}
+  startVolume: 0.17
+  useFadeIn: 1
+  fadeInDuration: 1
+  useFadeOut: 1
+  fadeOutDelay: 4
+  fadeOutDuration: 2
 --- !u!82 &1176926725
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2457,23 +2472,23 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ecc0455ac47fced4dab252aa2cc0bd89, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.215
+  m_audioClip: {fileID: 8300000, guid: d7d9acca7c607d74fa086b9706876f5b, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.01
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 252
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
+  BypassEffects: 1
   BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -2565,7 +2580,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176926723}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7d52d74328f6c94397b6d16f0ab95ad, type: 3}
   m_Name: 
@@ -4004,7 +4019,7 @@ MonoBehaviour:
     m_Extent: {x: 28.8, y: 6.25, z: 5}
   ConvertToColliderBoundsButton: 0
   LoadingSceneMode: 1
-  LoadingSceneName: Level0_Village
+  LoadingSceneName: Level3_Village
   AdditiveLoadingSettings:
     LoadingSceneName: MMAdditiveLoadingScreen
     ThreadPriority: 4
@@ -4085,7 +4100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1580315331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5479,13 +5494,15 @@ GameObject:
   - component: {fileID: 2135348643}
   - component: {fileID: 2135348645}
   - component: {fileID: 2135348644}
+  - component: {fileID: 2135348646}
+  - component: {fileID: 2135348647}
   m_Layer: 5
-  m_Name: LoadingText
+  m_Name: OneYearLaterText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2135348643
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5493,17 +5510,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135348642}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6834142, y: 0.6834142, z: 0.6834142}
+  m_LocalScale: {x: 0.052464724, y: 0.052464724, z: 0.052464724}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 106479779}
+  m_Father: {fileID: 49264570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 161, y: 101.51}
-  m_SizeDelta: {x: 338, y: 65}
+  m_AnchoredPosition: {x: 16.095688, y: 24.4}
+  m_SizeDelta: {x: 487.99, y: 63.0308}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2135348644
 MonoBehaviour:
@@ -5538,7 +5555,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LOADING
+  m_Text: One year later
 --- !u!222 &2135348645
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5547,6 +5564,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135348642}
   m_CullTransparentMesh: 0
+--- !u!225 &2135348646
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135348642}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &2135348647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135348642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2cf5053b2746eb4ab9828435a2ca9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tmpUGUI: {fileID: 0}
+  tmp3D: {fileID: 0}
+  uiText: {fileID: 2135348644}
+  delay: 2
+  fadeDuration: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -5555,6 +5601,7 @@ SceneRoots:
   - {fileID: 433679907}
   - {fileID: 183711204}
   - {fileID: 1922343295}
+  - {fileID: 1544110106}
   - {fileID: 1896010361}
   - {fileID: 1580315332}
   - {fileID: 648969771}
@@ -5562,4 +5609,3 @@ SceneRoots:
   - {fileID: 697568604}
   - {fileID: 531862209}
   - {fileID: 1176926726}
-  - {fileID: 1544110106}

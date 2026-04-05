@@ -169,13 +169,27 @@ public class LunaSporeSystem : MonoBehaviour
         Debug.Log("Spore system fully reset.");
     }
 
-    public void DestroyAttachedSpore()
+    public void DestroyAttachedSpore(bool playStoreSound = false)
     {
         if (activeSpore != null)
         {
+            if (slideCoroutine != null)
+            {
+                StopCoroutine(slideCoroutine);
+                slideCoroutine = null;
+            }
+
+            // ✅ Optional fallback sound
+            if (playStoreSound && storeSporeSFX != null)
+            {
+                storeSporeSFX.Play();
+            }
+
             Destroy(activeSpore);
             activeSpore = null;
-            Debug.Log("Attached spore destroyed.");
+            isSliding = false;
+
+            Debug.Log($"Attached spore destroyed. playStoreSound = {playStoreSound}");
         }
     }
 
