@@ -50767,11 +50767,32 @@ PrefabInstance:
       propertyPath: m_onTriggerEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1067355428}
+    - target: {fileID: 5239083177355378011, guid: a5dde01739462da459e9a4bb00d07fc7,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 6205470868046013451, guid: a5dde01739462da459e9a4bb00d07fc7,
         type: 3}
       propertyPath: moonbowToMove
       value: 
       objectReference: {fileID: 535142138}
+    - target: {fileID: 6659394505748565773, guid: a5dde01739462da459e9a4bb00d07fc7,
+        type: 3}
+      propertyPath: m_Name
+      value: RVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 6772350912022755664, guid: a5dde01739462da459e9a4bb00d07fc7,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1584574112, guid: e9cae1bf184f6d34ab40792c2da49014,
+        type: 3}
+    - target: {fileID: 7572789785375061372, guid: a5dde01739462da459e9a4bb00d07fc7,
+        type: 3}
+      propertyPath: dismissKeys.Array.data[0]
+      value: 114
+      objectReference: {fileID: 0}
     - target: {fileID: 7572789785375061372, guid: a5dde01739462da459e9a4bb00d07fc7,
         type: 3}
       propertyPath: OnFeedbackDismissed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -50786,6 +50807,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8270034259410520496, guid: a5dde01739462da459e9a4bb00d07fc7,
+        type: 3}
+      propertyPath: m_Name
+      value: RPrompt
       objectReference: {fileID: 0}
     - target: {fileID: 8787639235978563429, guid: a5dde01739462da459e9a4bb00d07fc7,
         type: 3}

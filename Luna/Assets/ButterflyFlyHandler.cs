@@ -79,7 +79,7 @@ public class ButterflyFlyHandler : MonoBehaviour
     [Header("Mount Settings")]
     public float maxMountDistance = 2f;
     public float mountHoldTime = 0.35f;
-    public KeyCode mountKey = KeyCode.R;
+    public KeyCode mountKey = KeyCode.B;
 
     [Header("Ground Follow Settings")]
     public float followSpeed = 5f;
