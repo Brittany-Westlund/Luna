@@ -12966,6 +12966,11 @@ PrefabInstance:
       propertyPath: neverDeactivateMoonbowObject
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2368486508507652551, guid: 9abae8f2a1605ac4086b41447561e6e7,
+        type: 3}
+      propertyPath: m_TagString
+      value: Moonbow
+      objectReference: {fileID: 0}
     - target: {fileID: 2620027573168725140, guid: 9abae8f2a1605ac4086b41447561e6e7,
         type: 3}
       propertyPath: m_LocalPosition.x

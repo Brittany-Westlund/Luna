@@ -54,6 +54,7 @@ TagManager:
   - Lilystool
   - LotusParticle
   - PlayerFeet
+  - Acorn
   layers:
   - Default
   - TransparentFX

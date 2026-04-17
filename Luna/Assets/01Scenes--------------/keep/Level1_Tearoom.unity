@@ -19798,6 +19798,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WreathLuna
       objectReference: {fileID: 0}
+    - target: {fileID: 625855643115806670, guid: d75f27a4c6fe6724892b8742c48434dd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2433711272215797037, guid: d75f27a4c6fe6724892b8742c48434dd,
         type: 3}
       propertyPath: m_LocalPosition.x

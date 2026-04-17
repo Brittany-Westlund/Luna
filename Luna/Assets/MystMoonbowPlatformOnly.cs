@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
-public class MystRestTransitionAuto : MonoBehaviour
+public class MystMoonbowPlatformOnly : MonoBehaviour
 {
     public enum MoonbowState
     {
@@ -24,20 +23,6 @@ public class MystRestTransitionAuto : MonoBehaviour
     [Header("Moonbow Colliders")]
     public Collider2D[] moonbowColliders;
     public bool autoFindMoonbowColliders = true;
-
-    [Header("Book Reveal")]
-    public string locationId;
-    public BookControllerSimple bookController;
-    public bool revealPageOnMoonbowAppear = true;
-
-    [Tooltip("If true, this moonbow can reveal pages when it becomes fully active.")]
-    public bool allowBookReveal = true;
-
-    [Tooltip("Only the nearest eligible reveal moonbow to Luna can reveal a page.")]
-    public bool onlyNearestRevealMoonbowCanReveal = true;
-
-    [Tooltip("Minimum seconds between reveal attempts by this instance.")]
-    public float revealAttemptCooldown = 0.2f;
 
     [Header("Optional Light Source (keeps Moonbow active)")]
     public bool requireLightSource = false;
@@ -92,10 +77,6 @@ public class MystRestTransitionAuto : MonoBehaviour
     [Tooltip("If Luna stays within activationRadius for at least this many seconds, the moonbow activates.")]
     public float standInMistDuration = 2f;
 
-    [Header("Moonbow Positioning")]
-    public float moonbowSitOffset = 0.4f;
-    public bool applySitOffsetOnRestOnly = true;
-
     [Header("Stay Active Behavior")]
     [Tooltip("If true, the moonbow stays active as long as Luna remains in range after activation.")]
     public bool stayActiveWhileLunaInRange = true;
@@ -104,56 +85,20 @@ public class MystRestTransitionAuto : MonoBehaviour
     [Tooltip("How often to re-assert visual/collider state even if nothing changed.")]
     public float failsafeRefreshInterval = 0.2f;
 
-    private static readonly List<MystRestTransitionAuto> AllInstances = new List<MystRestTransitionAuto>();
-
-    private LunaRest _lunaRest;
     private Transform _lunaTransform;
-
     private MoonbowState _state = MoonbowState.Myst;
 
     private float _timeInRange = 0f;
     private float _holdTimer = 0f;
     private float _failsafeTimer = 0f;
     private float _transitionDelayTimer = 0f;
-    private float _lastRevealAttemptTime = -999f;
-
-    private bool _pageRevealDoneThisCycle = false;
 
     private Coroutine _stateRoutine;
 
-    private void OnEnable()
-    {
-        if (!AllInstances.Contains(this))
-            AllInstances.Add(this);
-    }
-
-    private void OnDisable()
-    {
-        if (AllInstances.Contains(this))
-            AllInstances.Remove(this);
-
-        if (_stateRoutine != null)
-        {
-            StopCoroutine(_stateRoutine);
-            _stateRoutine = null;
-        }
-
-        _state = MoonbowState.Myst;
-        _timeInRange = 0f;
-        _holdTimer = 0f;
-        _failsafeTimer = 0f;
-        _transitionDelayTimer = 0f;
-        _pageRevealDoneThisCycle = false;
-
-        SetMoonbowSolidImmediate(false);
-    }
-
     private void Start()
     {
-        ResolveBookController();
         ResolveLuna();
         ResolveMoonbowColliders();
-
         InitializeVisualState();
         SetMoonbowSolidImmediate(false);
         ForceStateVisuals(MoonbowState.Myst);
@@ -162,9 +107,6 @@ public class MystRestTransitionAuto : MonoBehaviour
     private void Update()
     {
         ResolveLuna();
-
-        if (bookController == null)
-            ResolveBookController();
 
         if (moonbowColliders == null || moonbowColliders.Length == 0)
             ResolveMoonbowColliders();
@@ -187,23 +129,12 @@ public class MystRestTransitionAuto : MonoBehaviour
 
     private void ResolveLuna()
     {
-        if (_lunaRest != null && _lunaTransform != null)
+        if (_lunaTransform != null)
             return;
 
         GameObject luna = GameObject.FindGameObjectWithTag(lunaTag);
         if (luna != null)
-        {
             _lunaTransform = luna.transform;
-
-            if (_lunaRest == null)
-                _lunaRest = luna.GetComponent<LunaRest>();
-        }
-    }
-
-    private void ResolveBookController()
-    {
-        if (bookController == null)
-            bookController = FindObjectOfType<BookControllerSimple>();
     }
 
     private void ResolveMoonbowColliders()
@@ -242,9 +173,6 @@ public class MystRestTransitionAuto : MonoBehaviour
         {
             moonbowRenderer.gameObject.SetActive(true);
             SetAlpha(moonbowRenderer, hiddenAlpha);
-
-            if (!neverDeactivateMoonbowObject && Mathf.Approximately(hiddenAlpha, 0f))
-                moonbowRenderer.gameObject.SetActive(false);
         }
 
         if (moonbowSparkles != null)
@@ -350,20 +278,17 @@ public class MystRestTransitionAuto : MonoBehaviour
         {
             case MoonbowState.Myst:
                 _holdTimer = 0f;
-                _pageRevealDoneThisCycle = false;
                 ForceStateVisuals(MoonbowState.Myst);
                 break;
 
             case MoonbowState.FadingToMoonbow:
                 _holdTimer = 0f;
-                _pageRevealDoneThisCycle = false;
                 _stateRoutine = StartCoroutine(FadeToMoonbowRoutine());
                 break;
 
             case MoonbowState.Moonbow:
                 _holdTimer = 0f;
                 ForceStateVisuals(MoonbowState.Moonbow);
-                TryRevealPageIfEligible();
                 break;
 
             case MoonbowState.HoldingBeforeReturn:
@@ -499,7 +424,6 @@ public class MystRestTransitionAuto : MonoBehaviour
 
         _timeInRange = 0f;
         _holdTimer = 0f;
-        _pageRevealDoneThisCycle = false;
         _stateRoutine = null;
         ChangeState(MoonbowState.Myst);
     }
@@ -616,96 +540,6 @@ public class MystRestTransitionAuto : MonoBehaviour
         }
     }
 
-    private void TryRevealPageIfEligible()
-    {
-        if (!allowBookReveal || !revealPageOnMoonbowAppear)
-            return;
-
-        if (_pageRevealDoneThisCycle)
-            return;
-
-        if (Time.time < _lastRevealAttemptTime + revealAttemptCooldown)
-            return;
-
-        if (string.IsNullOrEmpty(locationId))
-        {
-            if (debugLogs)
-                Debug.LogWarning($"{name}: No locationId set, so no page reveal was attempted.");
-            return;
-        }
-
-        if (!IsRevealOwner())
-        {
-            if (debugLogs)
-                Debug.Log($"{name}: Not nearest reveal owner, skipping page reveal.");
-            return;
-        }
-
-        ResolveBookController();
-
-        if (bookController == null)
-        {
-            Debug.LogWarning($"{name}: Could not find BookControllerSimple, so page reveal could not occur.");
-            return;
-        }
-
-        _lastRevealAttemptTime = Time.time;
-
-        bool revealed = bookController.RevealNextFromLocation(locationId);
-
-        if (debugLogs)
-            Debug.Log($"{name}: RevealNextFromLocation({locationId}) -> {revealed}");
-
-        if (revealed)
-            _pageRevealDoneThisCycle = true;
-    }
-
-    private bool IsRevealOwner()
-    {
-        if (!onlyNearestRevealMoonbowCanReveal)
-            return true;
-
-        if (_lunaTransform == null)
-            return false;
-
-        MystRestTransitionAuto nearest = null;
-        float nearestDist = float.MaxValue;
-
-        for (int i = 0; i < AllInstances.Count; i++)
-        {
-            MystRestTransitionAuto candidate = AllInstances[i];
-
-            if (candidate == null)
-                continue;
-
-            if (!candidate.allowBookReveal || !candidate.revealPageOnMoonbowAppear)
-                continue;
-
-            if (string.IsNullOrEmpty(candidate.locationId))
-                continue;
-
-            bool candidateRelevant =
-                candidate._state == MoonbowState.Moonbow ||
-                candidate._state == MoonbowState.HoldingBeforeReturn ||
-                candidate._state == MoonbowState.FadingToMoonbow;
-
-            if (!candidateRelevant)
-                continue;
-
-            float dist = Vector2.Distance(candidate.transform.position, _lunaTransform.position);
-            if (dist > candidate.activationRadius)
-                continue;
-
-            if (dist < nearestDist)
-            {
-                nearestDist = dist;
-                nearest = candidate;
-            }
-        }
-
-        return nearest == this;
-    }
-
     private void EnforceCurrentState()
     {
         switch (_state)
@@ -720,14 +554,11 @@ public class MystRestTransitionAuto : MonoBehaviour
                 break;
 
             case MoonbowState.FadingToMoonbow:
-                if (mystRenderer != null && neverFullyHideMist)
+                if (mystRenderer != null && mystRenderer.color.a < hiddenAlpha && neverFullyHideMist)
                 {
                     Color c = mystRenderer.color;
-                    if (c.a < mistMinimumAlpha)
-                    {
-                        c.a = mistMinimumAlpha;
-                        mystRenderer.color = c;
-                    }
+                    c.a = mistMinimumAlpha;
+                    mystRenderer.color = c;
                 }
                 break;
 
@@ -751,6 +582,23 @@ public class MystRestTransitionAuto : MonoBehaviour
         Color c = sr.color;
         c.a = alpha;
         sr.color = c;
+    }
+
+    private void OnDisable()
+    {
+        if (_stateRoutine != null)
+        {
+            StopCoroutine(_stateRoutine);
+            _stateRoutine = null;
+        }
+
+        _state = MoonbowState.Myst;
+        _timeInRange = 0f;
+        _holdTimer = 0f;
+        _failsafeTimer = 0f;
+        _transitionDelayTimer = 0f;
+
+        SetMoonbowSolidImmediate(false);
     }
 
     private void OnDrawGizmosSelected()

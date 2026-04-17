@@ -11,7 +11,8 @@ public class LunaRest : MonoBehaviour
     public float gardenBonus = 0.15f;
 
     [Header("Rest Visual")]
-    public SpriteRenderer lunaRestVisualRenderer;
+    [Tooltip("Assign the root GameObject of the entire rest visual.")]
+    public GameObject lunaRestVisualRoot;
 
     [Header("Optional UI Sync")]
     public LunaStatusBarConnector statusBarConnector;
@@ -35,6 +36,9 @@ public class LunaRest : MonoBehaviour
     private Animator _lunaAnimator;
     private float _restStartTime;
 
+    private SpriteRenderer[] _restRenderers;
+    private Animator[] _restAnimators;
+
     private void Awake()
     {
         _character = GetComponent<Character>();
@@ -54,29 +58,32 @@ public class LunaRest : MonoBehaviour
         if (statusBarConnector == null)
             statusBarConnector = FindObjectOfType<LunaStatusBarConnector>();
 
+        if (lunaRestVisualRoot != null)
+        {
+            _restRenderers = lunaRestVisualRoot.GetComponentsInChildren<SpriteRenderer>(true);
+            _restAnimators = lunaRestVisualRoot.GetComponentsInChildren<Animator>(true);
+        }
+
         if (_health == null)
             Debug.LogError("LunaRest: No Health component found.");
         if (_lunaSpriteRenderer == null)
             Debug.LogError("LunaRest: No SpriteRenderer found on Luna.");
         if (_lunaAnimator == null)
             Debug.LogError("LunaRest: No Animator found on Luna.");
-        if (lunaRestVisualRenderer == null)
-            Debug.LogError("LunaRest: lunaRestVisualRenderer is not assigned.");
-        if (statusBarConnector == null)
-            Debug.LogWarning("LunaRest: No LunaStatusBarConnector found. Health bar will not update from resting.");
+        if (lunaRestVisualRoot == null)
+            Debug.LogError("LunaRest: lunaRestVisualRoot is not assigned.");
+
+        ForceVisualState(false);
+    }
+
+    private void OnEnable()
+    {
+        ForceVisualState(false);
     }
 
     private void Start()
     {
-        if (lunaRestVisualRenderer != null)
-        {
-            lunaRestVisualRenderer.enabled = false;
-
-            Color c = lunaRestVisualRenderer.color;
-            c.a = 1f;
-            lunaRestVisualRenderer.color = c;
-        }
-
+        ForceVisualState(false);
         UpdateHealthBarUI();
     }
 
@@ -130,17 +137,7 @@ public class LunaRest : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!isResting)
-            return;
-
-        if (_lunaSpriteRenderer != null)
-            _lunaSpriteRenderer.enabled = false;
-
-        if (_lunaAnimator != null)
-            _lunaAnimator.enabled = false;
-
-        if (lunaRestVisualRenderer != null)
-            lunaRestVisualRenderer.enabled = true;
+        ForceVisualState(isResting);
     }
 
     public void BeginRestExternal()
@@ -158,38 +155,16 @@ public class LunaRest : MonoBehaviour
         if (isResting)
             return;
 
-        if (lunaRestVisualRenderer == null)
-        {
-            Debug.LogError("LunaRest: lunaRestVisualRenderer is not assigned.");
-            return;
-        }
-
         isResting = true;
         _restStartTime = Time.time;
 
         if (_character != null)
             _character.ConditionState.ChangeState(CharacterStates.CharacterConditions.Frozen);
 
-        if (_lunaSpriteRenderer != null)
-            _lunaSpriteRenderer.enabled = false;
-
-        if (_lunaAnimator != null)
-            _lunaAnimator.enabled = false;
-
-        lunaRestVisualRenderer.enabled = true;
+        ForceVisualState(true);
 
         if (debugLogs)
-        {
-            Debug.Log(
-                "LunaRest StartResting | " +
-                "health=" + (_health != null) +
-                " | statusBarConnector=" + (statusBarConnector != null) +
-                " | current=" + (_health != null ? _health.CurrentHealth.ToString() : "NULL") +
-                " | max=" + (_health != null ? _health.MaximumHealth.ToString() : "NULL")
-            );
-        }
-
-        Debug.Log("Luna started resting");
+            Debug.Log("Luna started resting");
     }
 
     private void StopResting()
@@ -202,33 +177,47 @@ public class LunaRest : MonoBehaviour
         if (_character != null)
             _character.ConditionState.ChangeState(CharacterStates.CharacterConditions.Normal);
 
-        if (_lunaSpriteRenderer != null)
-            _lunaSpriteRenderer.enabled = true;
-
-        if (_lunaAnimator != null)
-            _lunaAnimator.enabled = true;
-
-        if (lunaRestVisualRenderer != null)
-            lunaRestVisualRenderer.enabled = false;
-
+        ForceVisualState(false);
         UpdateHealthBarUI();
 
-        Debug.Log("Luna stopped resting");
+        if (debugLogs)
+            Debug.Log("Luna stopped resting");
+    }
+
+    private void ForceVisualState(bool resting)
+    {
+        if (_lunaSpriteRenderer != null)
+            _lunaSpriteRenderer.enabled = !resting;
+
+        if (_lunaAnimator != null)
+            _lunaAnimator.enabled = !resting;
+
+        if (lunaRestVisualRoot != null)
+            lunaRestVisualRoot.SetActive(resting);
+
+        if (_restAnimators != null)
+        {
+            for (int i = 0; i < _restAnimators.Length; i++)
+            {
+                if (_restAnimators[i] != null)
+                    _restAnimators[i].enabled = resting;
+            }
+        }
+
+        if (_restRenderers != null)
+        {
+            for (int i = 0; i < _restRenderers.Length; i++)
+            {
+                if (_restRenderers[i] != null)
+                    _restRenderers[i].enabled = resting;
+            }
+        }
     }
 
     private void UpdateHealthBarUI()
     {
         if (statusBarConnector != null)
-        {
             statusBarConnector.UpdateHealthBar();
-
-            if (debugLogs)
-                Debug.Log("LunaRest UpdateHealthBarUI called.");
-        }
-        else if (debugLogs)
-        {
-            Debug.LogWarning("LunaRest: statusBarConnector is null; could not update health bar.");
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D col)
