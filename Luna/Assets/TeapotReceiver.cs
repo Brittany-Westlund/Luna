@@ -9,6 +9,9 @@ public class TeapotReceiver : MonoBehaviour
     public GameObject sparkleEffect;
     public Animator teapotAnimator;
 
+    [Header("Destroy")]
+    [SerializeField] private string teapotTag = "Teapot";
+
     private readonly List<GameObject> storedFlowers = new List<GameObject>();
     private readonly List<string> teaIngredients = new List<string>();
     private readonly Dictionary<string, GameObject> ingredientIcons = new Dictionary<string, GameObject>();
@@ -224,7 +227,35 @@ public class TeapotReceiver : MonoBehaviour
                 kv.Value.SetActive(false);
         }
 
+        GameObject teapotToDestroy = FindNearestTaggedParent(teapotTag);
+
+        if (teapotToDestroy != null)
+        {
+            Debug.Log($"[TeapotReceiver] Destroying teapot: {teapotToDestroy.name}");
+            Destroy(teapotToDestroy);
+        }
+        else
+        {
+            Debug.LogWarning("[TeapotReceiver] No parent tagged Teapot found. Destroying this object instead.");
+            Destroy(gameObject);
+        }
+
         return cup;
+    }
+
+    private GameObject FindNearestTaggedParent(string tagToFind)
+    {
+        Transform current = transform;
+
+        while (current != null)
+        {
+            if (current.CompareTag(tagToFind))
+                return current.gameObject;
+
+            current = current.parent;
+        }
+
+        return null;
     }
 
     private void HideHintIcons(GameObject flower)

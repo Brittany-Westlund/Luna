@@ -2,29 +2,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-[RequireComponent(typeof(SpriteRenderer))]
 public class LilypadVisualState : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("Trigger")]
-    [SerializeField] private string triggerTag = "PlayerFeet";
+    [SerializeField] private string[] validTriggerTags = new string[] { "PlayerFeet", "Player" };
 
-    [Header("Particle Tag")]
+    [Header("Particle References (optional)")]
+    [Tooltip("If assigned, only these Pulsate components will be affected.")]
+    [SerializeField] private List<Pulsate> assignedPulsates = new List<Pulsate>();
+
+    [Header("Particle Tag Fallback")]
     [SerializeField] private string particleTag = "LotusParticle";
+    [SerializeField] private bool useTagFallback = false;
 
     [Header("Pad Color")]
+    [SerializeField] private Color inactiveColor = Color.gray;
     [SerializeField] private Color activeColor = Color.white;
+    [SerializeField] private bool preserveOriginalAlpha = true;
 
     [Header("Particle Response")]
     [SerializeField] private float activeScaleMultiplier = 1.35f;
     [SerializeField] private float activeSpeedMultiplier = 1.3f;
 
     [Header("Debug")]
-    [SerializeField] private bool debugLogs = false;
+    [SerializeField] private bool debugLogs = true;
 
     private readonly List<Pulsate> allPulsates = new List<Pulsate>();
+    private readonly HashSet<Collider2D> validOverlaps = new HashSet<Collider2D>();
 
     private Collider2D triggerCollider;
     private Color originalColor;
@@ -32,28 +39,27 @@ public class LilypadVisualState : MonoBehaviour
 
     private void Reset()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
         triggerCollider = GetComponent<Collider2D>();
-
         if (triggerCollider != null)
-        {
             triggerCollider.isTrigger = true;
-        }
+
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Awake()
     {
         triggerCollider = GetComponent<Collider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (triggerCollider != null)
-        {
             triggerCollider.isTrigger = true;
-        }
+
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (spriteRenderer == null)
         {
-            Debug.LogWarning($"[LilypadVisualState] No SpriteRenderer found on {name}.");
+            Debug.LogWarning($"[LilypadVisualState] No SpriteRenderer assigned/found on {name}.");
             return;
         }
 
@@ -66,22 +72,47 @@ public class LilypadVisualState : MonoBehaviour
         if (debugLogs)
         {
             Debug.Log($"[LilypadVisualState] Awake on {name}");
+            Debug.Log($"[LilypadVisualState] Renderer = {spriteRenderer.name}");
             Debug.Log($"[LilypadVisualState] Original color = {originalColor}");
             Debug.Log($"[LilypadVisualState] Pulsates found = {allPulsates.Count}");
         }
     }
 
+    private void OnEnable()
+    {
+        validOverlaps.Clear();
+        isActive = false;
+
+        RefreshPulsateCache();
+        ResetAllPulsatesToDefault();
+        ApplyInactiveVisualsImmediate();
+    }
+
+    private void OnDisable()
+    {
+        validOverlaps.Clear();
+        isActive = false;
+
+        ResetAllPulsatesToDefault();
+        ApplyInactiveVisualsImmediate();
+    }
+
     private void OnValidate()
     {
-        if (spriteRenderer == null)
-        {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-        }
-
         if (triggerCollider == null)
-        {
             triggerCollider = GetComponent<Collider2D>();
-        }
+    }
+
+    private void LateUpdate()
+    {
+        if (spriteRenderer == null)
+            return;
+
+        // Force color every frame so no animator/other script can quietly override it.
+        if (isActive)
+            ApplyActiveVisualsImmediate();
+        else
+            ApplyInactiveVisualsImmediate();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -89,12 +120,13 @@ public class LilypadVisualState : MonoBehaviour
         if (!IsValidTrigger(other))
             return;
 
-        if (debugLogs)
-        {
-            Debug.Log($"[LilypadVisualState] ENTER {name} by {other.name}, tag={other.tag}");
-        }
+        validOverlaps.Add(other);
 
-        ActivateVisuals();
+        if (debugLogs)
+            Debug.Log($"[LilypadVisualState] ENTER {name} by {other.name}, tag={other.tag}, overlaps={validOverlaps.Count}");
+
+        if (!isActive)
+            ActivateVisuals();
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -102,12 +134,12 @@ public class LilypadVisualState : MonoBehaviour
         if (!IsValidTrigger(other))
             return;
 
+        validOverlaps.Add(other);
+
         if (!isActive)
         {
             if (debugLogs)
-            {
                 Debug.Log($"[LilypadVisualState] STAY re-activating {name} by {other.name}, tag={other.tag}");
-            }
 
             ActivateVisuals();
         }
@@ -118,12 +150,13 @@ public class LilypadVisualState : MonoBehaviour
         if (!IsValidTrigger(other))
             return;
 
-        if (debugLogs)
-        {
-            Debug.Log($"[LilypadVisualState] EXIT {name} by {other.name}, tag={other.tag}");
-        }
+        validOverlaps.Remove(other);
 
-        DeactivateVisuals();
+        if (debugLogs)
+            Debug.Log($"[LilypadVisualState] EXIT {name} by {other.name}, tag={other.tag}, overlaps={validOverlaps.Count}");
+
+        if (validOverlaps.Count == 0)
+            DeactivateVisuals();
     }
 
     private bool IsValidTrigger(Collider2D other)
@@ -131,23 +164,20 @@ public class LilypadVisualState : MonoBehaviour
         if (other == null)
             return false;
 
-        return other.CompareTag(triggerTag);
+        for (int i = 0; i < validTriggerTags.Length; i++)
+        {
+            string tagToCheck = validTriggerTags[i];
+            if (!string.IsNullOrEmpty(tagToCheck) && other.CompareTag(tagToCheck))
+                return true;
+        }
+
+        return false;
     }
 
     private void ActivateVisuals()
     {
         isActive = true;
-
-        if (spriteRenderer != null)
-        {
-            Color newColor = new Color(activeColor.r, activeColor.g, activeColor.b, originalColor.a);
-            spriteRenderer.color = newColor;
-
-            if (debugLogs)
-            {
-                Debug.Log($"[LilypadVisualState] Set ACTIVE color on {name} to {spriteRenderer.color}");
-            }
-        }
+        ApplyActiveVisualsImmediate();
 
         RefreshPulsateCache();
 
@@ -163,7 +193,7 @@ public class LilypadVisualState : MonoBehaviour
 
         if (debugLogs)
         {
-            Debug.Log($"[LilypadVisualState] Activated {name}. Pulsates affected: {allPulsates.Count}");
+            Debug.Log($"[LilypadVisualState] Activated {name}. Renderer={spriteRenderer.name}, Color={spriteRenderer.color}, Pulsates affected={allPulsates.Count}");
         }
     }
 
@@ -172,27 +202,52 @@ public class LilypadVisualState : MonoBehaviour
         isActive = false;
 
         ApplyInactiveVisualsImmediate();
-
-        RefreshPulsateCache();
         ResetAllPulsatesToDefault();
 
         if (debugLogs)
-        {
-            Debug.Log($"[LilypadVisualState] Deactivated {name}. Color reset to {spriteRenderer.color}");
-        }
+            Debug.Log($"[LilypadVisualState] Deactivated {name}. Renderer={spriteRenderer.name}, Color={spriteRenderer.color}");
+    }
+
+    private void ApplyActiveVisualsImmediate()
+    {
+        if (spriteRenderer == null)
+            return;
+
+        Color c = activeColor;
+        if (preserveOriginalAlpha)
+            c.a = originalColor.a;
+
+        spriteRenderer.color = c;
     }
 
     private void ApplyInactiveVisualsImmediate()
     {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = originalColor;
-        }
+        if (spriteRenderer == null)
+            return;
+
+        Color c = inactiveColor;
+        if (preserveOriginalAlpha)
+            c.a = originalColor.a;
+
+        spriteRenderer.color = c;
     }
 
     private void RefreshPulsateCache()
     {
         allPulsates.Clear();
+
+        for (int i = 0; i < assignedPulsates.Count; i++)
+        {
+            Pulsate p = assignedPulsates[i];
+            if (p != null && !allPulsates.Contains(p))
+                allPulsates.Add(p);
+        }
+
+        if (allPulsates.Count > 0)
+            return;
+
+        if (!useTagFallback)
+            return;
 
         GameObject[] objs;
         try
@@ -202,9 +257,7 @@ public class LilypadVisualState : MonoBehaviour
         catch
         {
             if (debugLogs)
-            {
                 Debug.LogWarning($"[LilypadVisualState] Tag '{particleTag}' does not exist.");
-            }
 
             return;
         }
@@ -215,10 +268,8 @@ public class LilypadVisualState : MonoBehaviour
                 continue;
 
             Pulsate p = objs[i].GetComponent<Pulsate>();
-            if (p != null)
-            {
+            if (p != null && !allPulsates.Contains(p))
                 allPulsates.Add(p);
-            }
         }
     }
 

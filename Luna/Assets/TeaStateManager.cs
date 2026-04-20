@@ -10,6 +10,11 @@ public class TeaStateManager : MonoBehaviour
     public KeyCode teaKey = KeyCode.T;
     public float lilyStoolSearchRadius = 1.5f;
 
+    [Header("Teapot Control")]
+    [SerializeField] private bool allowTeaKeyToSpawnTeapot = false;
+    [SerializeField] private string teapotTag = "Teapot";
+    [SerializeField] private float existingTeapotSearchRadius = 2f;
+
     [Header("Held Cup Input Buffer")]
     [Tooltip("Prevents the same keypress that brewed the tea from immediately consuming it.")]
     public float postReceiveUseBlockTime = 0.2f;
@@ -52,6 +57,13 @@ public class TeaStateManager : MonoBehaviour
             UpdateDrinkTargetHighlight();
         else
             RemoveDrinkTargetHighlight();
+
+        // Clean up stale references if a teapot was destroyed elsewhere.
+        if (_currentTeapot == null)
+        {
+            _currentTeapot = null;
+            _currentReceiver = null;
+        }
     }
 
     private void HandleTeaLogic()
@@ -107,9 +119,21 @@ public class TeaStateManager : MonoBehaviour
             return;
         }
 
-        // 3) No teapot yet -> spawn one at valid lilystool
+        // 3) If we are not currently tracking a teapot, try to find an existing nearby one first.
         if (_currentTeapot == null)
         {
+            TryFindNearbyExistingTeapot();
+        }
+
+        // 4) Still no teapot tracked/found.
+        if (_currentTeapot == null)
+        {
+            if (!allowTeaKeyToSpawnTeapot)
+            {
+                Debug.Log("[TeaStateManager] No teapot present. Tea key is set to brew-only.");
+                return;
+            }
+
             justDrankTea = false;
 
             LilyStool[] stools = FindObjectsOfType<LilyStool>();
@@ -165,18 +189,22 @@ public class TeaStateManager : MonoBehaviour
 
             _currentReceiver = _currentTeapot.GetComponent<TeapotLightReceiver>();
             if (_currentReceiver == null)
+                _currentReceiver = _currentTeapot.GetComponentInChildren<TeapotLightReceiver>(true);
+
+            if (_currentReceiver == null)
                 Debug.LogError("❌ Spawned teapot has no TeapotLightReceiver!");
 
             return;
         }
 
-        // 4) Teapot exists but isn't brew-ready -> store or warn
+        // 5) Teapot exists but receiver is missing
         if (_currentReceiver == null)
         {
             Debug.LogError("[TeaStateManager] Current teapot exists but current receiver is null.");
             return;
         }
 
+        // 6) Teapot exists but isn't brew-ready -> store or warn
         if (!_currentReceiver.HasLight)
         {
             if (_currentReceiver.GetIngredientCount() > 0)
@@ -195,7 +223,12 @@ public class TeaStateManager : MonoBehaviour
                 destroyDelay = storeAudioSource.clip.length;
             }
 
-            Destroy(_currentTeapot, destroyDelay);
+            if (_currentTeapot != null)
+                Destroy(_currentTeapot, destroyDelay);
+
+            if (_currentLilystool != null)
+                _currentLilystool.NotifyTeapotDestroyed();
+
             _currentTeapot = null;
             _currentReceiver = null;
             _currentLilystool = null;
@@ -203,7 +236,7 @@ public class TeaStateManager : MonoBehaviour
             return;
         }
 
-        // 5) Brew
+        // 7) Brew
         Debug.Log("🍵 Brewing tea (light detected)...");
         GameObject cup = _currentReceiver.BrewTea();
 
@@ -217,11 +250,16 @@ public class TeaStateManager : MonoBehaviour
             if (_currentLilystoolCandle != null)
                 _currentLilystoolCandle.NotifyTeapotGoneAfterBrewing();
 
-            Destroy(_currentTeapot);
+            if (_currentTeapot != null)
+                Destroy(_currentTeapot);
+
+            if (_currentLilystool != null)
+                _currentLilystool.NotifyTeapotDestroyed();
+
+            Debug.Log("🔥 Teapot destroyed by TeaStateManager");
+
             _currentTeapot = null;
             _currentReceiver = null;
-
-            // Keep lilystool/candle refs in inventory via SetSourceCandleController.
             _currentLilystool = null;
             _currentLilystoolCandle = null;
         }
@@ -229,6 +267,78 @@ public class TeaStateManager : MonoBehaviour
         {
             Debug.LogWarning("❗ BrewTea() returned null. Check TeapotReceiver logs above for exact reason (usually no water or no light).");
         }
+    }
+
+    private void TryFindNearbyExistingTeapot()
+    {
+        GameObject[] teapots = GameObject.FindGameObjectsWithTag(teapotTag);
+
+        GameObject nearestTeapot = null;
+        float nearestDist = float.MaxValue;
+        float maxDistSq = existingTeapotSearchRadius * existingTeapotSearchRadius;
+
+        for (int i = 0; i < teapots.Length; i++)
+        {
+            GameObject teapot = teapots[i];
+            if (teapot == null)
+                continue;
+
+            float distSq = ((Vector2)(teapot.transform.position - transform.position)).sqrMagnitude;
+            if (distSq > maxDistSq)
+                continue;
+
+            TeapotLightReceiver receiver = teapot.GetComponent<TeapotLightReceiver>();
+            if (receiver == null)
+                receiver = teapot.GetComponentInChildren<TeapotLightReceiver>(true);
+
+            if (receiver == null)
+                continue;
+
+            if (distSq < nearestDist)
+            {
+                nearestDist = distSq;
+                nearestTeapot = teapot;
+            }
+        }
+
+        if (nearestTeapot == null)
+        {
+            Debug.Log("[TeaStateManager] No nearby existing teapot found.");
+            return;
+        }
+
+        _currentTeapot = nearestTeapot;
+        _currentReceiver = _currentTeapot.GetComponent<TeapotLightReceiver>();
+        if (_currentReceiver == null)
+            _currentReceiver = _currentTeapot.GetComponentInChildren<TeapotLightReceiver>(true);
+
+        _currentLilystool = FindNearestActiveLilystool();
+        _currentLilystoolCandle = _currentLilystool != null ? _currentLilystool.GetComponent<LilystoolCandleController>() : null;
+
+        Debug.Log($"[TeaStateManager] Found nearby teapot: {_currentTeapot.name}");
+    }
+
+    private LilyStool FindNearestActiveLilystool()
+    {
+        LilyStool[] stools = FindObjectsOfType<LilyStool>();
+        LilyStool nearest = null;
+        float minDist = float.MaxValue;
+
+        for (int i = 0; i < stools.Length; i++)
+        {
+            LilyStool stool = stools[i];
+            if (stool == null)
+                continue;
+
+            float dist = Vector2.Distance(transform.position, stool.transform.position);
+            if (dist < lilyStoolSearchRadius && dist < minDist)
+            {
+                nearest = stool;
+                minDist = dist;
+            }
+        }
+
+        return nearest;
     }
 
     private void UpdateDrinkTargetHighlight()

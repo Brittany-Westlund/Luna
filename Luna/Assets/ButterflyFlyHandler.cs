@@ -88,6 +88,12 @@ public class ButterflyFlyHandler : MonoBehaviour
     public float offsetFlipSpeed = 3f;
     public bool startFollowing = false;
     public float lunaMovementDeadZone = 0.001f;
+    public float faceTowardLunaDeadZone = 0.02f;
+
+    [Header("Ground Hover Settings")]
+    public float groundHoverAmplitude = 0.08f;
+    public float groundHoverFrequency = 3.5f;
+    public float idleHoverAmplitudeMultiplier = 1f;
 
     [Header("Wand Hold Points")]
     public Transform groundWandHoldPoint;
@@ -111,6 +117,7 @@ public class ButterflyFlyHandler : MonoBehaviour
     private SpriteRenderer _sprLuna;
     private Animator _animLuna;
     private Coroutine _flashWarningCoroutine;
+    private Coroutine _lowerToLunaLevelCoroutine;
     private float _flightTimer;
     public bool _isFlying;
     private bool _warningTriggered;
@@ -119,6 +126,7 @@ public class ButterflyFlyHandler : MonoBehaviour
     private float _nextTempBoost;
     private bool _inCooldown;
     private bool _isFacingRight = true;
+    private bool _lastGroundTravelWasRight = true;
     private GameObject _wandObj;
     private ButterflyFatigue _fatigue;
 
@@ -130,6 +138,7 @@ public class ButterflyFlyHandler : MonoBehaviour
     private float _currentHorizontalOffset;
     private float _targetHorizontalOffset;
     private float _lastLunaX;
+    private float _idleHoverBaseY;
 
     void Start()
     {
@@ -196,10 +205,31 @@ public class ButterflyFlyHandler : MonoBehaviour
         if (teaRosePollenFX != null)
             teaRosePollenFX.SetActive(false);
 
-        _isFacingRight = true;
         _isFollowing = startFollowing;
-        _currentHorizontalOffset = -Mathf.Abs(horizontalOffset);
-        _targetHorizontalOffset = _currentHorizontalOffset;
+
+        if (luna != null && butterfly != null)
+        {
+            _lastGroundTravelWasRight = luna.transform.position.x >= butterfly.position.x;
+            _targetHorizontalOffset = _lastGroundTravelWasRight
+                ? -Mathf.Abs(horizontalOffset)
+                : Mathf.Abs(horizontalOffset);
+
+            float butterflyToLuna = luna.transform.position.x - butterfly.position.x;
+            if (butterflyToLuna > faceTowardLunaDeadZone)
+                _isFacingRight = true;
+            else if (butterflyToLuna < -faceTowardLunaDeadZone)
+                _isFacingRight = false;
+        }
+        else
+        {
+            _isFacingRight = true;
+            _targetHorizontalOffset = -Mathf.Abs(horizontalOffset);
+        }
+
+        _currentHorizontalOffset = _targetHorizontalOffset;
+
+        if (butterfly != null)
+            _idleHoverBaseY = butterfly.position.y;
 
         if (_holder != null && groundFlowerHoldPoint != null)
             _holder.holdPoint = groundFlowerHoldPoint;
@@ -210,7 +240,6 @@ public class ButterflyFlyHandler : MonoBehaviour
 
         _fatigue = GetComponent<ButterflyFatigue>();
 
-        // You said butterfly needed this direction.
         if (butterflyRenderer != null)
             butterflyRenderer.flipX = _isFacingRight;
 
@@ -232,7 +261,13 @@ public class ButterflyFlyHandler : MonoBehaviour
             UpdateGroundFacingAndOffset();
 
             if (_isFollowing)
+            {
                 FollowLunaGround();
+            }
+            else if (_lowerToLunaLevelCoroutine == null)
+            {
+                ApplyIdleGroundHover();
+            }
 
             return;
         }
@@ -322,26 +357,35 @@ public class ButterflyFlyHandler : MonoBehaviour
     {
         _isFollowing = !_isFollowing;
 
+        if (_lowerToLunaLevelCoroutine != null)
+        {
+            StopCoroutine(_lowerToLunaLevelCoroutine);
+            _lowerToLunaLevelCoroutine = null;
+        }
+
         if (!_isFollowing)
         {
-            StopCoroutine(nameof(LowerToLunaLevelMerged));
-            StartCoroutine(nameof(LowerToLunaLevelMerged));
+            _lowerToLunaLevelCoroutine = StartCoroutine(LowerToLunaLevelMerged());
+        }
+        else if (butterfly != null)
+        {
+            _idleHoverBaseY = butterfly.position.y;
         }
     }
 
     void UpdateGroundFacingAndOffset()
     {
-        if (luna == null)
+        if (luna == null || butterfly == null)
             return;
 
         float lunaDX = luna.transform.position.x - _lastLunaX;
 
         if (Mathf.Abs(lunaDX) > lunaMovementDeadZone)
-            _isFacingRight = lunaDX > 0f;
+            _lastGroundTravelWasRight = lunaDX > 0f;
 
         _lastLunaX = luna.transform.position.x;
 
-        _targetHorizontalOffset = _isFacingRight
+        _targetHorizontalOffset = _lastGroundTravelWasRight
             ? -Mathf.Abs(horizontalOffset)
             : Mathf.Abs(horizontalOffset);
 
@@ -351,6 +395,13 @@ public class ButterflyFlyHandler : MonoBehaviour
             offsetFlipSpeed * Time.deltaTime
         );
 
+        float lunaRelativeX = luna.transform.position.x - butterfly.position.x;
+
+        if (lunaRelativeX > faceTowardLunaDeadZone)
+            _isFacingRight = true;
+        else if (lunaRelativeX < -faceTowardLunaDeadZone)
+            _isFacingRight = false;
+
         ApplyVisualFacing();
     }
 
@@ -359,14 +410,41 @@ public class ButterflyFlyHandler : MonoBehaviour
         if (_followTarget == null || butterfly == null)
             return;
 
-        Vector3 goal = _followTarget.position + new Vector3(_currentHorizontalOffset, followDistance, 0f);
+        float hoverY = GetGroundHoverOffsetY(groundHoverAmplitude);
+
+        Vector3 goal = _followTarget.position + new Vector3(
+            _currentHorizontalOffset,
+            followDistance + hoverY,
+            0f
+        );
+
         butterfly.position = Vector3.Lerp(butterfly.position, goal, followSpeed * Time.deltaTime);
+    }
+
+    void ApplyIdleGroundHover()
+    {
+        if (butterfly == null)
+            return;
+
+        float hoverY = GetGroundHoverOffsetY(groundHoverAmplitude * idleHoverAmplitudeMultiplier);
+
+        Vector3 pos = butterfly.position;
+        pos.y = _idleHoverBaseY + hoverY;
+        butterfly.position = pos;
+    }
+
+    float GetGroundHoverOffsetY(float amplitude)
+    {
+        return Mathf.Sin(Time.time * groundHoverFrequency) * amplitude;
     }
 
     IEnumerator LowerToLunaLevelMerged()
     {
         if (_followTarget == null || butterfly == null)
+        {
+            _lowerToLunaLevelCoroutine = null;
             yield break;
+        }
 
         Vector3 goal = new Vector3(
             butterfly.position.x,
@@ -380,6 +458,8 @@ public class ButterflyFlyHandler : MonoBehaviour
         }
 
         butterfly.position = goal;
+        _idleHoverBaseY = butterfly.position.y;
+        _lowerToLunaLevelCoroutine = null;
     }
 
     Vector2 HandleMovement()
@@ -413,11 +493,9 @@ public class ButterflyFlyHandler : MonoBehaviour
 
     void ApplyVisualFacing()
     {
-        // You said this is the correct polarity for the butterfly.
         if (butterflyRenderer != null)
             butterflyRenderer.flipX = _isFacingRight;
 
-        // Reinstall the same polarity onto LunaInFlight.
         if (lunaInFlightRenderer != null)
             lunaInFlightRenderer.flipX = _isFacingRight;
     }
@@ -463,6 +541,12 @@ public class ButterflyFlyHandler : MonoBehaviour
         _flightTimer = 0f;
         _rHoldTimer = 0f;
         _followWasActiveBeforeMount = _isFollowing;
+
+        if (_lowerToLunaLevelCoroutine != null)
+        {
+            StopCoroutine(_lowerToLunaLevelCoroutine);
+            _lowerToLunaLevelCoroutine = null;
+        }
 
         if (_spore != null)
             _spore.enabled = false;
@@ -612,6 +696,9 @@ public class ButterflyFlyHandler : MonoBehaviour
             sparklePrefab.SetActive(false);
 
         _isFollowing = _followWasActiveBeforeMount;
+        if (!_isFollowing && butterfly != null)
+            _idleHoverBaseY = butterfly.position.y;
+
         StartCoroutine(ReenableFollowNextFrame());
 
         if (butterflyAnimator != null)
@@ -802,5 +889,3 @@ public class ButterflyFlyHandler : MonoBehaviour
         }
     }
 }
-
-// Golden

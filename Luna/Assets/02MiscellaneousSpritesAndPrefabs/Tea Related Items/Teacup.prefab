@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -1178380101908559042}
   m_Layer: 0
   m_Name: Teacup
-  m_TagString: Untagged
+  m_TagString: Teacup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 5964889124891561488}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.024, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalPosition: {x: 0, y: -0.24021, z: 0}
+  m_LocalScale: {x: 0.07908877, y: 0.07908877, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8673825627037569915}
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 1795597123
   m_SortingLayer: 5
   m_SortingOrder: 152
-  m_Sprite: {fileID: 1813079471, guid: d29a972eb836c5048a887f3e6b0dbb05, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 37f5aef10ef974b4eac71b058c240716, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -139,7 +139,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.55, y: 0.4201253}
+    oldSize: {x: 20.48, y: 27.324455}
     newSize: {x: 1.4800298, y: 1.14}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -329,27 +329,27 @@ PrefabInstance:
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.05965426
+      value: 1.081983
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3397962
+      value: 6.163075
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.14875357
+      value: 2.6980274
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.081
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.736
+      value: 13.3
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}

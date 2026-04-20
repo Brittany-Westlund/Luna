@@ -55,6 +55,7 @@ TagManager:
   - LotusParticle
   - PlayerFeet
   - Acorn
+  - Teacup
   layers:
   - Default
   - TransparentFX

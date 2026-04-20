@@ -1,15 +1,14 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using PixelCrushers.DialogueSystem;
 
 [DisallowMultipleComponent]
-[RequireComponent(typeof(Collider2D))]
 public class OpenBookTrigger : MonoBehaviour
 {
     [Header("Book Location")]
     [SerializeField] private string locationId = "";
-    [SerializeField] private BookControllerSimple bookController;
+
+    [Header("Trigger Collider")]
+    [SerializeField] private Collider2D triggerCollider;
 
     [Header("Availability")]
     [SerializeField] private bool startInteractionEnabled = false;
@@ -20,15 +19,14 @@ public class OpenBookTrigger : MonoBehaviour
     [SerializeField] private bool keepVisualObjectActive = true;
 
     [Header("Player Detection")]
-    [SerializeField] private string requiredColliderName = "PlayerFeet";
-    [SerializeField] private string playerTag = "Player";
+    [SerializeField] private string requiredTag = "PlayerFeet";
+
+    [Header("Radius Detection")]
+    [SerializeField] private float detectionRadius = 0.45f;
+    [SerializeField] private float detectionInterval = 0.02f;
 
     [Header("Stability")]
-    [SerializeField] private float exitBufferTime = 3f;
-
-    [Header("Dialogue Blocking")]
-    [SerializeField] private bool blockWhileDialogueActive = true;
-    [SerializeField] private bool forceCloseIfDialogueStarts = true;
+    [SerializeField] private float exitBufferTime = 0.5f;
 
     [Header("Fade")]
     [SerializeField] private float fadeDuration = 0.18f;
@@ -41,13 +39,14 @@ public class OpenBookTrigger : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
 
-    private readonly HashSet<int> insideColliderIds = new HashSet<int>();
+    private bool playerInside = false;
+    private bool bookOpen = false;
 
-    private Collider2D triggerCollider;
     private Coroutine closeRoutine;
     private Coroutine visualFadeRoutine;
-    private int closeVersion = 0;
-    private bool bookOpen = false;
+    private Coroutine detectionRoutine;
+
+    private BookControllerSimple bookController;
 
     public bool IsOpen()
     {
@@ -59,18 +58,35 @@ public class OpenBookTrigger : MonoBehaviour
         return interactionEnabled;
     }
 
-    private void Awake()
+    private void Reset()
     {
-        triggerCollider = GetComponent<Collider2D>();
-        if (triggerCollider != null)
-            triggerCollider.isTrigger = true;
+        if (triggerCollider == null)
+            triggerCollider = GetComponent<Collider2D>();
 
         if (bookVisualRenderer == null)
             bookVisualRenderer = GetComponentInChildren<SpriteRenderer>(true);
 
+        if (triggerCollider != null)
+            triggerCollider.isTrigger = true;
+    }
+
+    private void Awake()
+    {
+        if (triggerCollider == null)
+            triggerCollider = GetComponent<Collider2D>();
+
+        if (bookVisualRenderer == null)
+            bookVisualRenderer = GetComponentInChildren<SpriteRenderer>(true);
+
+        if (triggerCollider != null)
+            triggerCollider.isTrigger = true;
+        else
+            Debug.LogWarning($"[OpenBookTrigger] No triggerCollider assigned/found on '{name}'.");
+
         interactionEnabled = startInteractionEnabled;
 
-        EnsureVisualReady();
+        ResolveBookController();
+        PrepareVisualReference();
 
         if (!interactionEnabled)
         {
@@ -78,47 +94,31 @@ public class OpenBookTrigger : MonoBehaviour
         }
         else
         {
-            if (startClosed)
-                ApplyBookState(false, true);
-            else
-                ApplyBookState(true, true);
+            ApplyBookState(!startClosed, true);
         }
     }
 
-    private void Update()
+    private void Start()
     {
-        if (!interactionEnabled)
-        {
-            ForceImmediateHiddenState();
-            return;
-        }
-
-        EnsureVisualReady();
-
-        if (blockWhileDialogueActive && DialogueManager.isConversationActive)
-        {
-            if (forceCloseIfDialogueStarts && bookOpen)
-                ForceClose();
-        }
+        ResolveBookController();
     }
 
-    private void ResolveBookController()
-    {
-        if (bookController == null)
-            bookController = FindObjectOfType<BookControllerSimple>();
-    }
-
-    private void PushCurrentLocationToBookController()
+    private void OnEnable()
     {
         ResolveBookController();
 
-        if (bookController != null)
-            bookController.SetCurrentOpenLocation(locationId);
+        if (detectionRoutine != null)
+        {
+            StopCoroutine(detectionRoutine);
+            detectionRoutine = null;
+        }
+
+        detectionRoutine = StartCoroutine(RadiusDetectionRoutine());
     }
 
     private void OnDisable()
     {
-        insideColliderIds.Clear();
+        playerInside = false;
 
         if (closeRoutine != null)
         {
@@ -132,62 +132,92 @@ public class OpenBookTrigger : MonoBehaviour
             visualFadeRoutine = null;
         }
 
+        if (detectionRoutine != null)
+        {
+            StopCoroutine(detectionRoutine);
+            detectionRoutine = null;
+        }
+
         bookOpen = false;
         ApplyVisualImmediate(closedAlpha);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private IEnumerator RadiusDetectionRoutine()
     {
-        if (!interactionEnabled)
-            return;
+        WaitForSeconds wait = new WaitForSeconds(detectionInterval);
 
-        if (!IsValidPlayerCollider(other))
-            return;
-
-        int id = other.GetInstanceID();
-        insideColliderIds.Add(id);
-
-        CancelPendingClose();
-        closeVersion++;
-        PushCurrentLocationToBookController();
-        ApplyBookState(true);
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (!interactionEnabled)
-            return;
-
-        if (!IsValidPlayerCollider(other))
-            return;
-
-        int id = other.GetInstanceID();
-        insideColliderIds.Add(id);
-
-        CancelPendingClose();
-
-        if (!bookOpen)
+        while (true)
         {
-            PushCurrentLocationToBookController();
-            ApplyBookState(true);
+            if (interactionEnabled)
+            {
+                bool detectedNow = IsPlayerFeetWithinRadius();
+
+                if (detectedNow && !playerInside)
+                {
+                    playerInside = true;
+
+                    CancelPendingClose();
+                    PushCurrentLocationToBookController();
+                    ApplyBookState(true);
+
+                    if (debugLogs)
+                        Debug.Log("[OpenBookTrigger] RADIUS ENTER");
+                }
+                else if (detectedNow && playerInside)
+                {
+                    CancelPendingClose();
+
+                    if (!bookOpen)
+                    {
+                        PushCurrentLocationToBookController();
+                        ApplyBookState(true);
+
+                        if (debugLogs)
+                            Debug.Log("[OpenBookTrigger] RADIUS STAY reopened");
+                    }
+                }
+                else if (!detectedNow && playerInside)
+                {
+                    playerInside = false;
+
+                    if (debugLogs)
+                        Debug.Log("[OpenBookTrigger] RADIUS EXIT");
+
+                    StartBufferedClose();
+                }
+            }
+
+            yield return wait;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private bool IsPlayerFeetWithinRadius()
     {
-        if (!interactionEnabled)
-            return;
+        if (triggerCollider == null)
+            return false;
 
-        if (!IsValidPlayerCollider(other))
-            return;
+        Vector2 center = GetDetectionCenter();
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, detectionRadius);
 
-        int id = other.GetInstanceID();
-        insideColliderIds.Remove(id);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            Collider2D hit = hits[i];
+            if (hit == null)
+                continue;
 
-        if (insideColliderIds.Count > 0)
-            return;
+            if (IsValidPlayerCollider(hit))
+                return true;
+        }
 
-        StartBufferedClose();
+        return false;
+    }
+
+    private Vector2 GetDetectionCenter()
+    {
+        if (triggerCollider != null)
+            return triggerCollider.bounds.center;
+
+        return transform.position;
     }
 
     private bool IsValidPlayerCollider(Collider2D other)
@@ -195,13 +225,36 @@ public class OpenBookTrigger : MonoBehaviour
         if (other == null)
             return false;
 
-        return other.name == requiredColliderName;
+        return other.CompareTag(requiredTag);
+    }
+
+    private void ResolveBookController()
+    {
+        if (bookController != null)
+            return;
+
+        bookController = FindObjectOfType<BookControllerSimple>();
+
+        if (debugLogs)
+        {
+            if (bookController != null)
+                Debug.Log($"[OpenBookTrigger] Found BookControllerSimple automatically: {bookController.name}");
+            else
+                Debug.LogWarning("[OpenBookTrigger] Could not find BookControllerSimple in scene.");
+        }
+    }
+
+    private void PushCurrentLocationToBookController()
+    {
+        ResolveBookController();
+
+        if (bookController != null)
+            bookController.SetCurrentOpenLocation(locationId);
     }
 
     private void StartBufferedClose()
     {
         CancelPendingClose();
-        closeVersion++;
 
         if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
         {
@@ -209,14 +262,14 @@ public class OpenBookTrigger : MonoBehaviour
             return;
         }
 
-        closeRoutine = StartCoroutine(CloseAfterBuffer(closeVersion));
+        closeRoutine = StartCoroutine(CloseAfterBuffer());
     }
 
-    private IEnumerator CloseAfterBuffer(int version)
+    private IEnumerator CloseAfterBuffer()
     {
         yield return new WaitForSeconds(exitBufferTime);
 
-        if (insideColliderIds.Count == 0 && version == closeVersion)
+        if (!playerInside)
             ApplyBookState(false);
 
         closeRoutine = null;
@@ -243,14 +296,13 @@ public class OpenBookTrigger : MonoBehaviour
         }
 
         bookOpen = shouldBeOpen;
-
         FadeBookVisualTo(shouldBeOpen ? openAlpha : closedAlpha);
 
         if (debugLogs)
-            Debug.Log($"OpenBookTrigger ApplyBookState({shouldBeOpen})");
+            Debug.Log($"[OpenBookTrigger] ApplyBookState({shouldBeOpen})");
     }
 
-    private void EnsureVisualReady()
+    private void PrepareVisualReference()
     {
         if (bookVisualRenderer == null)
             return;
@@ -267,7 +319,7 @@ public class OpenBookTrigger : MonoBehaviour
         if (bookVisualRenderer == null)
             return;
 
-        EnsureVisualReady();
+        PrepareVisualReference();
 
         if (!gameObject.activeInHierarchy || !isActiveAndEnabled)
         {
@@ -281,18 +333,17 @@ public class OpenBookTrigger : MonoBehaviour
             visualFadeRoutine = null;
         }
 
-        visualFadeRoutine = StartCoroutine(FadeBookVisualRoutine(targetAlpha));
+        visualFadeRoutine = StartCoroutine(FadeRoutine(targetAlpha));
     }
 
-    private IEnumerator FadeBookVisualRoutine(float targetAlpha)
+    private IEnumerator FadeRoutine(float targetAlpha)
     {
         if (bookVisualRenderer == null)
             yield break;
 
-        EnsureVisualReady();
-
         Color c = bookVisualRenderer.color;
         float startAlpha = c.a;
+        float elapsed = 0f;
 
         if (fadeDuration <= 0f)
         {
@@ -302,8 +353,6 @@ public class OpenBookTrigger : MonoBehaviour
             yield break;
         }
 
-        float elapsed = 0f;
-
         while (elapsed < fadeDuration)
         {
             if (bookVisualRenderer == null)
@@ -311,8 +360,6 @@ public class OpenBookTrigger : MonoBehaviour
                 visualFadeRoutine = null;
                 yield break;
             }
-
-            EnsureVisualReady();
 
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / fadeDuration);
@@ -326,7 +373,6 @@ public class OpenBookTrigger : MonoBehaviour
 
         if (bookVisualRenderer != null)
         {
-            EnsureVisualReady();
             c = bookVisualRenderer.color;
             c.a = targetAlpha;
             bookVisualRenderer.color = c;
@@ -340,7 +386,7 @@ public class OpenBookTrigger : MonoBehaviour
         if (bookVisualRenderer == null)
             return;
 
-        EnsureVisualReady();
+        PrepareVisualReference();
 
         Color c = bookVisualRenderer.color;
         c.a = alpha;
@@ -350,7 +396,7 @@ public class OpenBookTrigger : MonoBehaviour
     private void ForceImmediateHiddenState()
     {
         bookOpen = false;
-        insideColliderIds.Clear();
+        playerInside = false;
         CancelPendingClose();
 
         if (visualFadeRoutine != null)
@@ -360,6 +406,9 @@ public class OpenBookTrigger : MonoBehaviour
         }
 
         ApplyVisualImmediate(closedAlpha);
+
+        if (debugLogs)
+            Debug.Log("[OpenBookTrigger] ForceImmediateHiddenState()");
     }
 
     public void EnableBookInteraction()
@@ -367,22 +416,16 @@ public class OpenBookTrigger : MonoBehaviour
         interactionEnabled = true;
 
         if (debugLogs)
-            Debug.Log("OpenBookTrigger: interaction enabled.");
-
-        if (startClosed)
-            ForceClose();
-        else
-            ForceOpen();
+            Debug.Log("[OpenBookTrigger] interaction enabled.");
     }
 
     public void DisableBookInteraction()
     {
         interactionEnabled = false;
+        ForceImmediateHiddenState();
 
         if (debugLogs)
-            Debug.Log("OpenBookTrigger: interaction disabled.");
-
-        ForceImmediateHiddenState();
+            Debug.Log("[OpenBookTrigger] interaction disabled.");
     }
 
     public void ForceOpen()
@@ -391,17 +434,33 @@ public class OpenBookTrigger : MonoBehaviour
             return;
 
         CancelPendingClose();
-        closeVersion++;
         PushCurrentLocationToBookController();
         ApplyBookState(true, true);
-    }
 
+        if (debugLogs)
+            Debug.Log("[OpenBookTrigger] ForceOpen()");
+    }
 
     public void ForceClose()
     {
-        insideColliderIds.Clear();
+        playerInside = false;
         CancelPendingClose();
-        closeVersion++;
         ApplyBookState(false, true);
+
+        if (debugLogs)
+            Debug.Log("[OpenBookTrigger] ForceClose()");
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector2 center;
+
+        if (triggerCollider != null)
+            center = triggerCollider.bounds.center;
+        else
+            center = transform.position;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(center, detectionRadius);
     }
 }

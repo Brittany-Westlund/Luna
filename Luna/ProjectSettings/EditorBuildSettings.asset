@@ -36,6 +36,9 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/keep/Level6_Brambles.unity
     guid: 9a489feb2b607fc42880bd638301f0f0
   - enabled: 1
+    path: Assets/01Scenes--------------/keep/Level6.5_Canopy.unity
+    guid: b4ab6e24841ccbe4f85020abaf0eff62
+  - enabled: 1
     path: Assets/01Scenes--------------/keep/Level7_Myre.unity
     guid: e21d85da21cb0af428292a7fa1611111
   - enabled: 0
@@ -65,7 +68,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/01Scenes--------------/keep/Credits.unity
     guid: 07af134f32288f94d880e6e9e914fa82
-  - enabled: 0
+  - enabled: 1
     path: Assets/01Scenes--------------/keep/LoadingScreen.unity
     guid: 888394d52616e5e42b3b54c3f2bbd3eb
   - enabled: 0

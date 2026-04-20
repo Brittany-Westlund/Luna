@@ -9,13 +9,11 @@ public class WaterDropPromptInteractor : MonoBehaviour
     [SerializeField] private SpriteRenderer mainWaterSpriteRenderer;
 
     [Header("Search")]
-    [SerializeField] private string playerTag = "Player";
     [SerializeField] private string teapotTag = "Teapot";
     [SerializeField] private float teapotSearchRadius = 2f;
 
-    [Header("Input")]
-    [SerializeField] private KeyCode interactKey = KeyCode.T;
-    [SerializeField] private float holdDuration = 0.5f;
+    [Header("Auto Interaction")]
+    [SerializeField] private float autoInteractDelay = 1.5f;
 
     [Header("Respawn")]
     [SerializeField] private float cooldownDuration = 5f;
@@ -33,12 +31,12 @@ public class WaterDropPromptInteractor : MonoBehaviour
     private Vector3 initialScale;
     private float initialAlpha = 1f;
 
-    private bool playerInRange;
+    private bool playerOnLilypad;
     private bool isAnimating;
     private bool isOnCooldown;
     private bool promptShowing;
 
-    private float holdTimer = 0f;
+    private float autoTimer = 0f;
 
     private TeapotWaterReceiver currentReceiver;
     private Coroutine respawnRoutine;
@@ -70,84 +68,64 @@ public class WaterDropPromptInteractor : MonoBehaviour
         }
 
         promptShowing = false;
-        holdTimer = 0f;
+        autoTimer = 0f;
+        playerOnLilypad = false;
+        currentReceiver = null;
     }
 
     private void Update()
     {
-        if (!promptShowing || isAnimating || isOnCooldown || !playerInRange)
+        // If player is standing on lilypad, keep trying to find a valid teapot.
+        // This is what lets the water drop begin after the teapot spawns,
+        // without requiring the player to leave and re-enter.
+        if (playerOnLilypad && !promptShowing && !isAnimating && !isOnCooldown)
         {
-            holdTimer = 0f;
+            TryShowPrompt();
+        }
+
+        if (!promptShowing || isAnimating || isOnCooldown || !playerOnLilypad)
+        {
+            autoTimer = 0f;
             return;
         }
 
-        if (Input.GetKey(interactKey))
-        {
-            holdTimer += Time.deltaTime;
+        autoTimer += Time.deltaTime;
 
-            if (holdTimer >= holdDuration)
-            {
-                holdTimer = 0f;
-                HandleInteraction();
-            }
-        }
-        else
+        if (autoTimer >= autoInteractDelay)
         {
-            holdTimer = 0f;
+            autoTimer = 0f;
+            HandleInteraction();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void SetPlayerOnLilypad(bool value)
     {
-        if (!other.CompareTag(playerTag))
-            return;
-
-        playerInRange = true;
+        playerOnLilypad = value;
 
         if (debugLogging)
         {
-            Debug.Log($"[WaterDropPromptInteractor] Player entered '{name}'.");
+            Debug.Log($"[WaterDropPromptInteractor] SetPlayerOnLilypad({value}) on '{name}'.");
+        }
+
+        if (!playerOnLilypad)
+        {
+            currentReceiver = null;
+            autoTimer = 0f;
+
+            if (hidePromptOnExit)
+            {
+                HidePrompt();
+            }
+
+            return;
         }
 
         TryShowPrompt();
     }
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (!other.CompareTag(playerTag))
-            return;
-
-        playerInRange = true;
-
-        if (!promptShowing && !isAnimating && !isOnCooldown)
-        {
-            TryShowPrompt();
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (!other.CompareTag(playerTag))
-            return;
-
-        playerInRange = false;
-        currentReceiver = null;
-        holdTimer = 0f;
-
-        if (hidePromptOnExit)
-        {
-            HidePrompt();
-        }
-
-        if (debugLogging)
-        {
-            Debug.Log($"[WaterDropPromptInteractor] Player exited '{name}'.");
-        }
-    }
-
     private void TryShowPrompt()
     {
-        if (!playerInRange)
+        if (!playerOnLilypad)
             return;
 
         if (isAnimating || isOnCooldown)
@@ -164,7 +142,7 @@ public class WaterDropPromptInteractor : MonoBehaviour
 
             if (debugLogging)
             {
-                Debug.Log("[WaterDropPromptInteractor] No nearby teapot needing water.");
+                Debug.Log("[WaterDropPromptInteractor] No nearby teapot needing water yet.");
             }
 
             return;
@@ -184,7 +162,7 @@ public class WaterDropPromptInteractor : MonoBehaviour
         }
 
         promptShowing = true;
-        holdTimer = 0f;
+        autoTimer = 0f;
 
         if (debugLogging)
         {
@@ -200,7 +178,7 @@ public class WaterDropPromptInteractor : MonoBehaviour
         }
 
         promptShowing = false;
-        holdTimer = 0f;
+        autoTimer = 0f;
 
         if (debugLogging)
         {
@@ -256,9 +234,9 @@ public class WaterDropPromptInteractor : MonoBehaviour
         }
 
         promptShowing = false;
-        holdTimer = 0f;
+        autoTimer = 0f;
 
-        if (!playerInRange)
+        if (!playerOnLilypad)
             return;
 
         if (isAnimating || isOnCooldown)
@@ -353,7 +331,7 @@ public class WaterDropPromptInteractor : MonoBehaviour
             Debug.Log("[WaterDropPromptInteractor] WaterDrop recharged.");
         }
 
-        if (playerInRange)
+        if (playerOnLilypad)
         {
             TryShowPrompt();
         }

@@ -6,9 +6,14 @@ public class LilypadGate : MonoBehaviour
     [Header("References")]
     [SerializeField] private LilyStool lilyStool;
     [SerializeField] private OpenBookTrigger openBookTrigger;
+    [SerializeField] private WaterDropPromptInteractor waterDropPromptInteractor;
 
     [Header("Settings")]
     [SerializeField] private string playerTag = "Player";
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip lilypadStepSFX;
+    [SerializeField] private AudioSource audioSource; // optional
 
     private void Awake()
     {
@@ -34,6 +39,8 @@ public class LilypadGate : MonoBehaviour
         }
 
         Debug.Log($"[LilypadGate] PLAYER ENTERED {name}");
+
+        PlayStepSFX();
         SetGateState(true);
     }
 
@@ -60,6 +67,11 @@ public class LilypadGate : MonoBehaviour
             lilyStool.SetPlayerOnLilypad(isActive);
         }
 
+        if (waterDropPromptInteractor != null)
+        {
+            waterDropPromptInteractor.SetPlayerOnLilypad(isActive);
+        }
+
         if (openBookTrigger != null)
         {
             openBookTrigger.enabled = isActive;
@@ -68,6 +80,24 @@ public class LilypadGate : MonoBehaviour
             {
                 openBookTrigger.ForceClose();
             }
+        }
+    }
+
+    private void PlayStepSFX()
+    {
+        if (lilypadStepSFX == null)
+        {
+            Debug.LogWarning("[LilypadGate] No lilypadStepSFX assigned");
+            return;
+        }
+
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(lilypadStepSFX);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(lilypadStepSFX, transform.position);
         }
     }
 }
