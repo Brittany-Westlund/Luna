@@ -1779,7 +1779,7 @@ PrefabInstance:
     - target: {fileID: 557830387757975331, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: summonSpeed
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 557830387757975331, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
@@ -2640,6 +2640,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6284592787044171541, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
+      propertyPath: butterflyFlowerAssist
+      value: 
+      objectReference: {fileID: 2071852177}
+    - target: {fileID: 6284592787044171541, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
       propertyPath: maxFlowerPickupDistance
       value: 0.5
       objectReference: {fileID: 0}
@@ -3247,6 +3252,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2071852176}
+    - targetCorrespondingSourceObject: {fileID: 1155848005275524758, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2071852177}
+    - targetCorrespondingSourceObject: {fileID: 1155848005275524758, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2071852197}
   m_SourcePrefab: {fileID: 100100000, guid: a9f055d37203fa54ba373213778c4b33, type: 3}
 --- !u!4 &124280115 stripped
 Transform:
@@ -5928,7 +5941,7 @@ Transform:
   m_GameObject: {fileID: 400333499}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.63, z: 0}
+  m_LocalPosition: {x: -0.15, y: 1.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9497,6 +9510,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &761794918 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4201661797197074324, guid: a9f055d37203fa54ba373213778c4b33,
+    type: 3}
+  m_PrefabInstance: {fileID: 124280114}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884342030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72b84ce7c86fc844b9cdf8cb1fd81b61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &773324645
 GameObject:
   m_ObjectHideFlags: 0
@@ -23561,8 +23586,11 @@ MonoBehaviour:
   butterflyFatigue: {fileID: 1251158099}
   followAndFlip: {fileID: 2071852174}
   butterflyAnimator: {fileID: 1251158111}
-  luna: {fileID: 0}
-  butterflyRenderer: {fileID: 0}
+  luna: {fileID: 884342030}
+  butterflyRenderer: {fileID: 898033999}
+  lunaRenderer: {fileID: 884342174}
+  useLunaRendererFacingWhilePerched: 1
+  invertPerchFacing: 1
   perchMoveSpeed: 1
   perchStopDistance: 0.05
   perchedAnimatorSpeed: 0.6
@@ -23587,6 +23615,54 @@ MonoBehaviour:
   flutterSpeed: 2.2
   fatigueTickInterval: 0.8
   affectColor: 1
+--- !u!114 &2071852177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251158065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c168044c2926bbc4d968801220a5972e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputCooldown: 0.2
+  lunaTransform: {fileID: 884342036}
+  lunaFlowerHolder: {fileID: 761794918}
+  butterflyTransform: {fileID: 1251158066}
+  butterflyFlowerHoldPoint: {fileID: 378787212}
+  butterflyRenderer: {fileID: 898033999}
+  followAndFlip: {fileID: 2071852174}
+  butterflyFatigue: {fileID: 1251158099}
+  butterflyPerchAndFatigue: {fileID: 2071852175}
+  lunaFlowerDetectRadius: 3
+  butterflyInteractRadius: 3
+  butterflyFetchSpeed: 3
+  flowerPickupStopDistance: 0.08
+  butterflyReturnStopDistance: 0.08
+  fetchFatigueCost: 1
+  swapFatigueCost: 0
+  handoffFatigueCost: 0
+  allowFetchFromPlantedFlowers: 0
+  requireButterflyToBeNearLunaForSwapOrTake: 0
+  allowTakeWhileFollowing: 1
+  debugLogs: 0
+--- !u!114 &2071852197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251158065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72b84ce7c86fc844b9cdf8cb1fd81b61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdPoint: {fileID: 0}
+  pickupSFXSource: {fileID: 0}
+  plantSFXSource: {fileID: 0}
 --- !u!1 &2073043623
 GameObject:
   m_ObjectHideFlags: 0

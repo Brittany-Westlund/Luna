@@ -10,6 +10,11 @@ public class ButterflyPerchAndFatigue : MonoBehaviour
     public Animator butterflyAnimator;
     public GameObject luna;
     public SpriteRenderer butterflyRenderer;
+    public SpriteRenderer lunaRenderer;
+
+    [Header("Perch Facing")]
+    public bool useLunaRendererFacingWhilePerched = true;
+    public bool invertPerchFacing = true;
 
     [Header("Perch Movement")]
     public float perchMoveSpeed = 4f;
@@ -46,6 +51,9 @@ public class ButterflyPerchAndFatigue : MonoBehaviour
 
         if (luna == null)
             luna = GameObject.FindWithTag("Player");
+
+        if (lunaRenderer == null && luna != null)
+            lunaRenderer = luna.GetComponentInChildren<SpriteRenderer>();
 
         _originalParent = butterfly.parent;
 
@@ -182,15 +190,29 @@ public class ButterflyPerchAndFatigue : MonoBehaviour
 
     void UpdatePerchedFacing()
     {
-        if (luna == null || butterfly == null || butterflyRenderer == null)
+        if (butterflyRenderer == null)
+            return;
+
+        if (useLunaRendererFacingWhilePerched && lunaRenderer != null)
+        {
+            bool flip = lunaRenderer.flipX;
+
+            if (invertPerchFacing)
+                flip = !flip;
+
+            butterflyRenderer.flipX = flip;
+            return;
+        }
+
+        if (luna == null || butterfly == null)
             return;
 
         float lunaRelativeX = luna.transform.position.x - butterfly.position.x;
 
         if (lunaRelativeX > 0.02f)
-            butterflyRenderer.flipX = true;
+            butterflyRenderer.flipX = invertPerchFacing ? false : true;
         else if (lunaRelativeX < -0.02f)
-            butterflyRenderer.flipX = false;
+            butterflyRenderer.flipX = invertPerchFacing ? true : false;
     }
 
     public bool IsPerched()

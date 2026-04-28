@@ -106,7 +106,6 @@ public class FollowAndFlip : MonoBehaviour
     void Update()
     {
         HandleInput();
-
         UpdateGroundFacingAndOffset();
 
         if (_isSummoning)
@@ -129,6 +128,13 @@ public class FollowAndFlip : MonoBehaviour
 
         if (Input.GetKeyDown(toggleFollowKey))
         {
+            // If not already following/summoning, make B reliably start follow.
+            if (!_isFollowing && !_isSummoning)
+            {
+                SetFollowing(true);
+                return;
+            }
+
             _bHeld = true;
             _bHoldTimer = 0f;
             _flutterTriggered = false;
@@ -214,6 +220,33 @@ public class FollowAndFlip : MonoBehaviour
     public void ForceFaceTowardLuna()
     {
         UpdateGroundFacingAndOffset();
+    }
+
+    public void CaptureCurrentIdleHeight()
+    {
+        if (butterfly != null)
+            _idleHoverBaseY = butterfly.position.y;
+    }
+
+    public void SnapBackToFollowWithoutSummon()
+    {
+        if (_lowerToLunaLevelCoroutine != null)
+        {
+            StopCoroutine(_lowerToLunaLevelCoroutine);
+            _lowerToLunaLevelCoroutine = null;
+        }
+
+        if (_summonCoroutine != null)
+        {
+            StopCoroutine(_summonCoroutine);
+            _summonCoroutine = null;
+        }
+
+        _isSummoning = false;
+        _isFollowing = true;
+
+        if (butterfly != null)
+            _idleHoverBaseY = butterfly.position.y;
     }
 
     IEnumerator SummonToLunaThenFollow()
@@ -310,13 +343,13 @@ public class FollowAndFlip : MonoBehaviour
 
     void ApplyIdleGroundHover()
     {
-        if (butterfly == null || _followTarget == null)
+        if (butterfly == null)
             return;
 
         float hoverY = GetGroundHoverOffsetY(groundHoverAmplitude * idleHoverAmplitudeMultiplier);
 
         Vector3 pos = butterfly.position;
-        pos.y = _followTarget.position.y + idleHeightAboveLuna + hoverY;
+        pos.y = _idleHoverBaseY + hoverY;
         butterfly.position = pos;
     }
 

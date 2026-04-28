@@ -27,6 +27,9 @@ public class FlowerInteractionManager : MonoBehaviour
     [Header("Garden Cleanup")]
     [SerializeField] private float maxGardenRetentionDistance = 2.0f;
 
+    [Header("Butterfly Assist")]
+    [SerializeField] private ButterflyFlowerAssist butterflyFlowerAssist;
+
     private FlowerHolder flowerHolder;
     private GardenSpot currentGarden;
     private FlowerPickup currentNearbyFlower;
@@ -52,6 +55,9 @@ public class FlowerInteractionManager : MonoBehaviour
         {
             holdPoint = flowerHolder.holdPoint;
         }
+
+        if (butterflyFlowerAssist == null)
+            butterflyFlowerAssist = GetComponent<ButterflyFlowerAssist>();
 
         if (debugLogs)
             Debug.Log($"[FlowerInteractionManager] Awake on {gameObject.name}");
@@ -125,15 +131,52 @@ public class FlowerInteractionManager : MonoBehaviour
             return;
         }
 
+        // 1) Plant takes priority if Luna is holding and can plant.
+        if (flowerHolder.HasFlower && currentGarden != null && IsWithinPlantingDistance(currentGarden))
+        {
+            TryPlantToGarden();
+            inputCooldown = inputCooldownDuration;
+            return;
+        }
+
+        // 2) If Luna is empty and butterfly has one, taking it back wins.
+        if (!flowerHolder.HasFlower && butterflyFlowerAssist != null && butterflyFlowerAssist.LunaCanTakeFromButterflyNow())
+        {
+            butterflyFlowerAssist.TryTakeFromButterfly();
+            inputCooldown = inputCooldownDuration;
+            return;
+        }
+
+        // 3) If both are holding flowers, swap wins before pickup/fetch.
+        if (flowerHolder.HasFlower && butterflyFlowerAssist != null && butterflyFlowerAssist.LunaCanSwapWithButterflyNow())
+        {
+            butterflyFlowerAssist.TrySwapWithButterfly();
+            inputCooldown = inputCooldownDuration;
+            return;
+        }
+
+        // 4) If Luna is empty, normal local pickup wins.
         if (!flowerHolder.HasFlower)
         {
             TryPickUpFlower();
-        }
-        else
-        {
-            TryPlantToGarden();
+            inputCooldown = inputCooldownDuration;
+            return;
         }
 
+        // 5) Luna already has a flower and is pressing F on a specific nearby flower:
+        // butterfly should fetch THAT flower only.
+        if (flowerHolder.HasFlower &&
+            currentNearbyFlower != null &&
+            butterflyFlowerAssist != null &&
+            butterflyFlowerAssist.CanFetchSpecificFlower(currentNearbyFlower))
+        {
+            butterflyFlowerAssist.TryFetchSpecificFlower(currentNearbyFlower);
+            inputCooldown = inputCooldownDuration;
+            return;
+        }
+
+        // 6) Fallback planting attempt.
+        TryPlantToGarden();
         inputCooldown = inputCooldownDuration;
     }
 
