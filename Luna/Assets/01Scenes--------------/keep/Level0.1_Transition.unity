@@ -363,7 +363,6 @@ MonoBehaviour:
   spreads:
   - {fileID: 888285278}
   - {fileID: 114930259}
-  - {fileID: 2086827479}
   visualsCanvasGroup: {fileID: 0}
   musicSources:
   - {fileID: 1544110107}
@@ -378,8 +377,8 @@ MonoBehaviour:
   preFadeDelay: 1.5
   fadeDuration: 2
   postFadeDelay: 0
-  nextLevelName: Level1_Tearoom
-  useSetNextLevelThenGotoNext: 0
+  nextLevelName: Level5_Meadow
+  useSetNextLevelThenGotoNext: 1
   levelManagerFadeOut: 1
   levelManagerSave: 1
 --- !u!4 &56354487
@@ -520,7 +519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -8.6, y: 51}
+  m_AnchoredPosition: {x: -8.6, y: 49.2}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &98487462
@@ -634,7 +633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &114930260
 RectTransform:
   m_ObjectHideFlags: 0
@@ -659,7 +658,7 @@ RectTransform:
   - {fileID: 535115121}
   - {fileID: 2029409585}
   - {fileID: 1947241631}
-  - {fileID: 1677378230}
+  - {fileID: 1665033582}
   - {fileID: 820860396}
   - {fileID: 751942473}
   m_Father: {fileID: 106479779}
@@ -1697,14 +1696,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '"I''m sorry, Luna. I don''t know how else to help... Slumberdust threatens
-    the forest." Mary reached for a book called Teas of the Moonbow.
-
-
-    Its pages
-    were made from pressed Moonpetal spores.
-
-'
+  m_Text: "The Moonflower Festival came every harvest, when gatherers returned from
+    the outer grove. \n\nBut the Moonpetals left before the next harvest. The slumberdust
+    had grown too heavy, even moonflower tea\n\n"
 --- !u!222 &751942477
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1796,9 +1790,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Mary opened the book. \"This once held recipes I never learned to brew\u2026
-    The Moonpetals have forgotten how to rest. These teas might remind them.\"\r\n\nLuna
-    touched the pages. \"There's nothing here.\"\r\n\n\n"
+  m_Text: She had meant to follow. But Mary didn't know where they were headed, and
+    Luna needed to be somewhere Mary could find he
 --- !u!222 &758908785
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1890,9 +1883,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Mary opened the book. She paused.\n\"...I never wanted to harvest the
-    moonflowers.\"\r\n\n\"Why don't we stop?\" Luna asked.\r \n\n\"The Moonpetals
-    depend on it,\" she whispered.\n\n\n"
+  m_Text: "couldn't keep up. \n\nLuna watched them go. She had meant to follow. But
+    Mary didn't know where they were headed, and Luna needed to be somewhere Mary
+    could find her."
 --- !u!222 &820860400
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1936,7 +1929,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -8.3, y: -6.9}
+  m_AnchoredPosition: {x: -8.3, y: -9.3}
   m_SizeDelta: {x: 590.4617, y: 621.66785}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &883071470
@@ -1984,8 +1977,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Luna warmed the teapot with a moonlit candle. \n\nShe poured wildflower
-    tea into a lotus cup and brought it to Mary. "
+  m_Text: "With the tea room closed and Mary gone, Luna stopped brewing tea. It wasn\u2019t
+    long before June left, too. Soon, Luna fell into a rhythm of labor."
 --- !u!222 &883071472
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2386,17 +2379,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '"The pages fade without moonbow light," said Mary.
-
-
-    Luna set the
-    book on the lilystool and turned to the hearth. She hung a wreath above it.
-
-
-    The
-    pages sparkled, waiting.
-
-'
+  m_Text: 
 --- !u!222 &1106450376
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3437,7 +3420,7 @@ MonoBehaviour:
     m_Extent: {x: 28.8, y: 6.25, z: 5}
   ConvertToColliderBoundsButton: 0
   LoadingSceneMode: 1
-  LoadingSceneName: Level1_Tearoom
+  LoadingSceneName: Level5_Meadow
   AdditiveLoadingSettings:
     LoadingSceneName: MMAdditiveLoadingScreen
     ThreadPriority: 4
@@ -3836,6 +3819,98 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1662559427}
   m_CullTransparentMesh: 0
+--- !u!1 &1665033581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1665033582}
+  - component: {fileID: 1665033585}
+  - component: {fileID: 1665033584}
+  - component: {fileID: 1665033583}
+  m_Layer: 5
+  m_Name: ControlsText (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1665033582
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665033581}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.032312274, y: 0.047594152, z: 0.047594152}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 114930260}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -8.72998, y: -36.45759}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1665033583
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665033581}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1665033584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665033581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.41960785}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: f0ab81afe8cd14f539d23f9f451a3af5, type: 3}
+    m_FontSize: 40
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 100
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Begin Adventure: E'
+--- !u!222 &1665033585
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665033581}
+  m_CullTransparentMesh: 0
 --- !u!1 &1672634796
 GameObject:
   m_ObjectHideFlags: 0
@@ -3911,98 +3986,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1672634796}
   m_CullTransparentMesh: 0
---- !u!1 &1677378229
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1677378230}
-  - component: {fileID: 1677378233}
-  - component: {fileID: 1677378232}
-  - component: {fileID: 1677378231}
-  m_Layer: 5
-  m_Name: ControlsText
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1677378230
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677378229}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.032312274, y: 0.047594152, z: 0.047594152}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 114930260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.9528809, y: -36.457596}
-  m_SizeDelta: {x: 1059.6056, y: 224.4409}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &1677378231
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677378229}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
---- !u!114 &1677378232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677378229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.41960785}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: f0ab81afe8cd14f539d23f9f451a3af5, type: 3}
-    m_FontSize: 40
-    m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 100
-    m_Alignment: 1
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 'Turn Page: A / D or Arrows'
---- !u!222 &1677378233
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677378229}
-  m_CullTransparentMesh: 0
 --- !u!1 &1714129049
 GameObject:
   m_ObjectHideFlags: 0
@@ -4038,7 +4021,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.5, y: -2}
+  m_AnchoredPosition: {x: 17.5, y: -0.8}
   m_SizeDelta: {x: 587.2733, y: 975.272}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1714129052
@@ -4086,15 +4069,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Mary sipped. The fog lifted from her eyes.
-
-
-    "You never rest from
-    serving tea. I miss when we sat together, while I still grew in the garden,"
-    said Luna.
-
-
-    Mary looked away.'
+  m_Text: "She gave her spores to help build onto the village. Moonflower tea replaced
+    rest, and the village no longer brewed wildflowers. \r\nOver time, the slumberdust
+    thickened. More moonflowers were needed. \r"
 --- !u!222 &1714129054
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4736,7 +4713,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2086827480
 RectTransform:
   m_ObjectHideFlags: 0

@@ -11,7 +11,6 @@ public class LunaRest : MonoBehaviour
     public float gardenBonus = 0.15f;
 
     [Header("Rest Visual")]
-    [Tooltip("Assign the root GameObject of the entire rest visual.")]
     public GameObject lunaRestVisualRoot;
 
     [Header("Optional UI Sync")]
@@ -22,6 +21,9 @@ public class LunaRest : MonoBehaviour
     public float cancelGraceTime = 0.15f;
     public bool cancelOnMovement = true;
     public bool cancelOnOtherKeys = true;
+
+    [Header("Animator Safety")]
+    public string normalIdleStateName = "Idle";
 
     [Header("State")]
     public bool isResting = false;
@@ -64,31 +66,25 @@ public class LunaRest : MonoBehaviour
             _restAnimators = lunaRestVisualRoot.GetComponentsInChildren<Animator>(true);
         }
 
-        if (_health == null)
-            Debug.LogError("LunaRest: No Health component found.");
-        if (_lunaSpriteRenderer == null)
-            Debug.LogError("LunaRest: No SpriteRenderer found on Luna.");
-        if (_lunaAnimator == null)
-            Debug.LogError("LunaRest: No Animator found on Luna.");
-        if (lunaRestVisualRoot == null)
-            Debug.LogError("LunaRest: lunaRestVisualRoot is not assigned.");
-
-        ForceVisualState(false);
+        ResetImmediate();
     }
 
     private void OnEnable()
     {
-        ForceVisualState(false);
+        ResetImmediate();
     }
 
     private void Start()
     {
-        ForceVisualState(false);
+        ResetImmediate();
         UpdateHealthBarUI();
     }
 
     private void Update()
     {
+        EnsureCharacterComponentEnabled();
+        EnforceVisualState();
+
         if (!isResting && Input.GetKeyDown(restKey))
         {
             StartResting();
@@ -137,7 +133,8 @@ public class LunaRest : MonoBehaviour
 
     private void LateUpdate()
     {
-        ForceVisualState(isResting);
+        EnsureCharacterComponentEnabled();
+        EnforceVisualState();
     }
 
     public void BeginRestExternal()
@@ -158,10 +155,10 @@ public class LunaRest : MonoBehaviour
         isResting = true;
         _restStartTime = Time.time;
 
-        if (_character != null)
+        if (_character != null && _character.ConditionState != null)
             _character.ConditionState.ChangeState(CharacterStates.CharacterConditions.Frozen);
 
-        ForceVisualState(true);
+        EnforceVisualState();
 
         if (debugLogs)
             Debug.Log("Luna started resting");
@@ -174,42 +171,63 @@ public class LunaRest : MonoBehaviour
 
         isResting = false;
 
-        if (_character != null)
+        if (_character != null && _character.ConditionState != null)
             _character.ConditionState.ChangeState(CharacterStates.CharacterConditions.Normal);
 
-        ForceVisualState(false);
+        EnforceVisualState();
         UpdateHealthBarUI();
 
         if (debugLogs)
             Debug.Log("Luna stopped resting");
     }
 
-    private void ForceVisualState(bool resting)
+    private void ResetImmediate()
+    {
+        isResting = false;
+        EnsureCharacterComponentEnabled();
+        EnforceVisualState(true);
+
+        if (debugLogs)
+            Debug.Log("LunaRest reset immediate");
+    }
+
+    private void EnsureCharacterComponentEnabled()
+    {
+        if (_character != null && !_character.enabled)
+            _character.enabled = true;
+    }
+
+    private void EnforceVisualState(bool forceIdle = false)
     {
         if (_lunaSpriteRenderer != null)
-            _lunaSpriteRenderer.enabled = !resting;
+            _lunaSpriteRenderer.enabled = !isResting;
 
         if (_lunaAnimator != null)
-            _lunaAnimator.enabled = !resting;
-
-        if (lunaRestVisualRoot != null)
-            lunaRestVisualRoot.SetActive(resting);
-
-        if (_restAnimators != null)
         {
-            for (int i = 0; i < _restAnimators.Length; i++)
-            {
-                if (_restAnimators[i] != null)
-                    _restAnimators[i].enabled = resting;
-            }
+            _lunaAnimator.enabled = !isResting;
+
+            if (!isResting && forceIdle && !string.IsNullOrEmpty(normalIdleStateName))
+                _lunaAnimator.Play(normalIdleStateName, 0, 0f);
         }
+
+        if (lunaRestVisualRoot != null && isResting)
+            lunaRestVisualRoot.SetActive(true);
 
         if (_restRenderers != null)
         {
             for (int i = 0; i < _restRenderers.Length; i++)
             {
                 if (_restRenderers[i] != null)
-                    _restRenderers[i].enabled = resting;
+                    _restRenderers[i].enabled = isResting;
+            }
+        }
+
+        if (_restAnimators != null)
+        {
+            for (int i = 0; i < _restAnimators.Length; i++)
+            {
+                if (_restAnimators[i] != null)
+                    _restAnimators[i].enabled = isResting;
             }
         }
     }

@@ -163,7 +163,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8679495483268242065}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -294,8 +294,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantingPoint: {fileID: 1744397371121947300}
   highlightObject: {fileID: 7989381468655696136}
+  requiresButterflyReveal: 1
+  allowFlowerPrompt: 1
+  grownGrassObject: {fileID: 0}
+  grownGrassRenderer: {fileID: 0}
+  promptGrassAlphaThreshold: 0.95
   fadeDuration: 0.3
-  sparkleFX: {fileID: 0}
+  sparkleGroup: {fileID: 0}
+  sparkleIdleScale: 1
+  sparkleActiveScale: 1.5
+  sparkleScaleLerpSpeed: 6
+  sparkleIdleColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+  sparkleActiveColor: {r: 1, g: 1, b: 1, a: 1}
+  sparkleColorLerpSpeed: 6
+  playerTag: Player
+  debugLogs: 0
 --- !u!114 &-4019639261628360866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,30 +554,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c7cc9bf4bc9d4458ea45d2a3a909b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeDuration: 0.1
-  fadeOutDelay: 0.5
+  targetFeedback: {fileID: 0}
   playerTag: Player
-  spriteRenderer: {fileID: 0}
-  textMesh: {fileID: 9096411782934755262}
-  meshRenderer: {fileID: 8739319874254698431}
---- !u!23 &8739319874254698431 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 1955789252853396247, guid: 5cd75e8319135ef42b72a16019e9e998,
-    type: 3}
-  m_PrefabInstance: {fileID: 7092068707424011432}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &9096411782934755262 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2040382125696152342, guid: 5cd75e8319135ef42b72a16019e9e998,
-    type: 3}
-  m_PrefabInstance: {fileID: 7092068707424011432}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6429116759358615012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  requireSpecificColliderName: 1
+  requiredColliderName: PlayerFeet
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
+  fadeOutDelay: 0.5
+  hiddenAlpha: 0
+  visibleAlpha: 1
+  restartCycleOnEnter: 1
+  stopCycleOnExit: 0
+  debugLogging: 0
 --- !u!1001 &7095265306607210917
 PrefabInstance:
   m_ObjectHideFlags: 0
