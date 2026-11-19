@@ -39,6 +39,9 @@ public class IntroBookSpreadSequenceController : MonoBehaviour
         public List<BloomItem> items = new List<BloomItem>();
     }
 
+    [Min(0f)]
+    [SerializeField] private float bookControllerStartDelay = 0f;
+    
     [Header("Book Spreads")]
     [SerializeField] private List<GameObject> spreads = new List<GameObject>();
 
