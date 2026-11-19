@@ -54,7 +54,7 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/PreviousVersion/Level1_Tearoom.unity
     guid: 8dedbc30839574f4eb073442c1da0416
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level8_River.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level8_River.unity
     guid: 7beec4c5a609ca6499932e3c36271a50
   - enabled: 0
     path: Assets/01Scenes--------------/keep/OtherLevels/Level3.5_SongberryWaypoint.unity
@@ -66,16 +66,16 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/PreviousVersion/Level11_Cave.unity
     guid: ffe38a780fdb3fd4b98ec852574f2327
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level12_Approach.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level12_Approach.unity
     guid: 40c248947ccef7843aceeb194efcfbe2
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level13_Settlement.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level13_Settlement.unity
     guid: 5761939989f91ad48a2fbaf60e94bcfe
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level14_Teahouse.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level14_Teahouse.unity
     guid: e9465a8b9651e064c8fd1dc7ac9874b2
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level15_Fairyveil.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level15_Fairyveil.unity
     guid: b46703ee91a210e4f9c3776c846301aa
   - enabled: 0
     path: Assets/01Scenes--------------/keep/Credits.unity
@@ -90,28 +90,28 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/PreviousVersion/XMainMenuNoManager_old.unity
     guid: fa15f5e9c1566f340a45d456296e2f48
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level0_Tearoom.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level0_Tearoom.unity
     guid: 4d9a85fda4fc7134782ef4a067a11c1a
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level1_Meadow_old.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level1_Meadow_old.unity
     guid: 2bac7a4bf3c9a9e42a17d9b9feb3833d
   - enabled: 0
     path: Assets/01Scenes--------------/keep/Level3_BramblePatch.unity
     guid: 76ba1ad90617a694e9fd5473b6c78977
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/MainMenuNoGameManager.unity
+    path: Assets/01Scenes--------------/KeepBackup/MainMenuNoGameManager.unity
     guid: 4ae86d24defc28648a89a70dc12f7f72
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level_BeautifulOld.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level_BeautifulOld.unity
     guid: 1e14f51439019084c9fe30375ee1d78a
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level0_Tutorial_old.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level0_Tutorial_old.unity
     guid: f0c0b18dd71938a46b805864a352d33a
   - enabled: 0
     path: Assets/CorgiEngine/Demos/LevelSelection/SplashScreen.unity
     guid: 7b96552fd1198fa4eaae54a2f975645e
   - enabled: 0
-    path: Assets/01Scenes--------------/Level3.unity
+    path: Assets/01Scenes--------------/Obsolete/Level3.unity
     guid: e063db0b755e9004ba3e8d48c5eae777
   - enabled: 0
     path: Assets/CorgiEngine/Common/Scenes--------------/Keep/Level3_Tree.unity
@@ -123,7 +123,7 @@ EditorBuildSettings:
     path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMSceneLoading/LoadingScreens/MMAdditiveLoadingScreen.unity
     guid: d89b77a7a68c1844280c6ff2e49f95b8
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/LevelSelection_old.unity
+    path: Assets/01Scenes--------------/KeepBackup/LevelSelection_old.unity
     guid: 19d14a033db3ff544ace68bcc08f15eb
   - enabled: 0
     path: Assets/CorgiEngine/Demos/LevelSelection/LevelSelectionMap.unity
@@ -330,16 +330,16 @@ EditorBuildSettings:
     path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMSceneLoading/LoadingScreens/MMAdditiveLoadingScreenSimple.unity
     guid: 945e5b97212e8e74ebcd35bddde3970c
   - enabled: 0
-    path: Assets/01Scenes--------------/BackupKeep/Level7_Village_old.unity
+    path: Assets/01Scenes--------------/KeepBackup/Level7_Village_old.unity
     guid: 4831a8f60a29ef541944a454a3e6f115
   - enabled: 0
-    path: Assets/01Scenes--------------/LevelTesting.unity
+    path: Assets/01Scenes--------------/Obsolete/LevelTesting.unity
     guid: ac03db28cf0954baf916a11624256a35
   - enabled: 0
-    path: Assets/01Scenes--------------/Level2NewerOld.unity
+    path: Assets/01Scenes--------------/Obsolete/Level2NewerOld.unity
     guid: 700882a1bd89c8347a4e283b7827ad65
   - enabled: 0
-    path: Assets/01Scenes--------------/StartScreen.unity
+    path: Assets/01Scenes--------------/Obsolete/StartScreen.unity
     guid: b1f070345301ccb46a6db77a5f4cd83a
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 0c4807857f184584597ede5fbce1cc26,
