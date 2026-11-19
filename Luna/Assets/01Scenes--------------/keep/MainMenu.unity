@@ -1156,7 +1156,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hold E: Return                        E: Turn Page     '
+  m_text: '     V: Close Book             A/D: Turn Page'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ad5edec1d2467f428156ac9f1fe786f, type: 2}
   m_sharedMaterial: {fileID: -1723674134689400254, guid: 0ad5edec1d2467f428156ac9f1fe786f,
@@ -1984,7 +1984,7 @@ PrefabInstance:
     - target: {fileID: 2894963074777306525, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: teaKey
-      value: 116
+      value: 101
       objectReference: {fileID: 0}
     - target: {fileID: 2894963074777306525, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
@@ -2088,8 +2088,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3525713045534754889, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
+      propertyPath: npcCheckRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525713045534754889, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
       propertyPath: gardenRestBonus
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525713045534754889, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: npcLayer.m_Bits
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 3525713045534754889, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
@@ -2121,6 +2131,11 @@ PrefabInstance:
       propertyPath: lunaRestVisualRoot
       value: 
       objectReference: {fileID: 1221863498}
+    - target: {fileID: 3525713045534754889, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      propertyPath: normalIdleStateName
+      value: Idle
+      objectReference: {fileID: 0}
     - target: {fileID: 3525713045534754889, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: lunaRestVisualObject
@@ -2310,7 +2325,7 @@ PrefabInstance:
     - target: {fileID: 4562882046606791980, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       propertyPath: Bottom
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4640164935458969687, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
@@ -3225,6 +3240,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 884342617}
+    - targetCorrespondingSourceObject: {fileID: 5256202750805728544, guid: a9f055d37203fa54ba373213778c4b33,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 884342704}
     - targetCorrespondingSourceObject: {fileID: 8003762325609667136, guid: a9f055d37203fa54ba373213778c4b33,
         type: 3}
       insertIndex: -1
@@ -3578,10 +3597,10 @@ MonoBehaviour:
   startEnabled: 0
   slumberdustReductionPercent: 0.5
   enableWalkingBob: 1
-  bobAmplitude: -0.035
+  bobAmplitude: -0.03
   bobSpeed: 35
   bobReturnSpeed: 35
-  bobMovementThreshold: 0.01
+  bobMovementThreshold: 0.009
   bobOnlyWhenGrounded: 1
   scaleBobByMovementSpeed: 1
   equipAudioSource: {fileID: 170385183}
@@ -10004,7 +10023,7 @@ PrefabInstance:
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Name
-      value: MeadowTeahouseButton
+      value: MoonpetalVillageButton
       objectReference: {fileID: 0}
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -10029,7 +10048,7 @@ PrefabInstance:
     - target: {fileID: 1431916979821228839, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Text
-      value: MEADOW
+      value: MOONPETAL
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -10129,7 +10148,7 @@ PrefabInstance:
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 350
+      value: 450
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -10210,7 +10229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4c0f86373b802b4b9b5316241f89644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level5_Meadow
+  levelName: Level2.0_MoonpetalVillage
 --- !u!1 &794477575
 GameObject:
   m_ObjectHideFlags: 0
@@ -10344,12 +10363,12 @@ PrefabInstance:
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Name
-      value: CanopyButton
+      value: BerrymoonWaypointButton
       objectReference: {fileID: 0}
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1383931774876139710, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -10369,7 +10388,7 @@ PrefabInstance:
     - target: {fileID: 1431916979821228839, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Text
-      value: CANOPY
+      value: BERRYMOON
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -10464,12 +10483,12 @@ PrefabInstance:
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 573.00024
+      value: 682
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 292
+      value: 261
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -10550,7 +10569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4c0f86373b802b4b9b5316241f89644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level6.5_Canopy
+  levelName: Level2.5_BerrymoonWaypoint
 --- !u!1 &810285690
 GameObject:
   m_ObjectHideFlags: 0
@@ -11792,6 +11811,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b470d1b161b2454590386135b7fd64f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &884342704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884342030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7e9db004c617524b9aee20805489014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crownController: {fileID: 170385182}
+  equippedCrownRenderer: {fileID: 1433560936}
+  crownTag: Crown
+  selectionRadius: 0.6
+  swapKey: 99
+  selectedScaleMultiplier: 1.15
+  scaleSpeed: 12
+  equippedCrownScaleMultiplier: 1.4
+  debugLogs: 0
 --- !u!1001 &895592572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11912,7 +11952,7 @@ PrefabInstance:
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Name
-      value: TearoomButton
+      value: KeepButton
       objectReference: {fileID: 0}
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -11937,7 +11977,7 @@ PrefabInstance:
     - target: {fileID: 1431916979821228839, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Text
-      value: TEA ROOM
+      value: KEEP
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -12118,7 +12158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4c0f86373b802b4b9b5316241f89644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level1_Tearoom
+  levelName: Level1_KeepersQuarters
 --- !u!1 &924149486
 GameObject:
   m_ObjectHideFlags: 0
@@ -16445,7 +16485,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 94769673}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7739679434270547682, guid: 863c1e37e621d5f42940dac6ab522fac,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1361967938}
   m_SourcePrefab: {fileID: 100100000, guid: 863c1e37e621d5f42940dac6ab522fac, type: 3}
 --- !u!4 &1361967933 stripped
 Transform:
@@ -16459,6 +16503,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1361967932}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &1361967938
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841344807}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1384492525
 GameObject:
   m_ObjectHideFlags: 0
@@ -16943,7 +16999,7 @@ PrefabInstance:
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Name
-      value: GardenButton
+      value: BerrypetalVillageButton
       objectReference: {fileID: 0}
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -16968,7 +17024,7 @@ PrefabInstance:
     - target: {fileID: 1431916979821228839, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Text
-      value: GARDEN
+      value: BERRYPETAL
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -17068,7 +17124,7 @@ PrefabInstance:
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 450
+      value: 166
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -17149,7 +17205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4c0f86373b802b4b9b5316241f89644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level2_Garden
+  levelName: Level3.0_BerrypetalVillage
 --- !u!1001 &1419685770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17345,14 +17401,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433560934}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 0.51, z: -5.263159}
-  m_LocalScale: {x: 0.54840755, y: 0.54840755, z: 0.5484075}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0, y: -0, z: -0.00895088, w: 0.99995995}
+  m_LocalPosition: {x: 0.040001478, y: 0.5099975, z: -5.263159}
+  m_LocalScale: {x: 0.91, y: 0.91, z: 0.91}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1955212764}
   m_Father: {fileID: 170385181}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.026}
 --- !u!212 &1433560936
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17395,7 +17451,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 301
   m_Sprite: {fileID: 954272298, guid: 3094600858966614a9f0c66d62602964, type: 3}
-  m_Color: {r: 0.5425863, g: 0.5490638, b: 0.6462264, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -18758,6 +18814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1590310991}
   - component: {fileID: 1590310992}
+  - component: {fileID: 1590310993}
   m_Layer: 0
   m_Name: MoonbowBookControllerSimple
   m_TagString: Untagged
@@ -18829,6 +18886,26 @@ MonoBehaviour:
   saveKeyPrefix: BOOK_SIMPLE_
   lunaMovementScript: {fileID: 124280119}
   horizontalLockBoolName: MovementForbidden
+  debugLogs: 1
+--- !u!114 &1590310993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590310990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35b475813560c144899c63df57556a6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bookUIRoot: {fileID: 841344807}
+  bookCanvasGroup: {fileID: 1361967938}
+  bookController: {fileID: 1590310992}
+  lunaMovementScript: {fileID: 124280119}
+  movementLockBoolName: MovementForbidden
+  toggleKey: 118
+  allowArrowKeys: 1
   debugLogs: 1
 --- !u!1 &1609605155
 GameObject:
@@ -21459,12 +21536,12 @@ PrefabInstance:
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Name
-      value: SettlementButton
+      value: SquareButton
       objectReference: {fileID: 0}
     - target: {fileID: 1093912796748947369, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1383931774876139710, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -21484,7 +21561,7 @@ PrefabInstance:
     - target: {fileID: 1431916979821228839, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_Text
-      value: SETTLEMENT
+      value: SQUARE
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -21579,12 +21656,12 @@ PrefabInstance:
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 819.0001
+      value: 680
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 369
+      value: 359
       objectReference: {fileID: 0}
     - target: {fileID: 4277296687728445457, guid: 35d64f0d8b2f6414fb84a2856951856f,
         type: 3}
@@ -21665,7 +21742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4c0f86373b802b4b9b5316241f89644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level13_Settlement
+  levelName: Level_Square
 --- !u!1001 &1934453187
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22077,27 +22154,27 @@ PrefabInstance:
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.47280988
+      value: 0.21788497
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4917223
+      value: 0.22660038
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4917223
+      value: 0.22660038
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.19
+      value: 0.11666
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1
+      value: -0.061532
       objectReference: {fileID: 0}
     - target: {fileID: 4104910804965193964, guid: 2d4c8d254062e9f47a32382c5abf6212,
         type: 3}
@@ -25907,7 +25984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90d8b2ca2099bb34f9719db04f1c4ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstLevel: Level0_Intro
+  firstLevel: Level0_IntroNew
   worldState: {fileID: 11400000, guid: 0e24b3390923e914b857b1aa4948a5ee, type: 2}
 --- !u!1 &9157264408584263154
 GameObject:

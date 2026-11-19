@@ -17,7 +17,7 @@ public class LunaRest : MonoBehaviour
     public LunaStatusBarConnector statusBarConnector;
 
     [Header("Input")]
-    public KeyCode restKey = KeyCode.Z;
+    public KeyCode restKey = KeyCode.E;
     public float cancelGraceTime = 0.15f;
     public bool cancelOnMovement = true;
     public bool cancelOnOtherKeys = true;
@@ -31,6 +31,10 @@ public class LunaRest : MonoBehaviour
 
     [Header("Debug")]
     public bool debugLogs = false;
+
+    [Header("NPC Priority")]
+    public float npcCheckRadius = 1.5f;
+    public LayerMask npcLayer;
 
     private Character _character;
     private Health _health;
@@ -87,7 +91,8 @@ public class LunaRest : MonoBehaviour
 
         if (!isResting && Input.GetKeyDown(restKey))
         {
-            StartResting();
+           if (NPCNearby()) return;
+           StartResting();
             return;
         }
 
@@ -140,6 +145,18 @@ public class LunaRest : MonoBehaviour
     public void BeginRestExternal()
     {
         StartResting();
+    }
+
+    private bool NPCNearby()
+    {
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, npcCheckRadius, ~0);
+    foreach (Collider2D hit in hits)
+    {
+        Debug.Log("Hit: " + hit.gameObject.name + " tag: " + hit.tag + " layer: " + hit.gameObject.layer);
+        if ((npcLayer.value & (1 << hit.gameObject.layer)) != 0) return true;
+        if (hit.CompareTag("Lilystool")) return true;
+    }
+    return false;
     }
 
     public void EndRestExternal()

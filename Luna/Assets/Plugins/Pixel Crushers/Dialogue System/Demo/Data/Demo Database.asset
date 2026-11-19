@@ -17960,8 +17960,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Lovely wreath, Luna. Oh, look\u2026 silvermist by the window.\nWhen
-          it gathers like that, our cap spores reflect moonbows."
+        value: Luna! The moon's risen! It's almost time for the Keeper's Festival.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18032,7 +18031,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Moonbows... from silvermist?
+        value: Moonrise... already?
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18103,8 +18102,14 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Mm, yes... Let\u2019s make some moonbow tea. Go ahead, step into
-          the mist.\nBring me a cup too, would you, dear?"
+        value: 'Yes, Dear. It''s time to choose a flower crown for your cap transformation.
+
+          Any
+          mushroom who carries many belongings needs a Cap of Keeping. A Keeper most
+          of all.
+
+          Choose wisely. Each holds a special qualitity: Radiance,
+          Resonance, Abundance, and Wonder.'
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18214,12 +18219,12 @@ MonoBehaviour:
         width: 640
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.5240034
+    canvasScrollPosition: {x: 181.365, y: 96.19959}
+    canvasZoom: 0.7192535
   - id: 75
     fields:
     - title: Title
-      value: MaryGiveBook
+      value: MaryTeachTea
       type: 0
       typeString: CustomFieldType_Text
     - title: Pictures
@@ -18364,9 +18369,10 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "The pages are pressed moonpetal spores, you see.\nThey only reveal
-          themselves beneath moonbow light.\nAnd even then\u2026 only a couple at
-          a time."
+        value: 'Oh! Lovely choice, Luna. Now, the Book of Keeping.
+
+          Here,
+          take it to the lilystool...'
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18437,7 +18443,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: What's it about?
+        value: Hm... what's it about?
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18508,8 +18514,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Ah, well If you want the whole story\u2026\nyou'll have to find it
-          across moonbows."
+        value: Ah, well, if you want the whole story... you'll have to brew a lot
+          of tea.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18580,7 +18586,152 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Oh... I see.
+        value: Tea, Mary?
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Parenthetical
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Audio Files
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Video File
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 75
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 75
+        originDialogueID: 4
+        destinationConversationID: 75
+        destinationDialogueID: 5
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 444.51788
+        y: 286.48145
+        width: 640
+        height: 30
+    - id: 5
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Pictures
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 27
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: 'That''s right. Cast a moonbow over the lilystool to light the teacandle.
+
+          Then
+          add some silverrod to the dew. See what happens when it brews...'
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Parenthetical
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Audio Files
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Video File
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 75
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 75
+        originDialogueID: 5
+        destinationConversationID: 75
+        destinationDialogueID: 6
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 444.51788
+        y: 336.48145
+        width: 640
+        height: 30
+    - id: 6
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Pictures
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 27
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: ...
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18615,16 +18766,16 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 444.51788
-        y: 286.48145
+        y: 386.48145
         width: 640
         height: 30
     entryGroups: []
     canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.5400008
+    canvasZoom: 0.49950144
   - id: 76
     fields:
     - title: Title
-      value: WindowMist
+      value: MaryExitQuarters
       type: 0
       typeString: CustomFieldType_Text
     - title: Pictures
@@ -18769,7 +18920,9 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: A fine cup, indeed. Your cap spores cast such bright moonbows.
+        value: "That's it! The tea steam wakes the book. We can connect with it at
+          the lilystools. \nAll we need are some foraged flowers. Keep the teaset
+          and book with you in your cap."
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18840,7 +18993,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: ...really?
+        value: Okay, thanks, Mary.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18911,10 +19064,10 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 'Yes, moonbows like those... they don''t just infuse tea.
+        value: 'I''ll take the candle and prepare it for the Moonlighting.
 
-          They''re
-          like little fleeting bridges we can stand on. '
+          You
+          can chat with the book until the tea cools.'
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -18985,7 +19138,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: ...oh.
+        value: Oh, I see.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -19056,7 +19209,13 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Quick, dear. Close the window... we\u2019ll lose the heat."
+        value: 'You''re a bit quiet, Dear. Everything alright? Hm...
+
+          Why
+          don''t you take a moment with Silverbelle before the festival!
+
+          ...I''ll
+          leave you too to get ready. See you for the lighting!'
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical

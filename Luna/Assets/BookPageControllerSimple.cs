@@ -57,7 +57,6 @@ public class BookControllerSimple : MonoBehaviour
     public bool neverOpenToBlank = false;
     private string currentOpenLocationId = "";
 
-
     [Header("Persistence")]
     public bool saveProgress = true;
     public string saveKeyPrefix = "BOOK_SIMPLE_";
@@ -70,6 +69,10 @@ public class BookControllerSimple : MonoBehaviour
     public bool debugLogs = false;
 
     public bool IsOpen => bookOpen;
+
+    // Set this to true when SimpleBookToggle has the book open,
+    // so BookControllerSimple doesn't override the movement lock.
+    public bool IsExternallyOpen { get; set; }
 
     private int currentPage = 0;
     private bool bookOpen = false;
@@ -147,7 +150,8 @@ public class BookControllerSimple : MonoBehaviour
             }
         }
 
-        if (!bookOpen)
+        // Only reset movement lock if neither the world book nor the V-toggle book is open
+        if (!bookOpen && !IsExternallyOpen)
         {
             ResetBookInputState();
             return;
@@ -173,7 +177,9 @@ public class BookControllerSimple : MonoBehaviour
             return;
         }
 
-        HandleTapHoldBookPaging();
+        // Only handle E paging when the world book is open, not the V-toggle book
+        if (bookOpen)
+            HandleTapHoldBookPaging();
     }
 
     void SetupCanvasGroup()
@@ -261,12 +267,10 @@ public class BookControllerSimple : MonoBehaviour
 
         if (hasCurrentLocation && !locationAlreadyUsed && hasBlankEndPage)
         {
-            // New lilystool: open to blank so the reveal can fade in beautifully.
             currentPage = GetPageCount() - 1;
         }
         else
         {
-            // Revisited lilystool (or no location info): show most recently revealed spread.
             currentPage = GetMostRecentlyRevealedPageIndex();
         }
 
@@ -343,7 +347,9 @@ public class BookControllerSimple : MonoBehaviour
     {
         ePressedForBook = false;
         holdActionTriggered = false;
-        SetHorizontalMovementLocked(false);
+        // Only unlock movement if the V-toggle book isn't holding it
+        if (!IsExternallyOpen)
+            SetHorizontalMovementLocked(false);
     }
 
     void OpenBookFromWorldSync()

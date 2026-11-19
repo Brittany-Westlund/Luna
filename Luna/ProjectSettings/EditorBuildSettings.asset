@@ -12,64 +12,70 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/keep/MainMenuNoManager.unity
     guid: c1e95fdea2380db48a364ed673711d43
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0_Intro.unity
-    guid: a7946cabc2a0f814aa5ebf22b20dbaef
+    path: Assets/01Scenes--------------/keep/Level0_IntroNew.unity
+    guid: b4a6d673d2b736d4993fa737c9d88383
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level1_Tearoom.unity
-    guid: 8dedbc30839574f4eb073442c1da0416
+    path: Assets/01Scenes--------------/keep/Level1_KeepersQuarters.unity
+    guid: 056d5bb2c3584464cb085d253f4ea9ed
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level2_Garden.unity
+    path: Assets/01Scenes--------------/keep/Level3.0_BerrypetalVillage.unity
     guid: aacbe27b335d15e449ec2914524ee783
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0.1_Transition.unity
+    path: Assets/01Scenes--------------/keep/Level0_Transition1.unity
     guid: 1701b6507239ae043b519fd681b63643
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level3_Village.unity
+    path: Assets/01Scenes--------------/keep/Level_Square.unity
     guid: bf82cbc8f5ec17c42ac74a0868bb1d71
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level4_Glade.unity
+    path: Assets/01Scenes--------------/keep/OtherLevels/Level4.0_SongpetalVillage.unity
     guid: 9cc30fa34504456418310077dd4e2370
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level5_Meadow.unity
+    path: Assets/01Scenes--------------/keep/Level2.0_MoonpetalVillage.unity
     guid: 1dab5f4a25f167d408dbdb2eabf2e536
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level0.2_Transition.unity
+    path: Assets/01Scenes--------------/keep/Level0_Transition2.unity
     guid: 96d90f61f2f52cb49bc8c0b9b6561f2f
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level6_Brambles.unity
+    path: Assets/01Scenes--------------/keep/OtherLevels/Level5.0_FairypetalVillage.unity
     guid: 9a489feb2b607fc42880bd638301f0f0
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level6.5_Canopy.unity
+    path: Assets/01Scenes--------------/keep/Level2.5_BerrymoonWaypoint.unity
     guid: b4ab6e24841ccbe4f85020abaf0eff62
   - enabled: 1
-    path: Assets/01Scenes--------------/keep/Level7_Myre.unity
+    path: Assets/01Scenes--------------/keep/OtherLevels/Level5.5_MoonfairyWaypoint.unity
     guid: e21d85da21cb0af428292a7fa1611111
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level_Beautiful.unity
+    path: Assets/01Scenes--------------/keep/Level0_Intro.unity
+    guid: a7946cabc2a0f814aa5ebf22b20dbaef
+  - enabled: 0
+    path: Assets/01Scenes--------------/keep/OtherLevels/Level_Beautiful.unity
     guid: 4d76a53605c671648b7e07135525c38a
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level8_River.unity
+    path: Assets/01Scenes--------------/PreviousVersion/Level1_Tearoom.unity
+    guid: 8dedbc30839574f4eb073442c1da0416
+  - enabled: 0
+    path: Assets/01Scenes--------------/BackupKeep/Level8_River.unity
     guid: 7beec4c5a609ca6499932e3c36271a50
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level9_Treehouse.unity
+    path: Assets/01Scenes--------------/keep/OtherLevels/Level3.5_SongberryWaypoint.unity
     guid: 869be7508a9f60f41852ce0a04719f2b
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level10_Fairydell.unity
+    path: Assets/01Scenes--------------/keep/OtherLevels/Level4.5_FairysongWaypoint.unity
     guid: 258bd5afe9a68d94786878e1edc39d71
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level11_Cave.unity
+    path: Assets/01Scenes--------------/PreviousVersion/Level11_Cave.unity
     guid: ffe38a780fdb3fd4b98ec852574f2327
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level12_Approach.unity
+    path: Assets/01Scenes--------------/BackupKeep/Level12_Approach.unity
     guid: 40c248947ccef7843aceeb194efcfbe2
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level13_Settlement.unity
+    path: Assets/01Scenes--------------/BackupKeep/Level13_Settlement.unity
     guid: 5761939989f91ad48a2fbaf60e94bcfe
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level14_Teahouse.unity
+    path: Assets/01Scenes--------------/BackupKeep/Level14_Teahouse.unity
     guid: e9465a8b9651e064c8fd1dc7ac9874b2
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/Level15_Fairyveil.unity
+    path: Assets/01Scenes--------------/BackupKeep/Level15_Fairyveil.unity
     guid: b46703ee91a210e4f9c3776c846301aa
   - enabled: 0
     path: Assets/01Scenes--------------/keep/Credits.unity
@@ -81,7 +87,7 @@ EditorBuildSettings:
     path: Assets/01Scenes--------------/keep/GameOver.unity
     guid: b1cad753955e25f468e7313353c26c6b
   - enabled: 0
-    path: Assets/01Scenes--------------/keep/XMainMenuNoManager_old.unity
+    path: Assets/01Scenes--------------/PreviousVersion/XMainMenuNoManager_old.unity
     guid: fa15f5e9c1566f340a45d456296e2f48
   - enabled: 0
     path: Assets/01Scenes--------------/BackupKeep/Level0_Tearoom.unity
