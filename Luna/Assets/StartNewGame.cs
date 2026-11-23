@@ -4,11 +4,8 @@ using PixelCrushers.DialogueSystem;
 
 public class StartNewGame : MonoBehaviour
 {
-    [SerializeField] private string firstLevel = "Level0_Meadow";
-
-    [Header("Optional Global State Reference")]
-    [Tooltip("Drag your global CollectibleState asset here.")]
-    public CollectibleState worldState;
+    [SerializeField] private string firstLevel;
+    [SerializeField] private CollectibleState worldState;
 
     public void LoadFirstLevel()
     {
@@ -33,6 +30,9 @@ public class StartNewGame : MonoBehaviour
             CollectibleManager.Instance.ResetAll();
             Debug.Log("[StartNewGame] CollectibleManager reset complete.");
         }
+
+        // Clear visited book page history
+        BookPageHistory.ResetAll();
 
         // Clear all PlayerPrefs-backed saves
         PlayerPrefs.DeleteAll();
