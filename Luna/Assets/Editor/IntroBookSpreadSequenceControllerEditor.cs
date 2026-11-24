@@ -93,12 +93,35 @@ public class IntroBookSpreadSequenceControllerEditor : Editor
             page.FindPropertyRelative("artwork").ClearArray();
             page.FindPropertyRelative("pagePrefab").objectReferenceValue = null;
             page.FindPropertyRelative("interactKeys").ClearArray();
+            page.FindPropertyRelative("pageId").stringValue = "";
+            page.FindPropertyRelative("availableFromStart").boolValue = true;
+            page.FindPropertyRelative("isOpeningSpread").boolValue = false;
+            page.FindPropertyRelative("autoAdvanceAfterInteractions").boolValue = false;
+            page.FindPropertyRelative("autoAdvanceAfterArtwork").stringValue = "";
+            page.FindPropertyRelative("autoAdvanceAfterEvent").enumValueIndex = 1;
+            page.FindPropertyRelative("autoAdvanceDelay").floatValue = 0f;
             page.FindPropertyRelative("requireInteractionsBeforeTurning").boolValue = true;
             page.FindPropertyRelative("replayInteractionsOnRevisit").boolValue = false;
             page.FindPropertyRelative("waitForArtworkBeforeTurning").boolValue = false;
             page.FindPropertyRelative("unlockArtworkName").stringValue = "";
             page.FindPropertyRelative("unlockEvent").enumValueIndex = 1;
             page.FindPropertyRelative("unlockDelay").floatValue = 0f;
+            page.FindPropertyRelative("ribbonGroup").objectReferenceValue = null;
+            page.FindPropertyRelative("specialRibbon").objectReferenceValue = null;
+            page.FindPropertyRelative("pageTurnRibbon").objectReferenceValue = null;
+            page.FindPropertyRelative("closeBookRibbon").objectReferenceValue = null;
+            page.FindPropertyRelative("useOneTimeSpecialRibbon").boolValue = false;
+            page.FindPropertyRelative("specialRibbonId").stringValue = "";
+            page.FindPropertyRelative("specialRibbonKey").intValue = (int)KeyCode.W;
+            page.FindPropertyRelative("specialRibbonExitsBook").boolValue = true;
+            page.FindPropertyRelative("ribbonReadyArtwork").stringValue = "";
+            page.FindPropertyRelative("ribbonReadyEvent").enumValueIndex = 1;
+            page.FindPropertyRelative("ribbonFadeDuration").floatValue = 0.25f;
+            // The event is a new serialized field; clear copied listeners on a new spread.
+            SerializedProperty eventProperty = page.FindPropertyRelative("onSpecialRibbonActivated");
+            SerializedProperty calls = eventProperty != null
+                ? eventProperty.FindPropertyRelative("m_PersistentCalls.m_Calls") : null;
+            if (calls != null) calls.ClearArray();
 
             page.isExpanded = true;
             listChanged = true;
@@ -168,6 +191,23 @@ public class IntroBookSpreadSequenceControllerEditor : Editor
                 pageObject, new GUIContent("Page GameObject"));
 
             EditorGUILayout.Space(5);
+            if (Fold(page.propertyPath + ".availability", "PAGE ACCESS & OPENING"))
+            {
+                EditorGUI.indentLevel++;
+                Field(page, "pageId", "Page ID");
+                Field(page, "availableFromStart", "Available From Start");
+                Field(page, "isOpeningSpread", "Opening Spread (No Back Navigation)");
+                Field(page, "autoAdvanceAfterInteractions", "Auto Advance After Interactions");
+                if (page.FindPropertyRelative("autoAdvanceAfterInteractions").boolValue)
+                {
+                    Field(page, "autoAdvanceAfterArtwork", "Wait For Artwork (Optional)");
+                    if (!string.IsNullOrWhiteSpace(page.FindPropertyRelative("autoAdvanceAfterArtwork").stringValue))
+                        Field(page, "autoAdvanceAfterEvent", "Wait For Event");
+                    Field(page, "autoAdvanceDelay", "Additional Delay");
+                }
+                EditorGUI.indentLevel--;
+            }
+            DrawRibbonSettings(page);
             DrawInteractKeys(page);
             if (listChanged)
             {
@@ -222,6 +262,9 @@ public class IntroBookSpreadSequenceControllerEditor : Editor
 
                 entry.FindPropertyRelative("shifts").ClearArray();
                 entry.FindPropertyRelative("steps").ClearArray();
+                entry.FindPropertyRelative("keepVisibleForBookSession").boolValue = false;
+                entry.FindPropertyRelative("keepVisibleWhenShared").boolValue = false;
+                entry.FindPropertyRelative("keepFinalStateOnRevisit").boolValue = false;
                 entry.FindPropertyRelative("waitForInteractKey").boolValue = false;
                 entry.FindPropertyRelative("interactionName").stringValue = "";
                 entry.FindPropertyRelative("dependencies").ClearArray();
@@ -252,6 +295,39 @@ public class IntroBookSpreadSequenceControllerEditor : Editor
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(3);
+    }
+
+    private void DrawRibbonSettings(SerializedProperty page)
+    {
+        if (!Fold(page.propertyPath + ".ribbons", "RIBBON GROUP (OPTIONAL)")) return;
+        EditorGUI.indentLevel++;
+        EditorGUILayout.HelpBox(
+            "Assign one parent group per spread (left or right), outside the Page GameObjects. " +
+            "The controller fades this parent and activates exactly one assigned child. " +
+            "An unassigned ribbon group preserves the original W/Continue behavior.",
+            MessageType.Info);
+        Field(page, "ribbonGroup", "Ribbon Group Parent");
+        if (page.FindPropertyRelative("ribbonGroup").objectReferenceValue != null)
+        {
+            Field(page, "specialRibbon", "Special Action Child");
+            Field(page, "pageTurnRibbon", "Page Turn Child (A / D)");
+            Field(page, "closeBookRibbon", "Close Book Child (E)");
+            Field(page, "ribbonReadyArtwork", "Reveal After Artwork (Optional)");
+            if (!string.IsNullOrWhiteSpace(page.FindPropertyRelative("ribbonReadyArtwork").stringValue))
+                Field(page, "ribbonReadyEvent", "Reveal After Event");
+            Field(page, "ribbonFadeDuration", "Ribbon Fade Duration");
+            Field(page, "useOneTimeSpecialRibbon", "Use One-Time Special Ribbon");
+            if (page.FindPropertyRelative("useOneTimeSpecialRibbon").boolValue)
+            {
+                EditorGUI.indentLevel++;
+                Field(page, "specialRibbonId", "Persistent Action ID");
+                Field(page, "specialRibbonKey", "Special Action Key");
+                Field(page, "specialRibbonExitsBook", "Exit Book On Action");
+                Field(page, "onSpecialRibbonActivated", "On Special Action (Optional)");
+                EditorGUI.indentLevel--;
+            }
+        }
+        EditorGUI.indentLevel--;
     }
 
     private void DrawInteractKeys(SerializedProperty page)
@@ -366,6 +442,19 @@ public class IntroBookSpreadSequenceControllerEditor : Editor
             if (Fold(entry.propertyPath + ".settings", "Settings"))
             {
                 EditorGUI.indentLevel++;
+                if (Fold(entry.propertyPath + ".persistence", "Persistence (Optional)"))
+                {
+                    EditorGUI.indentLevel++;
+                    Field(entry, "keepVisibleForBookSession", "Keep Visible For Book Session");
+                    Field(entry, "keepVisibleWhenShared", "Keep Visible On Shared Spreads");
+                    Field(entry, "keepFinalStateOnRevisit", "Keep Final State On Revisit");
+                    EditorGUILayout.HelpBox(
+                        "Book Session keeps a revealed target visible on every page. " +
+                        "Shared Spreads skips fading only when both adjacent spreads assign " +
+                        "the same target with that option on. Shared targets must be outside " +
+                        "individual Page GameObjects.", MessageType.None);
+                    EditorGUI.indentLevel--;
+                }
                 if (Fold(entry.propertyPath + ".interaction", "Interaction & Dependencies"))
                 {
                     EditorGUI.indentLevel++;

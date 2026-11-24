@@ -1143,18 +1143,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pages:
-  - name: Intro
+  - name: OpeningSpread
     pageObject: {fileID: 0}
     pagePrefab: {fileID: 0}
     artwork:
-    - name: OpenBook
-      graphic: {fileID: 0}
-      canvasGroup: {fileID: 1673249064}
+    - name: IntroLilytable
+      graphic: {fileID: 901514539}
+      canvasGroup: {fileID: 0}
       animation: 1
-      delay: 0.5
-      duration: 1
-      startingAlpha: 0
-      targetAlpha: 1
+      delay: 0
+      duration: 0.25
+      startingAlpha: 1
+      targetAlpha: 0
       startingColor: {r: 1, g: 1, b: 1, a: 1}
       shifts: []
       steps: []
@@ -1162,6 +1162,9 @@ MonoBehaviour:
       interactionName: Open Book
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1178,6 +1181,118 @@ MonoBehaviour:
       steamMaximumAlpha: 1
       steamCycleDuration: 2
       steamPhaseOffset: 0
+    - name: IntroClosedBook
+      graphic: {fileID: 0}
+      canvasGroup: {fileID: 329396904}
+      animation: 1
+      delay: 0
+      duration: 0.25
+      startingAlpha: 1
+      targetAlpha: 0
+      startingColor: {r: 1, g: 1, b: 1, a: 1}
+      shifts: []
+      steps: []
+      waitForInteractKey: 1
+      interactionName: Open Book
+      dependencies: []
+      specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
+      initialSFX: {fileID: 0}
+      initialVolume: 1
+      initialSFXTriggerAlpha: 0.9
+      ambientSFX: {fileID: 0}
+      ambientVolume: 1
+      ambientStartAlpha: 0.9
+      specialAnimation: 0
+      dewExitDelay: 0
+      dewExitDuration: 1
+      dewEndScale: 0.5
+      dewDropDistance: 30
+      steamGraphic: {fileID: 0}
+      steamMinimumAlpha: 0.65
+      steamMaximumAlpha: 1
+      steamCycleDuration: 2
+      steamPhaseOffset: 0
+    - name: IntroOpenBook
+      graphic: {fileID: 0}
+      canvasGroup: {fileID: 1673249064}
+      animation: 1
+      delay: 0.5
+      duration: 0.5
+      startingAlpha: 0
+      targetAlpha: 1
+      startingColor: {r: 1, g: 1, b: 1, a: 1}
+      shifts: []
+      steps: []
+      waitForInteractKey: 1
+      interactionName: Open Book
+      dependencies: []
+      specialDependencies: []
+      keepVisibleForBookSession: 1
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
+      initialSFX: {fileID: 0}
+      initialVolume: 1
+      initialSFXTriggerAlpha: 0.9
+      ambientSFX: {fileID: 0}
+      ambientVolume: 1
+      ambientStartAlpha: 0.9
+      specialAnimation: 0
+      dewExitDelay: 0
+      dewExitDuration: 1
+      dewEndScale: 0.5
+      dewDropDistance: 30
+      steamGraphic: {fileID: 0}
+      steamMinimumAlpha: 0.65
+      steamMaximumAlpha: 1
+      steamCycleDuration: 2
+      steamPhaseOffset: 0
+    interactKeys:
+    - name: Open Book
+      key: 101
+      promptGraphic: {fileID: 79214739}
+      promptCanvasGroup: {fileID: 0}
+      promptTiming: 0
+      afterArtwork: 
+      afterEvent: 1
+      promptDelay: 0
+      promptFadeIn: 0.25
+      promptFadeOut: 0.25
+      pressSFX: {fileID: 0}
+      pressVolume: 1
+    pageId: Opening
+    availableFromStart: 1
+    isOpeningSpread: 1
+    autoAdvanceAfterInteractions: 1
+    autoAdvanceAfterArtwork: IntroOpenBook
+    autoAdvanceAfterEvent: 1
+    autoAdvanceDelay: 0
+    requireInteractionsBeforeTurning: 1
+    replayInteractionsOnRevisit: 0
+    waitForArtworkBeforeTurning: 0
+    unlockArtworkName: 
+    unlockEvent: 1
+    unlockDelay: 0
+    ribbonGroup: {fileID: 0}
+    specialRibbon: {fileID: 0}
+    pageTurnRibbon: {fileID: 0}
+    closeBookRibbon: {fileID: 0}
+    useOneTimeSpecialRibbon: 0
+    specialRibbonId: 
+    specialRibbonKey: 119
+    specialRibbonExitsBook: 1
+    onSpecialRibbonActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    ribbonReadyArtwork: 
+    ribbonReadyEvent: 1
+    ribbonFadeDuration: 0.25
+  - name: CoverSpread
+    pageObject: {fileID: 0}
+    pagePrefab: {fileID: 0}
+    artwork:
     - name: Lilystool
       graphic: {fileID: 0}
       canvasGroup: {fileID: 1941654041}
@@ -1189,10 +1304,13 @@ MonoBehaviour:
       startingColor: {r: 1, g: 1, b: 1, a: 1}
       shifts: []
       steps: []
-      waitForInteractKey: 1
-      interactionName: Open Book
+      waitForInteractKey: 0
+      interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 1
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1220,10 +1338,13 @@ MonoBehaviour:
       startingColor: {r: 1, g: 1, b: 1, a: 1}
       shifts: []
       steps: []
-      waitForInteractKey: 1
+      waitForInteractKey: 0
       interactionName: Open Book
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1251,10 +1372,13 @@ MonoBehaviour:
       startingColor: {r: 1, g: 1, b: 1, a: 1}
       shifts: []
       steps: []
-      waitForInteractKey: 1
+      waitForInteractKey: 0
       interactionName: Open Book
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 1
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1282,10 +1406,13 @@ MonoBehaviour:
       startingColor: {r: 1, g: 1, b: 1, a: 1}
       shifts: []
       steps: []
-      waitForInteractKey: 1
+      waitForInteractKey: 0
       interactionName: Open Book
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 1
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1313,12 +1440,15 @@ MonoBehaviour:
       startingColor: {r: 1, g: 1, b: 1, a: 1}
       shifts: []
       steps: []
-      waitForInteractKey: 1
+      waitForInteractKey: 0
       interactionName: Open Book
       dependencies:
       - artworkName: Lilystool
         waitFor: 1
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1350,6 +1480,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1391,6 +1524,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1427,37 +1563,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
-      initialSFX: {fileID: 0}
-      initialVolume: 1
-      initialSFXTriggerAlpha: 0.9
-      ambientSFX: {fileID: 0}
-      ambientVolume: 1
-      ambientStartAlpha: 0.9
-      specialAnimation: 0
-      dewExitDelay: 0
-      dewExitDuration: 1
-      dewEndScale: 0.5
-      dewDropDistance: 30
-      steamGraphic: {fileID: 0}
-      steamMinimumAlpha: 0.65
-      steamMaximumAlpha: 1
-      steamCycleDuration: 2
-      steamPhaseOffset: 0
-    - name: Controls Ribbon
-      graphic: {fileID: 706501002}
-      canvasGroup: {fileID: 0}
-      animation: 1
-      delay: 1
-      duration: 1
-      startingAlpha: 0
-      targetAlpha: 1
-      startingColor: {r: 1, g: 1, b: 1, a: 1}
-      shifts: []
-      steps: []
-      waitForInteractKey: 1
-      interactionName: Brew Flower
-      dependencies: []
-      specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 1
+      keepFinalStateOnRevisit: 1
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1489,6 +1597,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1520,6 +1631,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1551,6 +1665,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1582,6 +1699,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1613,6 +1733,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1644,6 +1767,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1675,68 +1801,9 @@ MonoBehaviour:
       interactionName: Brew Flower
       dependencies: []
       specialDependencies: []
-      initialSFX: {fileID: 0}
-      initialVolume: 1
-      initialSFXTriggerAlpha: 0.9
-      ambientSFX: {fileID: 0}
-      ambientVolume: 1
-      ambientStartAlpha: 0.9
-      specialAnimation: 0
-      dewExitDelay: 0
-      dewExitDuration: 1
-      dewEndScale: 0.5
-      dewDropDistance: 30
-      steamGraphic: {fileID: 0}
-      steamMinimumAlpha: 0.65
-      steamMaximumAlpha: 1
-      steamCycleDuration: 2
-      steamPhaseOffset: 0
-    - name: Closed Book
-      graphic: {fileID: 0}
-      canvasGroup: {fileID: 329396904}
-      animation: 1
-      delay: 0
-      duration: 0.25
-      startingAlpha: 1
-      targetAlpha: 0
-      startingColor: {r: 1, g: 1, b: 1, a: 1}
-      shifts: []
-      steps: []
-      waitForInteractKey: 1
-      interactionName: Open Book
-      dependencies: []
-      specialDependencies: []
-      initialSFX: {fileID: 0}
-      initialVolume: 1
-      initialSFXTriggerAlpha: 0.9
-      ambientSFX: {fileID: 0}
-      ambientVolume: 1
-      ambientStartAlpha: 0.9
-      specialAnimation: 0
-      dewExitDelay: 0
-      dewExitDuration: 1
-      dewEndScale: 0.5
-      dewDropDistance: 30
-      steamGraphic: {fileID: 0}
-      steamMinimumAlpha: 0.65
-      steamMaximumAlpha: 1
-      steamCycleDuration: 2
-      steamPhaseOffset: 0
-    - name: Lilytable
-      graphic: {fileID: 901514539}
-      canvasGroup: {fileID: 0}
-      animation: 1
-      delay: 0
-      duration: 0.25
-      startingAlpha: 1
-      targetAlpha: 0
-      startingColor: {r: 1, g: 1, b: 1, a: 1}
-      shifts: []
-      steps: []
-      waitForInteractKey: 1
-      interactionName: Open Book
-      dependencies: []
-      specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1754,18 +1821,6 @@ MonoBehaviour:
       steamCycleDuration: 2
       steamPhaseOffset: 0
     interactKeys:
-    - name: Open Book
-      key: 101
-      promptGraphic: {fileID: 79214739}
-      promptCanvasGroup: {fileID: 0}
-      promptTiming: 0
-      afterArtwork: 
-      afterEvent: 1
-      promptDelay: 0.5
-      promptFadeIn: 0.25
-      promptFadeOut: 0.25
-      pressSFX: {fileID: 0}
-      pressVolume: 1
     - name: Brew Flower
       key: 101
       promptGraphic: {fileID: 181424638}
@@ -1778,12 +1833,33 @@ MonoBehaviour:
       promptFadeOut: 0.25
       pressSFX: {fileID: 0}
       pressVolume: 1
+    pageId: Cover
+    availableFromStart: 1
+    isOpeningSpread: 0
+    autoAdvanceAfterInteractions: 0
+    autoAdvanceAfterArtwork: 
+    autoAdvanceAfterEvent: 1
+    autoAdvanceDelay: 0
     requireInteractionsBeforeTurning: 0
     replayInteractionsOnRevisit: 0
     waitForArtworkBeforeTurning: 0
     unlockArtworkName: 
     unlockEvent: 1
     unlockDelay: 0
+    ribbonGroup: {fileID: 1944124162}
+    specialRibbon: {fileID: 0}
+    pageTurnRibbon: {fileID: 706501000}
+    closeBookRibbon: {fileID: 1575346639}
+    useOneTimeSpecialRibbon: 0
+    specialRibbonId: 
+    specialRibbonKey: 119
+    specialRibbonExitsBook: 1
+    onSpecialRibbonActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    ribbonReadyArtwork: 
+    ribbonReadyEvent: 1
+    ribbonFadeDuration: 0.25
   - name: Florilegium Spread
     pageObject: {fileID: 2104855302}
     pagePrefab: {fileID: 0}
@@ -1803,6 +1879,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1834,6 +1913,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1865,6 +1947,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1896,6 +1981,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1927,37 +2015,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
-      initialSFX: {fileID: 0}
-      initialVolume: 1
-      initialSFXTriggerAlpha: 0.9
-      ambientSFX: {fileID: 0}
-      ambientVolume: 1
-      ambientStartAlpha: 0.9
-      specialAnimation: 0
-      dewExitDelay: 0
-      dewExitDuration: 1
-      dewEndScale: 0.5
-      dewDropDistance: 30
-      steamGraphic: {fileID: 0}
-      steamMinimumAlpha: 0.65
-      steamMaximumAlpha: 1
-      steamCycleDuration: 2
-      steamPhaseOffset: 0
-    - name: FlorilegiumControlsRibbon
-      graphic: {fileID: 706501002}
-      canvasGroup: {fileID: 0}
-      animation: 1
-      delay: 1
-      duration: 0.25
-      startingAlpha: 0
-      targetAlpha: 0.8
-      startingColor: {r: 1, g: 1, b: 1, a: 1}
-      shifts: []
-      steps: []
-      waitForInteractKey: 0
-      interactionName: 
-      dependencies: []
-      specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -1989,6 +2049,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2007,7 +2070,7 @@ MonoBehaviour:
       steamPhaseOffset: 0
     - name: Lilystool
       graphic: {fileID: 0}
-      canvasGroup: {fileID: 839289973}
+      canvasGroup: {fileID: 1941654041}
       animation: 1
       delay: 0
       duration: 0.25
@@ -2020,6 +2083,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 1
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2038,7 +2104,7 @@ MonoBehaviour:
       steamPhaseOffset: 0
     - name: Teapot
       graphic: {fileID: 0}
-      canvasGroup: {fileID: 802459405}
+      canvasGroup: {fileID: 650939660}
       animation: 1
       delay: 0
       duration: 0.5
@@ -2051,6 +2117,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2068,7 +2137,7 @@ MonoBehaviour:
       steamCycleDuration: 2
       steamPhaseOffset: 0
     - name: Steam1
-      graphic: {fileID: 1199038800}
+      graphic: {fileID: 1040812856}
       canvasGroup: {fileID: 0}
       animation: 1
       delay: 0.75
@@ -2082,6 +2151,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 1
+      keepFinalStateOnRevisit: 1
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2099,7 +2171,7 @@ MonoBehaviour:
       steamCycleDuration: 2
       steamPhaseOffset: 0
     - name: Steam2
-      graphic: {fileID: 425999980}
+      graphic: {fileID: 1237832998}
       canvasGroup: {fileID: 0}
       animation: 1
       delay: 1
@@ -2113,6 +2185,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 1
+      keepFinalStateOnRevisit: 1
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2129,12 +2204,12 @@ MonoBehaviour:
       steamMaximumAlpha: 1
       steamCycleDuration: 1.75
       steamPhaseOffset: 0
-    - name: OpenBook
-      graphic: {fileID: 0}
-      canvasGroup: {fileID: 1673249064}
+    - name: BrightTeapot
+      graphic: {fileID: 2071110231}
+      canvasGroup: {fileID: 0}
       animation: 1
       delay: 0
-      duration: 0.1
+      duration: 1
       startingAlpha: 0
       targetAlpha: 1
       startingColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2144,6 +2219,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 1
+      keepFinalStateOnRevisit: 1
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2161,12 +2239,33 @@ MonoBehaviour:
       steamCycleDuration: 2
       steamPhaseOffset: 0
     interactKeys: []
+    pageId: 
+    availableFromStart: 1
+    isOpeningSpread: 0
+    autoAdvanceAfterInteractions: 0
+    autoAdvanceAfterArtwork: 
+    autoAdvanceAfterEvent: 1
+    autoAdvanceDelay: 0
     requireInteractionsBeforeTurning: 1
     replayInteractionsOnRevisit: 0
     waitForArtworkBeforeTurning: 0
     unlockArtworkName: 
     unlockEvent: 1
     unlockDelay: 0
+    ribbonGroup: {fileID: 1944124162}
+    specialRibbon: {fileID: 0}
+    pageTurnRibbon: {fileID: 706501000}
+    closeBookRibbon: {fileID: 1575346639}
+    useOneTimeSpecialRibbon: 0
+    specialRibbonId: 
+    specialRibbonKey: 119
+    specialRibbonExitsBook: 1
+    onSpecialRibbonActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    ribbonReadyArtwork: 
+    ribbonReadyEvent: 1
+    ribbonFadeDuration: 0.25
   - name: CrossingSpread
     pageObject: {fileID: 888285278}
     pagePrefab: {fileID: 0}
@@ -2196,6 +2295,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2237,6 +2339,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2278,6 +2383,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2319,6 +2427,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2360,6 +2471,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2401,6 +2515,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2432,6 +2549,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2463,6 +2583,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2494,6 +2617,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2525,6 +2651,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2556,6 +2685,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2587,6 +2719,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2618,6 +2753,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2649,6 +2787,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2680,6 +2821,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2711,37 +2855,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
-      initialSFX: {fileID: 0}
-      initialVolume: 1
-      initialSFXTriggerAlpha: 0.9
-      ambientSFX: {fileID: 0}
-      ambientVolume: 1
-      ambientStartAlpha: 0.9
-      specialAnimation: 0
-      dewExitDelay: 0
-      dewExitDuration: 1
-      dewEndScale: 0.5
-      dewDropDistance: 30
-      steamGraphic: {fileID: 0}
-      steamMinimumAlpha: 0.65
-      steamMaximumAlpha: 1
-      steamCycleDuration: 2
-      steamPhaseOffset: 0
-    - name: Controls Ribbon
-      graphic: {fileID: 706501002}
-      canvasGroup: {fileID: 0}
-      animation: 1
-      delay: 3.05
-      duration: 0.25
-      startingAlpha: 0
-      targetAlpha: 0.8
-      startingColor: {r: 1, g: 1, b: 1, a: 1}
-      shifts: []
-      steps: []
-      waitForInteractKey: 0
-      interactionName: 
-      dependencies: []
-      specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2773,6 +2889,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2790,12 +2909,33 @@ MonoBehaviour:
       steamCycleDuration: 2
       steamPhaseOffset: 0
     interactKeys: []
+    pageId: 
+    availableFromStart: 1
+    isOpeningSpread: 0
+    autoAdvanceAfterInteractions: 0
+    autoAdvanceAfterArtwork: 
+    autoAdvanceAfterEvent: 1
+    autoAdvanceDelay: 0
     requireInteractionsBeforeTurning: 1
     replayInteractionsOnRevisit: 0
     waitForArtworkBeforeTurning: 0
     unlockArtworkName: 
     unlockEvent: 1
     unlockDelay: 0
+    ribbonGroup: {fileID: 1944124162}
+    specialRibbon: {fileID: 0}
+    pageTurnRibbon: {fileID: 706501000}
+    closeBookRibbon: {fileID: 1575346639}
+    useOneTimeSpecialRibbon: 0
+    specialRibbonId: 
+    specialRibbonKey: 119
+    specialRibbonExitsBook: 1
+    onSpecialRibbonActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    ribbonReadyArtwork: 
+    ribbonReadyEvent: 1
+    ribbonFadeDuration: 0.25
   - name: BestowingSpread1
     pageObject: {fileID: 114930259}
     pagePrefab: {fileID: 0}
@@ -2815,6 +2955,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2846,6 +2989,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2877,6 +3023,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2908,6 +3057,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2939,6 +3091,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -2970,6 +3125,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3001,6 +3159,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3032,6 +3193,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3063,37 +3227,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
-      initialSFX: {fileID: 0}
-      initialVolume: 1
-      initialSFXTriggerAlpha: 0.9
-      ambientSFX: {fileID: 0}
-      ambientVolume: 1
-      ambientStartAlpha: 0.9
-      specialAnimation: 0
-      dewExitDelay: 0
-      dewExitDuration: 1
-      dewEndScale: 0.5
-      dewDropDistance: 30
-      steamGraphic: {fileID: 0}
-      steamMinimumAlpha: 0.65
-      steamMaximumAlpha: 1
-      steamCycleDuration: 2
-      steamPhaseOffset: 0
-    - name: Bestowing1ControlsRibbon
-      graphic: {fileID: 1677378234}
-      canvasGroup: {fileID: 0}
-      animation: 1
-      delay: 2.75
-      duration: 0.25
-      startingAlpha: 0
-      targetAlpha: 0.8
-      startingColor: {r: 1, g: 1, b: 1, a: 1}
-      shifts: []
-      steps: []
-      waitForInteractKey: 0
-      interactionName: 
-      dependencies: []
-      specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3125,6 +3261,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3142,12 +3281,33 @@ MonoBehaviour:
       steamCycleDuration: 2
       steamPhaseOffset: 0
     interactKeys: []
+    pageId: 
+    availableFromStart: 1
+    isOpeningSpread: 0
+    autoAdvanceAfterInteractions: 0
+    autoAdvanceAfterArtwork: 
+    autoAdvanceAfterEvent: 1
+    autoAdvanceDelay: 0
     requireInteractionsBeforeTurning: 1
     replayInteractionsOnRevisit: 0
     waitForArtworkBeforeTurning: 0
     unlockArtworkName: 
     unlockEvent: 1
     unlockDelay: 0
+    ribbonGroup: {fileID: 618904017}
+    specialRibbon: {fileID: 0}
+    pageTurnRibbon: {fileID: 1930003085}
+    closeBookRibbon: {fileID: 218949140}
+    useOneTimeSpecialRibbon: 0
+    specialRibbonId: GainWand
+    specialRibbonKey: 119
+    specialRibbonExitsBook: 1
+    onSpecialRibbonActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    ribbonReadyArtwork: 
+    ribbonReadyEvent: 1
+    ribbonFadeDuration: 0.25
   - name: BestowingSpread2
     pageObject: {fileID: 2086827479}
     pagePrefab: {fileID: 0}
@@ -3167,6 +3327,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3198,6 +3361,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3229,6 +3395,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3260,6 +3429,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3291,6 +3463,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3322,6 +3497,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3353,6 +3531,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3384,6 +3565,9 @@ MonoBehaviour:
       interactionName: 
       dependencies: []
       specialDependencies: []
+      keepVisibleForBookSession: 0
+      keepVisibleWhenShared: 0
+      keepFinalStateOnRevisit: 0
       initialSFX: {fileID: 0}
       initialVolume: 1
       initialSFXTriggerAlpha: 0.9
@@ -3400,129 +3584,47 @@ MonoBehaviour:
       steamMaximumAlpha: 1
       steamCycleDuration: 2
       steamPhaseOffset: 0
-    - name: Bestowing2 Controls
-      graphic: {fileID: 706501002}
-      canvasGroup: {fileID: 0}
-      animation: 1
-      delay: 1.5
-      duration: 0.25
-      startingAlpha: 0
-      targetAlpha: 0.8
-      startingColor: {r: 1, g: 1, b: 1, a: 1}
-      shifts: []
-      steps: []
-      waitForInteractKey: 0
-      interactionName: 
-      dependencies: []
-      specialDependencies: []
-      initialSFX: {fileID: 0}
-      initialVolume: 1
-      initialSFXTriggerAlpha: 0.9
-      ambientSFX: {fileID: 0}
-      ambientVolume: 1
-      ambientStartAlpha: 0.9
-      specialAnimation: 0
-      dewExitDelay: 0
-      dewExitDuration: 1
-      dewEndScale: 0.5
-      dewDropDistance: 30
-      steamGraphic: {fileID: 0}
-      steamMinimumAlpha: 0.65
-      steamMaximumAlpha: 1
-      steamCycleDuration: 2
-      steamPhaseOffset: 0
-    - name: OpenBook
-      graphic: {fileID: 0}
-      canvasGroup: {fileID: 1673249064}
-      animation: 1
-      delay: 0
-      duration: 0.1
-      startingAlpha: 0
-      targetAlpha: 1
-      startingColor: {r: 1, g: 1, b: 1, a: 1}
-      shifts: []
-      steps: []
-      waitForInteractKey: 0
-      interactionName: 
-      dependencies: []
-      specialDependencies: []
-      initialSFX: {fileID: 0}
-      initialVolume: 1
-      initialSFXTriggerAlpha: 0.9
-      ambientSFX: {fileID: 0}
-      ambientVolume: 1
-      ambientStartAlpha: 0.9
-      specialAnimation: 0
-      dewExitDelay: 0
-      dewExitDuration: 1
-      dewEndScale: 0.5
-      dewDropDistance: 30
-      steamGraphic: {fileID: 0}
-      steamMinimumAlpha: 0.65
-      steamMaximumAlpha: 1
-      steamCycleDuration: 2
-      steamPhaseOffset: 0
-    interactKeys: []
+    interactKeys:
+    - name: Wand
+      key: 119
+      promptGraphic: {fileID: 0}
+      promptCanvasGroup: {fileID: 915915232}
+      promptTiming: 1
+      afterArtwork: Bestowing2 SilvermistFront
+      afterEvent: 1
+      promptDelay: 0.5
+      promptFadeIn: 0.25
+      promptFadeOut: 0.25
+      pressSFX: {fileID: 0}
+      pressVolume: 1
+    pageId: 
+    availableFromStart: 1
+    isOpeningSpread: 0
+    autoAdvanceAfterInteractions: 0
+    autoAdvanceAfterArtwork: 
+    autoAdvanceAfterEvent: 1
+    autoAdvanceDelay: 0
     requireInteractionsBeforeTurning: 1
     replayInteractionsOnRevisit: 0
     waitForArtworkBeforeTurning: 0
     unlockArtworkName: 
     unlockEvent: 1
     unlockDelay: 0
+    ribbonGroup: {fileID: 1944124162}
+    specialRibbon: {fileID: 747011874}
+    pageTurnRibbon: {fileID: 706501000}
+    closeBookRibbon: {fileID: 1575346639}
+    useOneTimeSpecialRibbon: 1
+    specialRibbonId: GainWand
+    specialRibbonKey: 119
+    specialRibbonExitsBook: 1
+    onSpecialRibbonActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    ribbonReadyArtwork: 
+    ribbonReadyEvent: 1
+    ribbonFadeDuration: 0.25
   visitedPagesController: {fileID: 0}
-  useLegacyIntroduction: 0
-  introController: {fileID: 0}
-  firstSpreadArrangement:
-  - name: FlorilegiumLilystool
-    target: {fileID: 1681364766}
-    delay: 0.5
-    duration: 0.5
-    targetAlpha: 1
-  - name: FlorilegiumDew
-    target: {fileID: 932923284}
-    delay: 0.5
-    duration: 0.5
-    targetAlpha: 1
-  - name: FlorigeiumTeapot
-    target: {fileID: 991406486}
-    delay: 0.5
-    duration: 0.5
-    targetAlpha: 0.243
-  - name: FlorilegiumTeapotBright
-    target: {fileID: 2071110229}
-    delay: 0.75
-    duration: 0.5
-    targetAlpha: 1
-  - name: FlorilegiumTeapotShadow
-    target: {fileID: 1410256017}
-    delay: 0.75
-    duration: 0.5
-    targetAlpha: 0.246
-  - name: FlorilegiumTeapotSteam1
-    target: {fileID: 1237832996}
-    delay: 1
-    duration: 0.5
-    targetAlpha: 1
-  - name: FlorilegiumTeapotSteam2
-    target: {fileID: 1040812854}
-    delay: 1.2
-    duration: 0.5
-    targetAlpha: 1
-  - name: FlorilegiumCandle
-    target: {fileID: 568610926}
-    delay: 0.75
-    duration: 0.5
-    targetAlpha: 1
-  - name: FlorilegiumCandleShadow
-    target: {fileID: 170935060}
-    delay: 0.75
-    duration: 0.5
-    targetAlpha: 0.242
-  - name: FlorigeiumCandleFlame
-    target: {fileID: 488019128}
-    delay: 0.9
-    duration: 0.5
-    targetAlpha: 0.243
   startSpreadIndex: 0
   pageTurnCooldown: 0.12
   pageTurnFadeDuration: 0.5
@@ -3540,6 +3642,7 @@ MonoBehaviour:
   previousPageKey1: 276
   previousPageKey2: 97
   confirmKey: 119
+  closeBookKey: 101
   requireLastSpreadForConfirm: 1
   preFadeDelay: 0
   fadeDuration: 1.5
@@ -3956,11 +4059,11 @@ RectTransform:
   m_LocalScale: {x: 1.417401, y: 1.7548774, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1999999502}
+  m_Father: {fileID: 106479779}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 5, y: 141.00005}
+  m_AnchoredPosition: {x: 4.9999747, y: 316}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &79214739
@@ -3976,7 +4079,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4457,6 +4560,7 @@ RectTransform:
   - {fileID: 719308937}
   - {fileID: 329396901}
   - {fileID: 1196012928}
+  - {fileID: 79214738}
   - {fileID: 1673249061}
   - {fileID: 1736933194}
   - {fileID: 1401103490}
@@ -4471,8 +4575,8 @@ RectTransform:
   - {fileID: 1796562328}
   - {fileID: 1961139840}
   - {fileID: 2061488545}
-  - {fileID: 706501001}
-  - {fileID: 1677378230}
+  - {fileID: 1944124163}
+  - {fileID: 618904018}
   - {fileID: 285175374}
   - {fileID: 244200548}
   - {fileID: 796762529}
@@ -5762,6 +5866,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 202903336}
   m_CullTransparentMesh: 0
+--- !u!1 &218949140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 218949141}
+  - component: {fileID: 218949143}
+  - component: {fileID: 218949142}
+  m_Layer: 5
+  m_Name: CloseBook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &218949141
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218949140}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.10837919, y: 0.35674208, z: 0.35581312}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1010902460}
+  m_Father: {fileID: 618904018}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.19999695, y: 0}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &218949142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218949140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 973f9214abb19034a942a9c924ffabfd, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &218949143
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218949140}
+  m_CullTransparentMesh: 0
 --- !u!1 &239535480
 GameObject:
   m_ObjectHideFlags: 0
@@ -5928,6 +6108,154 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &253505858
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 253505859}
+  - component: {fileID: 253505863}
+  - component: {fileID: 253505862}
+  - component: {fileID: 253505861}
+  - component: {fileID: 253505860}
+  m_Layer: 5
+  m_Name: Lightmote3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &253505859
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253505858}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.04298242, y: 0.067744784, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 915915231}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 4.074098, y: 6.8668}
+  m_SizeDelta: {x: 70, y: 70}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &253505860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253505858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3b41e11f8e24747a8b74425baf4dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSpeed: 6.5
+  scaleAmount: 0.5
+  fadeAmount: 0.5
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
+--- !u!212 &253505861
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253505858}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &253505862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253505858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -421924884, guid: 807582a53ef9d4185affe23135150601, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &253505863
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253505858}
+  m_CullTransparentMesh: 0
 --- !u!1 &264067491
 GameObject:
   m_ObjectHideFlags: 0
@@ -6373,7 +6701,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302065933}
   m_CullTransparentMesh: 0
---- !u!1 &305875301
+--- !u!1 &305705125
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6381,42 +6709,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 305875302}
-  - component: {fileID: 305875304}
-  - component: {fileID: 305875303}
+  - component: {fileID: 305705126}
+  - component: {fileID: 305705128}
+  - component: {fileID: 305705127}
   m_Layer: 5
-  m_Name: Shadow
+  m_Name: GainWandText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &305875302
+--- !u!224 &305705126
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305875301}
-  m_LocalRotation: {x: -0, y: -0, z: -0.1825863, w: 0.9831898}
+  m_GameObject: {fileID: 305705125}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.709841, y: 1.0868417, z: 1.15146}
+  m_LocalScale: {x: 1.1697828, y: 0.75400513, z: 1.1275012}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1470622802}
+  m_Father: {fileID: 747011875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -1, y: 37}
-  m_SizeDelta: {x: 70, y: 70}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2, y: -13}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &305875303
+--- !u!114 &305705127
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305875301}
+  m_GameObject: {fileID: 305705125}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -6430,7 +6758,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7b74538f4222a694eaa5f4d7c94ce4e1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c698194f00df2564f9172982120cc0db, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6440,13 +6768,13 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &305875304
+--- !u!222 &305705128
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305875301}
+  m_GameObject: {fileID: 305705125}
   m_CullTransparentMesh: 0
 --- !u!1 &310710091
 GameObject:
@@ -7870,6 +8198,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 420122340}
   m_CullTransparentMesh: 0
+--- !u!1 &425716724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 425716725}
+  - component: {fileID: 425716727}
+  - component: {fileID: 425716726}
+  m_Layer: 5
+  m_Name: TurnPageText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &425716725
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425716724}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.2071313, y: 0.7780789, z: 1.1635}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1930003086}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 8, y: -13}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &425716726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425716724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 5f258fa0f31c66542b4f9ec10040cb20, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &425716727
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425716724}
+  m_CullTransparentMesh: 0
 --- !u!1 &425999978
 GameObject:
   m_ObjectHideFlags: 0
@@ -8890,6 +9293,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 588444961}
   m_CullTransparentMesh: 0
+--- !u!1 &618904017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 618904018}
+  - component: {fileID: 618904019}
+  m_Layer: 0
+  m_Name: RightRibbonGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &618904018
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618904017}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1930003086}
+  - {fileID: 747011875}
+  - {fileID: 218949141}
+  m_Father: {fileID: 106479779}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 101.58997, y: -182.99995}
+  m_SizeDelta: {x: 115.23921, y: 80.06753}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &618904019
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618904017}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &620956304
 GameObject:
   m_ObjectHideFlags: 0
@@ -9221,6 +9675,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 654007245}
+  m_CullTransparentMesh: 0
+--- !u!1 &669420539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 669420540}
+  - component: {fileID: 669420542}
+  - component: {fileID: 669420541}
+  m_Layer: 5
+  m_Name: WandStem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &669420540
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669420539}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: -0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2639506, y: 0.013007163, z: 0.11743792}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 915915231}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0.02675438, y: -2}
+  m_SizeDelta: {x: 70, y: 70}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &669420541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669420539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -686936800, guid: 7ec688fc7bc1c4ba78a981bc29d31055, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &669420542
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669420539}
   m_CullTransparentMesh: 0
 --- !u!1 &675987676
 GameObject:
@@ -9585,7 +10114,7 @@ GameObject:
   - component: {fileID: 706501003}
   - component: {fileID: 706501002}
   m_Layer: 5
-  m_Name: ControlsRibbonLeft
+  m_Name: TurnPageRibbon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9600,14 +10129,15 @@ RectTransform:
   m_GameObject: {fileID: 706501000}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.10837921, y: 0.3007343, z: 0.35581318}
+  m_LocalScale: {x: 0.1083792, y: 0.3567421, z: 0.35581315}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 106479779}
+  m_Children:
+  - {fileID: 2099171452}
+  m_Father: {fileID: 1944124163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -95.61, y: -193}
+  m_AnchoredPosition: {x: 0, y: 11}
   m_SizeDelta: {x: 1059.6056, y: 224.4409}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &706501002
@@ -9623,14 +10153,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 558e0d13eb262f2469702df319502c51, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 973f9214abb19034a942a9c924ffabfd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9943,7 +10473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &721340040
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9953,7 +10483,7 @@ RectTransform:
   m_GameObject: {fileID: 721340039}
   m_LocalRotation: {x: -0, y: -0, z: 0.98919374, w: 0.14661485}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.19883874, y: 0.30005276, z: 0.10336792}
+  m_LocalScale: {x: 0.34553477, y: 0.52142084, z: 0.17962901}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1717703352}
@@ -9961,7 +10491,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 163.138}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 5.8, y: 32.2}
+  m_AnchoredPosition: {x: -19, y: 46}
   m_SizeDelta: {x: 73.63349, y: 56.74278}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &721340041
@@ -10048,7 +10578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10072,6 +10602,82 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 721340039}
+  m_CullTransparentMesh: 0
+--- !u!1 &747011874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 747011875}
+  - component: {fileID: 747011877}
+  - component: {fileID: 747011876}
+  m_Layer: 5
+  m_Name: GainWand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &747011875
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747011874}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.10837919, y: 0.35674208, z: 0.35581312}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 305705126}
+  m_Father: {fileID: 618904018}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.19999695, y: 0}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &747011876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747011874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 973f9214abb19034a942a9c924ffabfd, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &747011877
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747011874}
   m_CullTransparentMesh: 0
 --- !u!1 &754989952
 GameObject:
@@ -11861,6 +12467,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901514537}
   m_CullTransparentMesh: 0
+--- !u!1 &915915230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 915915231}
+  - component: {fileID: 915915232}
+  m_Layer: 5
+  m_Name: Wand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &915915231
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915915230}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.0653273, y: 1.1251984, z: 1.065327}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1483697585}
+  - {fileID: 1271242337}
+  - {fileID: 1326512921}
+  - {fileID: 253505859}
+  - {fileID: 669420540}
+  m_Father: {fileID: 2086827480}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 21.898453, y: -15.776283}
+  m_SizeDelta: {x: 9.84311, y: 18.05473}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &915915232
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915915230}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &930823817
 GameObject:
   m_ObjectHideFlags: 0
@@ -12540,6 +13199,156 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &998489344
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 998489345}
+  - component: {fileID: 998489347}
+  - component: {fileID: 998489346}
+  m_Layer: 5
+  m_Name: GainWandText (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &998489345
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998489344}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.1697829, y: 0.75400513, z: 1.1275012}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1575346640}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2, y: -13}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &998489346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998489344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 9ce1227dab81956459b572be8969f7c8, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &998489347
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998489344}
+  m_CullTransparentMesh: 0
+--- !u!1 &1010902459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1010902460}
+  - component: {fileID: 1010902462}
+  - component: {fileID: 1010902461}
+  m_Layer: 5
+  m_Name: GainWandText (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1010902460
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010902459}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.1697829, y: 0.75400513, z: 1.1275012}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 218949141}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2, y: -13}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1010902461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010902459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 9ce1227dab81956459b572be8969f7c8, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1010902462
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010902459}
+  m_CullTransparentMesh: 0
 --- !u!1 &1016970786
 GameObject:
   m_ObjectHideFlags: 0
@@ -15813,6 +16622,154 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1271242336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1271242337}
+  - component: {fileID: 1271242341}
+  - component: {fileID: 1271242340}
+  - component: {fileID: 1271242339}
+  - component: {fileID: 1271242338}
+  m_Layer: 5
+  m_Name: Lightmote1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1271242337
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271242336}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.043221634, y: 0.06812181, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 915915231}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -2.6, y: 15.946}
+  m_SizeDelta: {x: 70, y: 70}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1271242338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271242336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3b41e11f8e24747a8b74425baf4dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSpeed: 7
+  scaleAmount: 0.4
+  fadeAmount: 0.5
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
+--- !u!212 &1271242339
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271242336}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &1271242340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271242336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -421924884, guid: 807582a53ef9d4185affe23135150601, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1271242341
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271242336}
+  m_CullTransparentMesh: 0
 --- !u!1 &1273297128
 GameObject:
   m_ObjectHideFlags: 0
@@ -16303,6 +17260,154 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322664336}
+  m_CullTransparentMesh: 0
+--- !u!1 &1326512920
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1326512921}
+  - component: {fileID: 1326512925}
+  - component: {fileID: 1326512924}
+  - component: {fileID: 1326512923}
+  - component: {fileID: 1326512922}
+  m_Layer: 5
+  m_Name: Lightmote2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1326512921
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326512920}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.03328082, y: 0.05245404, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 915915231}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 2.3425982, y: 3.7078}
+  m_SizeDelta: {x: 70, y: 70}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1326512922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326512920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3b41e11f8e24747a8b74425baf4dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSpeed: 6
+  scaleAmount: 0.45
+  fadeAmount: 0.5
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
+--- !u!212 &1326512923
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326512920}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &1326512924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326512920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -421924884, guid: 807582a53ef9d4185affe23135150601, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1326512925
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326512920}
   m_CullTransparentMesh: 0
 --- !u!1 &1341845006
 GameObject:
@@ -17582,7 +18687,6 @@ RectTransform:
   m_Children:
   - {fileID: 793594642}
   - {fileID: 1944255805}
-  - {fileID: 305875302}
   m_Father: {fileID: 650939659}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.979}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -17676,6 +18780,154 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480362256}
+  m_CullTransparentMesh: 0
+--- !u!1 &1483697584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1483697585}
+  - component: {fileID: 1483697589}
+  - component: {fileID: 1483697588}
+  - component: {fileID: 1483697587}
+  - component: {fileID: 1483697586}
+  m_Layer: 5
+  m_Name: WandLit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1483697585
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483697584}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1336771, y: 0.3181855, z: 0.116413474}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 915915231}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -0, y: 9.027365}
+  m_SizeDelta: {x: 73.63349, y: 56.74278}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1483697586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483697584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3b41e11f8e24747a8b74425baf4dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSpeed: 6
+  scaleAmount: 0.1
+  fadeAmount: 0.3
+  externalScaleMultiplier: 1
+  externalSpeedMultiplier: 1
+  useExternalBaseScale: 0
+  useExternalBaseColor: 0
+--- !u!212 &1483697587
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483697584}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &1483697588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483697584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 1993295943, guid: fcf33725374d74a48846164d18ea5236, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1483697589
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483697584}
   m_CullTransparentMesh: 0
 --- !u!1 &1488963310
 GameObject:
@@ -18019,6 +19271,82 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534612997}
+  m_CullTransparentMesh: 0
+--- !u!1 &1540562364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1540562365}
+  - component: {fileID: 1540562367}
+  - component: {fileID: 1540562366}
+  m_Layer: 5
+  m_Name: GainWand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1540562365
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540562364}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1083792, y: 0.3567421, z: 0.35581315}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1648823573}
+  m_Father: {fileID: 1944124163}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.4, y: 10.999996}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1540562366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540562364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 973f9214abb19034a942a9c924ffabfd, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1540562367
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540562364}
   m_CullTransparentMesh: 0
 --- !u!1 &1544110101
 GameObject:
@@ -18525,6 +19853,82 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1572641251}
+  m_CullTransparentMesh: 0
+--- !u!1 &1575346639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1575346640}
+  - component: {fileID: 1575346642}
+  - component: {fileID: 1575346641}
+  m_Layer: 5
+  m_Name: CloseBook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1575346640
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575346639}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1083792, y: 0.3567421, z: 0.35581315}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 998489345}
+  m_Father: {fileID: 1944124163}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.40000913, y: 10.999996}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1575346641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575346639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 973f9214abb19034a942a9c924ffabfd, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1575346642
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575346639}
   m_CullTransparentMesh: 0
 --- !u!1 &1583491333
 GameObject:
@@ -19039,6 +20443,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1646055127}
   m_CullTransparentMesh: 0
+--- !u!1 &1648823572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1648823573}
+  - component: {fileID: 1648823575}
+  - component: {fileID: 1648823574}
+  m_Layer: 5
+  m_Name: GainWandText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1648823573
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648823572}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.1697828, y: 0.75400513, z: 1.1275012}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1540562365}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2, y: -13}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1648823574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648823572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: c698194f00df2564f9172982120cc0db, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1648823575
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648823572}
+  m_CullTransparentMesh: 0
 --- !u!1 &1652175726
 GameObject:
   m_ObjectHideFlags: 0
@@ -19169,81 +20648,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!1 &1677378229
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1677378230}
-  - component: {fileID: 1677378233}
-  - component: {fileID: 1677378234}
-  m_Layer: 5
-  m_Name: ControlsRibbonRight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1677378230
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677378229}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.10837921, y: 0.3007343, z: 0.35581318}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 106479779}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 98.91, y: -193.76}
-  m_SizeDelta: {x: 1059.6056, y: 224.4409}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &1677378233
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677378229}
-  m_CullTransparentMesh: 0
---- !u!114 &1677378234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677378229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 558e0d13eb262f2469702df319502c51, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1681364766
 GameObject:
   m_ObjectHideFlags: 0
@@ -19875,7 +21279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -21326,7 +22730,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.06
   m_Text: The Petalfolk recognized the new Keeper once their cap had fully flowered.
-    A teaparty held by the Moonpetals, The Bestowing brimmed with blended sachets
+    A teaparty held by the Moonpetals, The Bestowing, brimmed with blended sachets
     wisked by the Berrypetals. Teatime began with candlelit readings of The Florilegium,
     Crossing, and Bestowing.
 --- !u!222 &1884244520
@@ -21442,7 +22846,7 @@ RectTransform:
   m_GameObject: {fileID: 1892381213}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.9128275, y: 1.9837072, z: 0.9208284}
+  m_LocalScale: {x: 3.4796576, y: 1.4050202, z: 0.6522044}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1497456178}
@@ -21450,7 +22854,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 177.64, y: 84}
+  m_AnchoredPosition: {x: 123, y: 255}
   m_SizeDelta: {x: 73.63349, y: 56.74278}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1892381215
@@ -21850,6 +23254,82 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &1930003085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930003086}
+  - component: {fileID: 1930003088}
+  - component: {fileID: 1930003087}
+  m_Layer: 5
+  m_Name: TurnPageRibbon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1930003086
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930003085}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.10837919, y: 0.35674208, z: 0.35581312}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 425716725}
+  m_Father: {fileID: 618904018}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.19996643, y: 0}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1930003087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930003085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 973f9214abb19034a942a9c924ffabfd, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1930003088
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930003085}
+  m_CullTransparentMesh: 0
 --- !u!1 &1930615809
 GameObject:
   m_ObjectHideFlags: 0
@@ -22023,6 +23503,57 @@ CanvasGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942334055}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!1 &1944124162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1944124163}
+  - component: {fileID: 1944124164}
+  m_Layer: 0
+  m_Name: LeftControlsGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1944124163
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944124162}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 706501001}
+  - {fileID: 1540562365}
+  - {fileID: 1575346640}
+  m_Father: {fileID: 106479779}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -95.61, y: -193}
+  m_SizeDelta: {x: 114.8392, y: 67.49707}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1944124164
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944124162}
   m_Enabled: 1
   m_Alpha: 0
   m_Interactable: 1
@@ -22263,7 +23794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1999999502}
   m_Layer: 0
-  m_Name: Intro
+  m_Name: CoverSpread
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22281,7 +23812,6 @@ RectTransform:
   m_LocalScale: {x: 2.4000003, y: 2.4000003, z: 2.4000003}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 79214738}
   - {fileID: 181424635}
   - {fileID: 1941654040}
   - {fileID: 650939659}
@@ -23300,6 +24830,7 @@ RectTransform:
   - {fileID: 1016970787}
   - {fileID: 1106450373}
   - {fileID: 758908782}
+  - {fileID: 915915231}
   m_Father: {fileID: 56354487}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -23557,6 +25088,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2088792440}
+  m_CullTransparentMesh: 0
+--- !u!1 &2099171451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2099171452}
+  - component: {fileID: 2099171454}
+  - component: {fileID: 2099171453}
+  m_Layer: 5
+  m_Name: TurnPageText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2099171452
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099171451}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.2071313, y: 0.7780789, z: 1.1635}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 706501001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 8, y: -13}
+  m_SizeDelta: {x: 1059.6056, y: 224.4409}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2099171453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099171451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 5f258fa0f31c66542b4f9ec10040cb20, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2099171454
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099171451}
   m_CullTransparentMesh: 0
 --- !u!1 &2103887054
 GameObject:
